@@ -116,17 +116,6 @@
           <a href="#rp03" style="text-decoration:none; color:#6b6b6b; font-size:11px; border-radius:6px; padding:6px 10px; transition:background .16s, color .16s" style-hover="background:#F1F1F1; color:#111">Reporte enviado</a>
           </div>
         </sc-if>
-        <a href="#elementos" onClick="{{ openElementos }}" style="display:flex; align-items:center; justify-content:space-between; gap:8px; text-decoration:none; color:#111; font-weight:600; border-radius:8px; padding:9px 11px; font-size:13px; transition:background .18s" style-hover="background:#EFEFEF">Elementos<span style="font-size:9px; color:#8a8a8a; transform:rotate(0deg); transition:transform .18s">▾</span></a>
-        <sc-if value="{{ elementosOpen }}" hint-placeholder-val="{{ false }}">
-          <div style="display:flex; flex-direction:column; gap:1px; padding:2px 0 8px 10px; margin-left:6px; border-left:1px solid #E4E4E4">
-          <a href="#e1" style="text-decoration:none; color:#6b6b6b; font-size:12px; border-radius:6px; padding:6px 10px; transition:background .16s, color .16s" style-hover="background:#F1F1F1; color:#111">Adjuntar</a>
-          <a href="#e2" style="text-decoration:none; color:#6b6b6b; font-size:12px; border-radius:6px; padding:6px 10px; transition:background .16s, color .16s" style-hover="background:#F1F1F1; color:#111">Enviar</a>
-          <a href="#e3" style="text-decoration:none; color:#6b6b6b; font-size:12px; border-radius:6px; padding:6px 10px; transition:background .16s, color .16s" style-hover="background:#F1F1F1; color:#111">Búsqueda / Argumento</a>
-          <a href="#e4" style="text-decoration:none; color:#6b6b6b; font-size:12px; border-radius:6px; padding:6px 10px; transition:background .16s, color .16s" style-hover="background:#F1F1F1; color:#111">Archivo adjunto</a>
-          <a href="#e5" style="text-decoration:none; color:#6b6b6b; font-size:12px; border-radius:6px; padding:6px 10px; transition:background .16s, color .16s" style-hover="background:#F1F1F1; color:#111">Descargar chat</a>
-          <a href="#e6" style="text-decoration:none; color:#6b6b6b; font-size:12px; border-radius:6px; padding:6px 10px; transition:background .16s, color .16s" style-hover="background:#F1F1F1; color:#111">Tooltip</a>
-          </div>
-        </sc-if>
       </div>
     </aside>
 
@@ -137,7 +126,7 @@
     <div style="display:flex; align-items:baseline; gap:14px">
       <div style="font-family:Georgia,'Times New Roman',serif; font-size:26px; font-weight:700">Composer</div>
     </div>
-    <div style="max-width:640px; font-size:14px; line-height:1.7; color:#444; margin-top:10px; text-wrap:pretty">Cada estado se muestra completo, con la proporción exacta del prototipo, escalado al 62 % para que entre junto a su explicación. Los estados de interacción de cada control (hover, presionado, tooltip) están en la sección Elementos.</div>
+    <div style="max-width:640px; font-size:14px; line-height:1.7; color:#444; margin-top:10px; text-wrap:pretty">Cada estado se muestra completo, con la proporción exacta del prototipo, escalado al 62 % para que entre junto a su explicación.</div>
 
     <div style="display:flex; flex-direction:column; gap:22px; margin-top:30px">
       <div id="c00" style="scroll-margin-top:20px; background:#fff; border:1px solid #E4E4E4; border-radius:14px; padding:28px 30px">
@@ -1937,155 +1926,6 @@
     </div>
     </sc-if>
 
-    <sc-if value="{{ elementosOpen }}" hint-placeholder-val="{{ false }}">
-    <div>
-    <div id="elementos" style="display:flex; align-items:baseline; gap:14px; margin-top:56px; scroll-margin-top:20px">
-      <div style="font-family:Georgia,'Times New Roman',serif; font-size:26px; font-weight:700">Elementos</div>
-      <div style="font-size:13px; color:#8a8a8a">Controles individuales y sus estados de interacción</div>
-    </div>
-    <div style="max-width:640px; font-size:14px; line-height:1.7; color:#444; margin-top:10px; text-wrap:pretty">Los tres estados de cada control, a tamaño real. Los ejemplos son reactivos: pasá el cursor o mantené presionado para verlos.</div>
-
-    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:22px; margin-top:26px">
-
-      <div id="e1" style="scroll-margin-top:20px; background:#fff; border:1px solid #E4E4E4; border-radius:14px; padding:24px 26px; min-width:0; overflow-x:auto">
-        <div style="font-size:15px; font-weight:700">Adjuntar</div>
-        <div style="font-size:12.5px; line-height:1.65; color:#555; margin-top:7px; text-wrap:pretty">Fondo gris fijo. En hover se oscurece un paso. El presionado no existe todavía en el prototipo.</div>
-        <div style="display:flex; gap:34px; margin-top:20px">
-          <div style="display:flex; flex-direction:column; align-items:center; gap:9px">
-            <div style="width:42px; height:42px; border-radius:12px; background:#F1F1F1; display:flex; align-items:center; justify-content:center">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#4a4a4a" stroke-width="1.6" stroke-linecap="round"><path d="M20 11.5l-8.2 8.2a4.2 4.2 0 01-6-6l8-8a2.8 2.8 0 014 4l-8 8a1.4 1.4 0 01-2-2l7.3-7.3"></path></svg>
-            </div>
-            <span style="font-size:11px; color:#8a8a8a">normal</span>
-          </div>
-          <div style="display:flex; flex-direction:column; align-items:center; gap:9px">
-            <div style="width:42px; height:42px; border-radius:12px; background:#E8E8E8; display:flex; align-items:center; justify-content:center">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#4a4a4a" stroke-width="1.6" stroke-linecap="round"><path d="M20 11.5l-8.2 8.2a4.2 4.2 0 01-6-6l8-8a2.8 2.8 0 014 4l-8 8a1.4 1.4 0 01-2-2l7.3-7.3"></path></svg>
-            </div>
-            <span style="font-size:11px; color:#8a8a8a">hover</span>
-          </div>
-          <div style="display:flex; flex-direction:column; align-items:center; gap:9px">
-            <button style="width:42px; height:42px; border-radius:12px; background:#F1F1F1; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0; transition:background .18s, transform .1s" style-hover="background:#E8E8E8" style-active="background:#DEDEDE; transform:scale(.96)">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#4a4a4a" stroke-width="1.6" stroke-linecap="round"><path d="M20 11.5l-8.2 8.2a4.2 4.2 0 01-6-6l8-8a2.8 2.8 0 014 4l-8 8a1.4 1.4 0 01-2-2l7.3-7.3"></path></svg>
-            </button>
-            <span style="font-size:11px; color:#8a8a8a">probalo<span style="border:1px dashed #B0B0B0; border-radius:5px; padding:1px 6px; font-size:10px; color:#8a8a8a; margin-left:6px">propuesta</span></span>
-          </div>
-        </div>
-      </div>
-
-      <div id="e2" style="scroll-margin-top:20px; background:#fff; border:1px solid #E4E4E4; border-radius:14px; padding:24px 26px; min-width:0; overflow-x:auto">
-        <div style="font-size:15px; font-weight:700">Enviar</div>
-        <div style="font-size:12.5px; line-height:1.65; color:#555; margin-top:7px; text-wrap:pretty">Gris claro cuando no hay nada que enviar, negro cuando sí. El prototipo solo transiciona entre esos dos colores: todavía no tiene hover ni presionado.</div>
-        <div style="display:flex; gap:34px; margin-top:20px">
-          <div style="display:flex; flex-direction:column; align-items:center; gap:9px">
-            <div style="width:46px; height:46px; border-radius:13px; background:#EDEDED; color:#B5B5B5; display:flex; align-items:center; justify-content:center">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V5"></path><path d="M5.5 11.5L12 5l6.5 6.5"></path></svg>
-            </div>
-            <span style="font-size:11px; color:#8a8a8a">inactivo</span>
-          </div>
-          <div style="display:flex; flex-direction:column; align-items:center; gap:9px">
-            <div style="width:46px; height:46px; border-radius:13px; background:#111; color:#fff; display:flex; align-items:center; justify-content:center">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V5"></path><path d="M5.5 11.5L12 5l6.5 6.5"></path></svg>
-            </div>
-            <span style="font-size:11px; color:#8a8a8a">activo</span>
-          </div>
-          <div style="display:flex; flex-direction:column; align-items:center; gap:9px">
-            <button style="width:46px; height:46px; border-radius:13px; background:#111; color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0; transition:background .18s, transform .1s" style-hover="background:#333" style-active="background:#000; transform:scale(.95)">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V5"></path><path d="M5.5 11.5L12 5l6.5 6.5"></path></svg>
-            </button>
-            <span style="font-size:11px; color:#8a8a8a">hover y presionado <span style="border:1px dashed #B0B0B0; border-radius:5px; padding:1px 6px; font-size:10px; color:#8a8a8a; margin-left:7px">propuesta</span></span>
-          </div>
-        </div>
-      </div>
-
-      <div id="e3" style="scroll-margin-top:20px; background:#fff; border:1px solid #E4E4E4; border-radius:14px; padding:24px 26px; min-width:0; overflow-x:auto">
-        <div style="font-size:15px; font-weight:700">Búsqueda / Argumento</div>
-        <div style="font-size:12.5px; line-height:1.65; color:#555; margin-top:7px; text-wrap:pretty">La opción activa es la pastilla blanca con sombra; la otra queda en gris. Tocar Argumento abre el cuestionario, así que el cambio de estado casi nunca se ve solo. El prototipo no tiene hover ni presionado en estas pastillas.</div>
-        <div style="display:flex; flex-direction:column; gap:16px; margin-top:20px">
-          <div style="display:flex; align-items:center; gap:14px">
-            <div style="display:flex; background:#F1F1F1; border-radius:12px; padding:4px">
-              <div style="background:#fff; border-radius:9px; padding:9px 18px; font-size:14px; box-shadow:0 1px 2px rgba(0,0,0,.10)">Búsqueda</div>
-              <div style="padding:9px 18px; font-size:14px; color:#9a9a9a">Argumento</div>
-            </div>
-            <span style="font-size:11px; color:#8a8a8a">Búsqueda activa</span>
-          </div>
-          <div style="display:flex; align-items:center; gap:14px">
-            <div style="display:flex; background:#F1F1F1; border-radius:12px; padding:4px">
-              <div style="padding:9px 18px; font-size:14px; color:#9a9a9a">Búsqueda</div>
-              <div style="background:#fff; border-radius:9px; padding:9px 18px; font-size:14px; box-shadow:0 1px 2px rgba(0,0,0,.10)">Argumento</div>
-            </div>
-            <span style="font-size:11px; color:#8a8a8a">Argumento activo</span>
-          </div>
-          <div style="display:flex; align-items:center; gap:14px">
-            <div style="display:flex; background:#F1F1F1; border-radius:12px; padding:4px">
-              <button style="background:#fff; border:none; border-radius:9px; padding:9px 18px; font-size:14px; box-shadow:0 1px 2px rgba(0,0,0,.10); cursor:pointer">Búsqueda</button>
-              <button style="background:transparent; border:none; border-radius:9px; padding:9px 18px; font-size:14px; color:#9a9a9a; cursor:pointer; transition:color .18s, background .18s" style-hover="color:#111; background:rgba(255,255,255,.55)" style-active="background:#E4E4E4">Argumento</button>
-            </div>
-            <span style="font-size:11px; color:#8a8a8a">probalo<span style="border:1px dashed #B0B0B0; border-radius:5px; padding:1px 6px; font-size:10px; color:#8a8a8a; margin-left:6px">propuesta</span></span>
-          </div>
-        </div>
-      </div>
-
-      <div id="e4" style="scroll-margin-top:20px; background:#fff; border:1px solid #E4E4E4; border-radius:14px; padding:24px 26px; min-width:0; overflow-x:auto">
-        <div style="font-size:15px; font-weight:700">Archivo adjunto</div>
-        <div style="font-size:12.5px; line-height:1.65; color:#555; margin-top:7px; text-wrap:pretty">Caja de 96 × 96 px. Arranca cargando, luego muestra el nombre recortado. El botón de eliminar solo aparece con el cursor encima, para no ensuciar la caja.</div>
-        <div style="display:flex; gap:22px; margin-top:20px">
-          <div style="display:flex; flex-direction:column; align-items:center; gap:9px">
-            <div style="flex:0 0 96px; background:#EDEDED; border-radius:8px; padding:11px 12px; width:96px; height:96px; overflow-wrap:anywhere; display:flex; flex-direction:column; align-items:flex-start; justify-content:center; gap:8px; color:#8a8a8a">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2.2" stroke-linecap="round" style="animation:spin 1s linear infinite"><path d="M12 3a9 9 0 019 9" opacity=".9"></path><path d="M21 12a9 9 0 01-9 9" opacity=".25"></path><path d="M12 21a9 9 0 01-9-9" opacity=".25"></path><path d="M3 12a9 9 0 019-9" opacity=".25"></path></svg>
-              <span style="font-size:11px">Cargando</span>
-            </div>
-            <span style="font-size:11px; color:#8a8a8a">cargando</span>
-          </div>
-          <div style="display:flex; flex-direction:column; align-items:center; gap:9px">
-            <div style="flex:0 0 96px; background:#EDEDED; border-radius:8px; padding:11px 12px; font-size:12px; line-height:1.35; width:96px; height:96px; overflow-wrap:anywhere; color:#1a1a1a; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between">Reglamento de la Ley 30364.pdf</div>
-            <span style="font-size:11px; color:#8a8a8a">listo</span>
-          </div>
-          <div style="display:flex; flex-direction:column; align-items:center; gap:9px">
-            <div style="position:relative; background:#EDEDED; border-radius:8px; padding:11px 12px; font-size:12px; line-height:1.35; width:96px; height:96px; overflow-wrap:anywhere; color:#1a1a1a; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between">
-              <div style="position:absolute; top:6px; right:6px; width:20px; height:20px; border-radius:50%; background:#111; color:#fff; display:flex; align-items:center; justify-content:center">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg>
-              </div>
-              Reglamento de la Ley 30364.pdf
-            </div>
-            <span style="font-size:11px; color:#8a8a8a">hover</span>
-          </div>
-        </div>
-      </div>
-
-      <div id="e5" style="scroll-margin-top:20px; background:#fff; border:1px solid #E4E4E4; border-radius:14px; padding:24px 26px; min-width:0; overflow-x:auto">
-        <div style="font-size:15px; font-weight:700">Descargar chat</div>
-        <div style="font-size:12.5px; line-height:1.65; color:#555; margin-top:7px; text-wrap:pretty">Botón blanco sobre el aviso negro del límite. Es la única acción disponible en ese estado, por eso va en contraste máximo.</div>
-        <div style="display:flex; flex-direction:column; gap:14px; margin-top:20px">
-          <div style="display:flex; align-items:center; gap:14px"><div style="background:#111; border-radius:12px; padding:14px 16px; display:flex"><div style="flex:0 0 auto; display:flex; align-items:center; gap:7px; background:#fff; border-radius:8px; padding:8px 13px; font-size:13px; color:#111; white-space:nowrap"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5v12"></path><path d="M7 11l5 5 5-5"></path><path d="M4 20.5h16"></path></svg>Descargar chat</div></div><span style="font-size:11px; color:#8a8a8a">normal</span></div>
-          <div style="display:flex; align-items:center; gap:14px"><div style="background:#111; border-radius:12px; padding:14px 16px; display:flex"><div style="flex:0 0 auto; display:flex; align-items:center; gap:7px; background:#E0E0E0; border-radius:8px; padding:8px 13px; font-size:13px; color:#111; white-space:nowrap"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5v12"></path><path d="M7 11l5 5 5-5"></path><path d="M4 20.5h16"></path></svg>Descargar chat</div></div><span style="font-size:11px; color:#8a8a8a">hover</span></div>
-          <div style="display:flex; align-items:center; gap:14px"><div style="background:#111; border-radius:12px; padding:14px 16px; display:flex"><button style="flex:0 0 auto; display:flex; align-items:center; gap:7px; background:#fff; border:none; border-radius:8px; padding:8px 13px; font-size:13px; color:#111; white-space:nowrap; cursor:pointer; transition:background .18s, transform .1s" style-hover="background:#E0E0E0" style-active="background:#CFCFCF; transform:scale(.97)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5v12"></path><path d="M7 11l5 5 5-5"></path><path d="M4 20.5h16"></path></svg>Descargar chat</button></div><span style="font-size:11px; color:#8a8a8a">probalo<span style="border:1px dashed #B0B0B0; border-radius:5px; padding:1px 6px; font-size:10px; color:#8a8a8a; margin-left:6px">propuesta</span></span></div>
-        </div>
-      </div>
-
-      <div id="e6" style="scroll-margin-top:20px; background:#fff; border:1px solid #E4E4E4; border-radius:14px; padding:24px 26px; min-width:0; overflow-x:auto">
-        <div style="font-size:15px; font-weight:700">Tooltip</div>
-        <div style="font-size:12.5px; line-height:1.65; color:#555; margin-top:7px; text-wrap:pretty">Fondo oscuro, texto de 11 px, aparece debajo del elemento tras pasar el cursor. Lo usan los tags de confianza de cada respuesta y los íconos sin etiqueta.</div>
-        <div style="display:flex; align-items:flex-start; gap:30px; margin-top:24px">
-          <div style="display:flex; flex-direction:column; align-items:flex-start; gap:9px">
-            <div style="position:relative; padding-bottom:38px">
-              <div style="background:#111; color:#fff; border-radius:7px; padding:7px 13px; font-size:13px; display:flex; align-items:center; gap:8px"><span style="width:7px; height:7px; border-radius:50%; background:#9a9a9a"></span>Sujeta a validación</div>
-              <div style="position:absolute; top:calc(100% - 30px); left:0; background:#1A1A1A; color:#F2F2F2; border-radius:7px; padding:8px 11px; font-size:11px; white-space:nowrap">Aquí va una explicación</div>
-            </div>
-            <span style="font-size:11px; color:#8a8a8a">tooltip visible</span>
-          </div>
-          <div style="display:flex; flex-direction:column; align-items:flex-start; gap:9px">
-            <div style="background:#fff; border:1px solid #111; border-radius:7px; padding:6px 12px; font-size:13px; display:flex; align-items:center; gap:8px"><span style="width:7px; height:7px; border-radius:50%; background:#111"></span>Verificada</div>
-            <span style="font-size:11px; color:#8a8a8a">sin hover</span>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <div style="margin-top:44px; font-size:12.5px; color:#8a8a8a">Siguen: respuesta, paneles de Favoritos y Documentos, selector de archivos, cuestionario de argumento y modales.</div>
-
-    </div>
-    </sc-if>
 
     </div>
 
@@ -2114,12 +1954,9 @@ class Component extends DCLogic {
 
       openDocumentos: () => this.setState({ open: "documentos" }),
       openFavoritos: () => this.setState({ open: "favoritos" }),
-      elementosOpen: s.open === "elementos",
       openRespuesta: () => this.setState({ open: "respuesta" }),
       rotComposer: s.open === "composer" ? "0deg" : "-90deg",
-      rotElementos: s.open === "elementos" ? "0deg" : "-90deg",
-      openComposer: () => this.setState({ open: "composer" }),
-      openElementos: () => this.setState({ open: "elementos" })
+      openComposer: () => this.setState({ open: "composer" })
     };
   }
 }
