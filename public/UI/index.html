@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JUSFEM — Prototipo con marca</title>
+<script src="../support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#F7F6F8; -webkit-font-smoothing:antialiased; }
+  * { box-sizing:border-box; }
+  a { color:#622C7B; text-decoration:underline; text-underline-offset:2px; }
+  a:hover { color:#0B0B0B; }
+  input, textarea, button { font-family:inherit; }
+  input:focus, textarea:focus { outline:none; }
+  ::selection { background:#F3EDF7; }
+  @keyframes spin { to { transform:rotate(360deg) } }
+  @keyframes blink { 0%,49% { opacity:1 } 50%,100% { opacity:0 } }
+  @keyframes riseIn { from { opacity:0; transform:translateY(8px) } to { opacity:1; transform:none } }
+</style>
+</helmet>
+<div style="display:flex; height:100vh; width:100%; font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,sans-serif; color:#0B0B0B; font-size:15px; overflow:hidden; background:#F7F6F8">
+
+  <aside style="{{ favAside }}">
+    <div style="width:238px; height:100%; padding:69px 16px 22px; display:flex; flex-direction:column; gap:16px; background:#F5F4F6; border-right:1px solid #F3EDF7">
+      <div style="display:flex; flex-direction:column; gap:4px">
+        <sc-for list="{{ favItems }}" as="item" hint-placeholder-count="2">
+          <div onClick="{{ item.go }}" onMouseEnter="{{ item.enter }}" onMouseLeave="{{ item.leave }}" style="{{ item.style }}">
+            <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ item.label }}</span>
+            <button onClick="{{ item.ask }}" title="Eliminar de favoritos" style="{{ item.delStyle }}">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 7h16"></path><path d="M9.5 7V4.8h5V7"></path><path d="M6.5 7l.9 12.2h9.2L17.5 7"></path></svg>
+            </button>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </aside>
+
+  <main style="flex:1; min-width:0; min-height:0; height:100%; position:relative; display:flex; flex-direction:column">
+
+    <div style="position:fixed; left:0; right:0; top:0; z-index:8; height:44px; box-sizing:content-box; display:flex; align-items:center; justify-content:space-between; padding:13px 18px 0; pointer-events:none; background:transparent">
+      <div style="display:flex; align-items:center; gap:10px; pointer-events:auto; min-width:0">
+        <div style="position:relative; display:flex">
+          <img src="./logo-jusfem.svg" alt="JUSFEM" style="height:53px; width:auto; display:block; margin-top:-12px; margin-left:-6px" />
+          <div style="position:absolute; left:2px; top:38px; font-size:8px; font-weight:500; color:#7F768C; letter-spacing:.03em; line-height:1.4; width:96px">Asistente jurídico<br />con enfoque de género</div>
+        </div>
+        <div style="{{ sideShift }}"></div>
+        <button onClick="{{ toggleFav }}" onMouseEnter="{{ onFavBtn }}" onMouseLeave="{{ offHov }}" title="Sidebar" style="{{ favBtn }}">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2.5"></rect><path d="M9 4v16"></path></svg>
+        </button>
+        <div style="{{ convShift }}"></div>
+        <div style="font-size:12.5px; color:#0B0B0B; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:320px">Debida diligencia reforzada y deber de investigar</div>
+        <div style="position:relative; display:flex; margin-left:-10px">
+          <button onClick="{{ toggleConvMenu }}" onMouseEnter="{{ onConv }}" onMouseLeave="{{ offHov }}" title="Opciones de la conversación" style="{{ convBtn }}">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="12" cy="19" r="1.6"></circle></svg>
+          </button>
+          <sc-if value="{{ convMenuOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute; left:0; top:32px; z-index:9; width:212px; background:#F7F6F8; border:1px solid #F3EDF7; border-radius:10px; box-shadow:0 10px 26px rgba(98,44,123,.12); padding:6px; display:flex; flex-direction:column">
+              <sc-for list="{{ convOptions }}" as="op" hint-placeholder-count="4">
+                <button onClick="{{ op.click }}" onMouseEnter="{{ op.enter }}" onMouseLeave="{{ offHov }}" style="{{ op.style }}">{{ op.label }}</button>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:4px; pointer-events:auto; flex:0 0 auto">
+        <button onClick="{{ openShare }}" onMouseEnter="{{ onShare }}" onMouseLeave="{{ offHov }}" title="Compartir" style="{{ shareBtn }}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5v3.9a2 2 0 01-2 2H6a2 2 0 01-2-2v-3.9"></path><path d="M12 15V4"></path><path d="M8 7.6L12 3.6l4 4"></path></svg>
+        </button>
+        <button onClick="{{ toggleDocs }}" onMouseEnter="{{ onDocsBtn }}" onMouseLeave="{{ offHov }}" title="Documentos" style="{{ docsBtn }}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"></path><path d="M14 3v5h5"></path><path d="M9 13h6"></path><path d="M9 17h4"></path></svg>
+          Documentos
+        </button>
+      </div>
+    </div>
+
+    <div style="position:absolute; left:0; right:0; top:0; height:70px; z-index:4; pointer-events:none; background:linear-gradient(#F7F6F8 62%, rgba(247,246,248,0))"></div>
+
+    <div data-screen-label="Conversación" ref="{{ scrollRef }}" style="flex:1; min-height:0; overflow-y:auto; padding:74px 0 0">
+      <div style="width:560px; margin:0 auto; display:flex; flex-direction:column; gap:34px">
+
+        <div ref="{{ ref1 }}" style="display:flex; flex-direction:column; gap:24px">
+          <div onMouseEnter="{{ onQ }}" onMouseLeave="{{ offHov }}" style="align-self:flex-end; margin-right:-22px; display:flex; flex-direction:column; align-items:flex-end; gap:8px">
+            <div style="background:#EEECF0; border-radius:10px; padding:11px 15px; font-size:13.5px; max-width:420px; line-height:1.55; color:#0B0B0B">Éstandares internacionales de DDHH sobre debida diligencia reforzada</div>
+            <div style="{{ qActionsStyle }}">
+              <span style="font-size:11px; color:#7F768C">Hace 11 minutos</span>
+              <sc-for list="{{ qActions }}" as="act" hint-placeholder-count="3">
+                <button onClick="{{ act.click }}" onMouseEnter="{{ act.enter }}" onMouseLeave="{{ offHov }}" title="{{ act.label }}" style="{{ act.style }}">
+                  <span style="display:flex" dangerouslySetInnerHTML="{{ act.icon }}"></span>
+                  {{ act.label }}
+                </button>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:22px; font-family:'Source Serif 4',Georgia,serif; font-size:17px">
+            <div style="align-self:flex-start; position:relative; display:flex">
+              <div onMouseEnter="{{ tipOn }}" onMouseLeave="{{ tipOff }}" style="margin-left:-22px; background:#DFF0EA; color:#035D4A; border-radius:4px; padding:6px 11px; font-size:11px; font-weight:500; letter-spacing:.02em; display:flex; align-items:center; gap:7px; cursor:default; font-family:Inter,sans-serif">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+                Verificada
+              </div>
+              <div style="{{ tipArrowStyle }}"></div>
+              <div style="{{ tipStyle }}">Aquí va una explicación</div>
+            </div>
+
+            <div style="border-left:3px solid #035D4A; padding:0 22px; margin:0 -22px; display:flex; flex-direction:column; gap:9px">
+              <div style="font-weight:700; color:#0B0B0B">Idea clave</div>
+              <div style="line-height:1.58; text-wrap:pretty; color:#0B0B0B">El deber de debida diligencia reforzada obliga al Estado a actuar con especial rigor ante denuncias de violencia contra las mujeres, y su incumplimiento genera responsabilidad internacional.</div>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:9px; line-height:1.58; color:#0B0B0B">
+              <div style="font-weight:700">Estándar aplicable</div>
+              <div style="text-wrap:pretty">La Corte IDH estableció que, ante un contexto de violencia contra las mujeres, el deber de debida diligencia adquiere carácter reforzado desde el momento en que las autoridades toman conocimiento del riesgo.</div>
+              <div style="text-wrap:pretty">Corte IDH. (2009). Caso González y otras ("Campo Algodonero") vs. México. Serie C No. 205, párr. 258.</div>
+              <div style="display:flex; align-items:center; gap:10px">
+                <a href="#" onClick="{{ openDoc2 }}">Convención de Belém do Pará.pdf</a>
+                <button onClick="{{ openDoc2 }}" title="Ver documento" style="border:none; background:transparent; cursor:pointer; padding:0; display:flex; color:#622C7B" style-hover="color:#0B0B0B">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1.8 12S5.5 5.8 12 5.8 22.2 12 22.2 12 18.5 18.2 12 18.2 1.8 12 1.8 12z"></path><circle cx="12" cy="12" r="2.6"></circle></svg>
+                </button>
+              </div>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:9px; line-height:1.58; color:#0B0B0B">
+              <div style="font-weight:700">Vinculatoriedad</div>
+              <div style="text-wrap:pretty">Este estándar es vinculante para el Perú conforme al artículo 55 y la cuarta disposición final y transitoria de la Constitución Política del Perú y el artículo V del Título Preliminar del Código Procesal Constitucional.</div>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:9px; line-height:1.58; color:#0B0B0B">
+              <div style="font-weight:700">Documentos consultados</div>
+              <div style="display:flex; align-items:center; gap:10px">
+                <a href="#" onClick="{{ openDoc1 }}">N1 — Corte IDH, Caso González y otras vs. México (2009).pdf</a>
+                <button onClick="{{ openDoc1 }}" title="Ver documento" style="border:none; background:transparent; cursor:pointer; padding:0; display:flex; color:#622C7B" style-hover="color:#0B0B0B">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1.8 12S5.5 5.8 12 5.8 22.2 12 22.2 12 18.5 18.2 12 18.2 1.8 12 1.8 12z"></path><circle cx="12" cy="12" r="2.6"></circle></svg>
+                </button>
+              </div>
+              <div style="display:flex; align-items:center; gap:10px">
+                <a href="#" onClick="{{ openDoc2 }}">N2 — Convención de Belém do Pará.pdf</a>
+                <button onClick="{{ openDoc2 }}" title="Ver documento" style="border:none; background:transparent; cursor:pointer; padding:0; display:flex; color:#622C7B" style-hover="color:#0B0B0B">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1.8 12S5.5 5.8 12 5.8 22.2 12 22.2 12 18.5 18.2 12 18.2 1.8 12 1.8 12z"></path><circle cx="12" cy="12" r="2.6"></circle></svg>
+                </button>
+              </div>
+            </div>
+
+            <div style="display:flex; align-items:center; gap:5px; margin-top:2px">
+              <button onClick="{{ copy }}" onMouseEnter="{{ onCopy }}" onMouseLeave="{{ offHov }}" style="{{ copyStyle }}">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="3" width="13" height="16" rx="2"></rect><path d="M20 7v12a2 2 0 01-2 2H8"></path></svg>
+                {{ copyLabel }}
+              </button>
+              <button onClick="{{ fav }}" onMouseEnter="{{ onFav }}" onMouseLeave="{{ offHov }}" style="{{ favStyle }}">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="{{ favFill }}" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 3.5l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4L12 18.3l-5.8 3 1.1-6.4L2.6 10.3l6.5-.9z"></path></svg>
+                {{ favLabel }}
+              </button>
+              <sc-if value="{{ notReported1 }}" hint-placeholder-val="{{ true }}">
+                <button onClick="{{ openReport1 }}" title="Reportar un problema con esta respuesta" style="border:none; background:transparent; cursor:pointer; padding:0; display:flex; color:#622C7B" style-hover="color:#0B0B0B">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5L22 20H2z"></path><path d="M12 10v4.5"></path><path d="M12 17.2v.2"></path></svg>
+                </button>
+              </sc-if>
+              <sc-if value="{{ reported1 }}" hint-placeholder-val="{{ false }}">
+                <span style="display:inline-flex; align-items:center; gap:6px; background:#F3EDF7; border-radius:8px; padding:5px 10px; font-size:11px; color:#622C7B; font-family:Inter,sans-serif"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.5L22 20H2z"></path></svg>Respuesta reportada</span>
+              </sc-if>
+              <span style="font-size:12px; color:#7F768C; font-family:Inter,sans-serif">Hace 11 minutos</span>
+            </div>
+          </div>
+        </div>
+
+        <sc-for list="{{ turns }}" as="turn" hint-placeholder-count="0">
+          <div ref="{{ turn.ref }}" style="display:flex; flex-direction:column; gap:24px">
+            <div style="align-self:flex-end; margin-right:-22px; display:flex; flex-direction:column; align-items:flex-end; gap:8px">
+              <sc-if value="{{ turn.hasFiles }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end">
+                  <sc-for list="{{ turn.files }}" as="f" hint-placeholder-count="1">
+                    <div onClick="{{ f.open }}" title="Ver documento" style="background:#EEECF0; border-radius:8px; padding:10px 12px; font-size:11px; line-height:1.35; width:92px; height:92px; overflow:hidden; cursor:pointer; transition:background .18s" style-hover="background:#F3EDF7">{{ f.name }}</div>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <sc-if value="{{ turn.hasQ }}" hint-placeholder-val="{{ true }}">
+                <div style="background:#EEECF0; border-radius:10px; padding:11px 15px; font-size:13.5px; max-width:420px; line-height:1.55; color:#0B0B0B; animation:riseIn .3s ease both">{{ turn.q }}</div>
+              </sc-if>
+            </div>
+
+            <sc-if value="{{ turn.thinking }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex; align-items:center; gap:11px; color:#7F768C; font-size:13.5px">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#622C7B" stroke-width="2.2" stroke-linecap="round" style="animation:spin 1s linear infinite"><path d="M12 3a9 9 0 019 9" opacity=".9"></path><path d="M21 12a9 9 0 01-9 9" opacity=".25"></path><path d="M12 21a9 9 0 01-9-9" opacity=".25"></path><path d="M3 12a9 9 0 019-9" opacity=".25"></path></svg>
+                <span>{{ turn.thought }}</span>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ turn.done }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex; flex-direction:column; gap:22px; font-family:'Source Serif 4',Georgia,serif; font-size:17px">
+                <sc-if value="{{ turn.hasTag }}" hint-placeholder-val="{{ true }}">
+                  <div style="align-self:flex-start; margin-left:-22px; background:#DFF0EA; color:#035D4A; border-radius:4px; padding:6px 11px; font-size:11px; font-weight:500; display:flex; align-items:center; gap:7px; font-family:Inter,sans-serif; animation:riseIn .3s ease both">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+                    Verificada
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ turn.hasKey }}" hint-placeholder-val="{{ true }}">
+                  <div style="border-left:3px solid #035D4A; padding:0 22px; margin:0 -22px; display:flex; flex-direction:column; gap:9px">
+                    <div style="font-weight:700">{{ turn.keyTitle }}</div>
+                    <div style="line-height:1.58; text-wrap:pretty">{{ turn.typed }}<sc-if value="{{ turn.typing }}" hint-placeholder-val="{{ false }}"><span style="display:inline-block; width:8px; margin-left:1px; border-bottom:2px solid #0B0B0B; animation:blink 1s step-end infinite"></span></sc-if></div>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ turn.plainBody }}" hint-placeholder-val="{{ false }}">
+                  <div style="line-height:1.58; text-wrap:pretty">{{ turn.typed }}<sc-if value="{{ turn.typing }}" hint-placeholder-val="{{ false }}"><span style="display:inline-block; width:8px; margin-left:1px; border-bottom:2px solid #0B0B0B; animation:blink 1s step-end infinite"></span></sc-if></div>
+                </sc-if>
+
+                <sc-if value="{{ turn.sensitive }}" hint-placeholder-val="{{ false }}">
+                  <div style="line-height:1.58; text-wrap:pretty">El documento contiene datos personales. <span style="background:#0B0B0B; color:#F5F4F6; border-radius:3px; padding:1px 5px">Los nombres y datos personales se mantienen bloqueados y no se utilizan en las respuestas.</span></div>
+                </sc-if>
+
+                <sc-if value="{{ turn.hasNorm }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex; flex-direction:column; gap:9px; line-height:1.58">
+                    <div style="font-weight:700">Fundamento normativo</div>
+                    <div style="text-wrap:pretty">Convención de Belém do Pará, artículo 7, literal b; Ley 30364, artículo 10. Corte IDH, Caso González y otras vs. México, párr. 258.</div>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ turn.hasDocs }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex; flex-direction:column; gap:9px; line-height:1.58">
+                    <div style="font-weight:700">Documentos consultados</div>
+                    <div style="display:flex; align-items:center; gap:10px">
+                      <a href="#" onClick="{{ turn.openDoc }}">{{ turn.docLabel }}</a>
+                      <button onClick="{{ turn.openDoc }}" title="Ver documento" style="border:none; background:transparent; cursor:pointer; padding:0; display:flex; color:#622C7B" style-hover="color:#0B0B0B">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1.8 12S5.5 5.8 12 5.8 22.2 12 22.2 12 18.5 18.2 12 18.2 1.8 12 1.8 12z"></path><circle cx="12" cy="12" r="2.6"></circle></svg>
+                      </button>
+                    </div>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ turn.isDraft }}" hint-placeholder-val="{{ false }}">
+                  <div style="font-size:12px; color:#7F768C; font-family:Inter,sans-serif; line-height:1.6; text-wrap:pretty">Este párrafo es un borrador. Requiere revisión y edición antes de incorporarlo a una resolución.</div>
+                </sc-if>
+
+                <sc-if value="{{ turn.showActions }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex; align-items:center; gap:5px; margin-top:2px">
+                    <button onClick="{{ turn.copy }}" onMouseEnter="{{ turn.onCopy }}" onMouseLeave="{{ offHov }}" style="{{ turn.copyStyle }}">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="3" width="13" height="16" rx="2"></rect><path d="M20 7v12a2 2 0 01-2 2H8"></path></svg>
+                      {{ turn.copyLabel }}
+                    </button>
+                    <button onClick="{{ turn.fav }}" onMouseEnter="{{ turn.onFav }}" onMouseLeave="{{ offHov }}" style="{{ turn.favStyle }}">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="{{ turn.favFill }}" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 3.5l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4L12 18.3l-5.8 3 1.1-6.4L2.6 10.3l6.5-.9z"></path></svg>
+                      {{ turn.favLabel }}
+                    </button>
+                    <sc-if value="{{ turn.isDraft }}" hint-placeholder-val="{{ false }}">
+                      <button onMouseEnter="{{ turn.onDl }}" onMouseLeave="{{ offHov }}" style="{{ turn.dlStyle }}">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5v12"></path><path d="M7 11l5 5 5-5"></path><path d="M4 20.5h16"></path></svg>
+                        Descargar
+                      </button>
+                    </sc-if>
+                    <sc-if value="{{ turn.notReported }}" hint-placeholder-val="{{ true }}">
+                      <button onClick="{{ turn.openReport }}" title="Reportar un problema con esta respuesta" style="border:none; background:transparent; cursor:pointer; padding:0; display:flex; color:#622C7B" style-hover="color:#0B0B0B">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5L22 20H2z"></path><path d="M12 10v4.5"></path><path d="M12 17.2v.2"></path></svg>
+                      </button>
+                    </sc-if>
+                    <sc-if value="{{ turn.reported }}" hint-placeholder-val="{{ false }}">
+                      <span style="display:inline-flex; align-items:center; gap:6px; background:#F3EDF7; border-radius:8px; padding:5px 10px; font-size:11px; color:#622C7B; font-family:Inter,sans-serif"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.5L22 20H2z"></path></svg>Respuesta reportada</span>
+                    </sc-if>
+                    <span style="font-size:12px; color:#7F768C; font-family:Inter,sans-serif">Hace unos segundos</span>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-if>
+          </div>
+        </sc-for>
+
+        <div style="flex:0 0 auto; height:62vh"></div>
+      </div>
+    </div>
+
+    <div style="flex:0 0 auto; padding:0 0 18px; position:relative; z-index:6; display:flex; flex-direction:column; justify-content:flex-end">
+      <div style="width:690px; margin:0 auto">
+
+        <sc-if value="{{ nearLimit }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex; align-items:flex-start; gap:9px; background:#F3EDF7; border:1px solid #F3EDF7; border-radius:10px; padding:11px 13px; font-size:12px; line-height:1.55; color:#0B0B0B; margin-bottom:10px">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#622C7B" stroke-width="1.7" stroke-linecap="round" style="flex:0 0 14px; margin-top:1px"><path d="M12 3.5L22 20H2z"></path><path d="M12 10v4.5"></path><path d="M12 17.2v.2"></path></svg>
+            <span>Estás cerca del límite de consultas de hoy. Te quedan 2 aproximadamente. Si llegás al límite podés descargar la conversación para continuar mañana.</span>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ atLimit }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:14px; background:#622C7B; border-radius:10px; padding:12px 14px; font-size:12px; line-height:1.55; color:#fff; margin-bottom:10px">
+            <span>Alcanzaste el límite de consultas de hoy. Podés descargar la conversación y continuar mañana.</span>
+            <button style="flex:0 0 auto; background:#fff; border:none; border-radius:8px; padding:8px 12px; font-size:11px; color:#622C7B; cursor:pointer; white-space:nowrap">Descargar el chat</button>
+          </div>
+        </sc-if>
+
+        <div style="border:1px solid #F3EDF7; border-radius:18px; padding:20px 20px 14px; background:#fff; box-shadow:0 2px 10px rgba(98,44,123,.06)">
+          <sc-if value="{{ hasAttach }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex; gap:10px; margin-bottom:14px; padding-bottom:4px; overflow-x:auto">
+              <sc-for list="{{ attachList }}" as="a" hint-placeholder-count="1">
+                <div onMouseEnter="{{ a.enter }}" onMouseLeave="{{ offHov }}" style="{{ a.style }}">
+                  <sc-if value="{{ a.loading }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; height:100%; color:#7F768C; font-size:10px">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#622C7B" stroke-width="2.4" stroke-linecap="round" style="animation:spin 1s linear infinite"><path d="M12 3a9 9 0 019 9"></path></svg>
+                      Cargando
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ a.ready }}" hint-placeholder-val="{{ true }}">
+                    <div style="font-size:11px; line-height:1.35; color:#0B0B0B">{{ a.name }}</div>
+                  </sc-if>
+                  <button onClick="{{ a.remove }}" title="Quitar" style="{{ a.delStyle }}">×</button>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <textarea ref="{{ taRef }}" value="{{ text }}" onChange="{{ onText }}" onKeyDown="{{ onKey }}" placeholder="{{ placeholder }}" rows="1" style="width:100%; border:none; font-size:14px; line-height:1.5; color:#0B0B0B; background:transparent; resize:none; overflow-y:auto; max-height:210px; margin:0 0 20px; padding:0; display:block"></textarea>
+
+          <div style="display:flex; align-items:center; justify-content:space-between">
+            <button onClick="{{ openPicker }}" onMouseEnter="{{ onClip }}" onMouseLeave="{{ offHov }}" title="Adjuntar documento" style="{{ clipStyle }}">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M20 11.5l-8.2 8.2a4.2 4.2 0 01-6-6l8-8a2.8 2.8 0 014 4l-8 8a1.4 1.4 0 01-2-2l7.3-7.3"></path></svg>
+            </button>
+            <div style="display:flex; align-items:center; gap:12px">
+              <div style="display:flex; background:#F5F4F6; border-radius:12px; padding:4px">
+                <button onClick="{{ setBusqueda }}" onMouseEnter="{{ onTabB }}" onMouseLeave="{{ offHov }}" style="{{ tabBusqueda }}">Búsqueda</button>
+                <button onClick="{{ setArgumento }}" onMouseEnter="{{ onTabA }}" onMouseLeave="{{ offHov }}" style="{{ tabArgumento }}">Argumento</button>
+              </div>
+              <button onClick="{{ send }}" style="{{ sendStyle }}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V5"></path><path d="M5.5 11.5L12 5l6.5 6.5"></path></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:center; font-size:12px; color:#7F768C; font-style:italic; margin-top:11px">JUSFEM es una herramienta de apoyo. Sus respuestas deben ser validadas por la persona responsable.</div>
+      </div>
+    </div>
+
+    <sc-if value="{{ wizardOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute; left:0; right:0; bottom:0; top:0; display:flex; align-items:flex-end; justify-content:center; padding-bottom:43px; z-index:12; pointer-events:none">
+        <div style="width:690px; min-height:530px; background:#fff; border:1px solid #F3EDF7; border-radius:20px; box-shadow:0 12px 40px rgba(98,44,123,.12); padding:26px 34px 22px; pointer-events:auto; display:flex; flex-direction:column; gap:18px; animation:riseIn .26s ease both">
+          <div style="display:flex; align-items:flex-start; justify-content:space-between">
+            <div style="background:#622C7B; color:#fff; border-radius:4px; padding:3px 9px; font-size:11px; font-weight:600">{{ stepLabel }}</div>
+            <button onClick="{{ closeWizard }}" onMouseEnter="{{ onWclose }}" onMouseLeave="{{ offHov }}" style="{{ wcloseStyle }}">×</button>
+          </div>
+          <div style="line-height:1.6; font-size:14px; text-wrap:pretty">Para poder asistirte con la generación de párrafos argumentativos con enfoque de género, necesito que me proporciones la siguiente información sobre el caso:</div>
+
+          <div style="flex:1; display:flex; flex-direction:column; gap:14px">
+            <div style="font-weight:600; font-size:14px">{{ stepTitle }}</div>
+            <sc-if value="{{ stepHint }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size:12.5px; font-style:italic; line-height:1.7; color:#7F768C; margin-top:-8px">{{ stepHint }}</div>
+            </sc-if>
+
+            <sc-if value="{{ isStep1 }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex; flex-direction:column; gap:9px; max-width:270px">
+                <sc-for list="{{ especialidades }}" as="op" hint-placeholder-count="5">
+                  <button onClick="{{ op.pick }}" onMouseEnter="{{ op.enter }}" onMouseLeave="{{ offHov }}" style="{{ op.style }}">
+                    <span style="{{ op.dot }}"></span>{{ op.label }}
+                  </button>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ isStep2 }}" hint-placeholder-val="{{ false }}">
+              <input value="{{ wTema }}" onChange="{{ onTema }}" placeholder="Escriba acá su respuesta" style="width:83%; border:1px solid #F3EDF7; border-radius:9px; padding:13px 15px; font-size:14px; background:#fff" />
+            </sc-if>
+
+            <sc-if value="{{ isStep3 }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex; flex-direction:column; gap:9px; max-width:340px; max-height:250px; overflow-y:auto; padding-right:10px">
+                <sc-for list="{{ hechosOpts }}" as="op" hint-placeholder-count="2">
+                  <button onClick="{{ op.pick }}" onMouseEnter="{{ op.enter }}" onMouseLeave="{{ offHov }}" style="{{ op.style }}">
+                    <span style="{{ op.box }}" dangerouslySetInnerHTML="{{ op.check }}"></span>{{ op.label }}
+                  </button>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ isStep4 }}" hint-placeholder-val="{{ false }}">
+              <textarea value="{{ wExtra }}" onChange="{{ onExtra }}" placeholder="Escriba acá su respuesta" style="width:73%; height:225px; border:1px solid #F3EDF7; border-radius:9px; padding:13px 15px; font-size:14px; resize:none; line-height:1.6; background:#fff"></textarea>
+            </sc-if>
+
+            <sc-if value="{{ isStep5 }}" hint-placeholder-val="{{ false }}">
+              <textarea value="{{ wObj }}" onChange="{{ onObj }}" placeholder="Escriba acá su respuesta" style="width:73%; height:195px; border:1px solid #F3EDF7; border-radius:9px; padding:13px 15px; font-size:14px; resize:none; line-height:1.6; background:#fff"></textarea>
+            </sc-if>
+          </div>
+
+          <div style="display:flex; align-items:center; justify-content:space-between">
+            <sc-if value="{{ showBack }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ wizardBack }}" onMouseEnter="{{ onBack }}" onMouseLeave="{{ offHov }}" style="{{ backStyle }}">Atrás</button>
+            </sc-if>
+            <span style="flex:1"></span>
+            <div style="display:flex; gap:10px">
+              <sc-if value="{{ showSkip }}" hint-placeholder-val="{{ false }}">
+                <button onClick="{{ wizardSkip }}" onMouseEnter="{{ onSkip }}" onMouseLeave="{{ offHov }}" style="{{ skipStyle }}">Omitir</button>
+              </sc-if>
+              <button onClick="{{ wizardNext }}" style="{{ nextBtnStyle }}">{{ nextLabel }}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+  </main>
+
+  <sc-if value="{{ pickerOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; inset:0; background:rgba(247,246,248,.6); display:flex; align-items:center; justify-content:center; z-index:24">
+      <div data-screen-label="Selector de archivos" style="width:870px; height:435px; background:#2B2B2B; border-radius:10px; box-shadow:0 24px 60px rgba(11,11,11,.35); display:flex; overflow:hidden; color:#EDEDED; font-size:13px; animation:riseIn .22s ease both">
+        <div style="width:134px; flex:0 0 134px; background:#252525; padding:14px 10px; display:flex; flex-direction:column; gap:14px">
+          <div style="display:flex; flex-direction:column; gap:9px">
+            <div style="display:flex; align-items:center; gap:8px; color:#DADADA"><span style="opacity:.7">◷</span>Recientes</div>
+            <div style="display:flex; align-items:center; gap:8px; color:#DADADA"><span style="opacity:.7">🗀</span>Comparti…</div>
+          </div>
+          <div style="font-size:11px; color:#8d8d8d">Favoritos</div>
+          <div style="display:flex; flex-direction:column; gap:9px; color:#DADADA"><div>Aplicacio…</div><div>Descargas</div><div>Escrit…</div><div>Docu…</div></div>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column">
+          <div style="display:flex; align-items:center; gap:10px; padding:11px 14px; border-bottom:1px solid #3A3A3A">
+            <span style="color:#9a9a9a">‹ ›</span>
+            <span style="background:#3A3A3A; border-radius:5px; padding:3px 8px">☰ ⌄</span>
+            <span style="background:#3A3A3A; border-radius:5px; padding:3px 8px">⊞ ⌄</span>
+            <span style="flex:1"></span>
+            <span style="background:#3A3A3A; border-radius:5px; padding:4px 12px">Documentos ⌃⌄</span>
+            <span style="flex:1"></span>
+            <span style="color:#9a9a9a">⌕ Buscar</span>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 90px 90px 150px; padding:8px 14px; color:#a5a5a5; border-bottom:1px solid #3A3A3A; font-size:12px">
+            <div>Nombre</div><div>Tamaño</div><div>Clase</div><div>Fecha de inclusión</div>
+          </div>
+          <div style="flex:1; overflow-y:auto; padding:6px 0">
+            <sc-for list="{{ files }}" as="f" hint-placeholder-count="6">
+              <div onClick="{{ f.pick }}" style="{{ f.rowStyle }}">
+                <div style="display:flex; align-items:center; gap:8px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis">🖹 {{ f.name }}</div>
+                <div style="color:#b5b5b5">{{ f.size }}</div>
+                <div style="color:#b5b5b5">{{ f.kind }}</div>
+                <div style="color:#b5b5b5">{{ f.date }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:flex; justify-content:flex-end; gap:10px; padding:12px 14px; border-top:1px solid #3A3A3A">
+            <button onClick="{{ closePicker }}" style="background:#4A4A4A; color:#fff; border:none; border-radius:6px; padding:6px 16px; font-size:13px; cursor:pointer">Cancelar</button>
+            <button onClick="{{ confirmPick }}" style="{{ openBtnStyle }}">Abrir</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ rejectOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; inset:0; background:rgba(11,11,11,.18); display:flex; align-items:center; justify-content:center; z-index:26">
+      <div style="width:460px; background:#F7F6F8; border:1px solid #F3EDF7; border-radius:16px; box-shadow:0 18px 50px rgba(11,11,11,.16); padding:26px 28px 20px; display:flex; flex-direction:column; gap:14px; animation:riseIn .22s ease both">
+        <div style="display:flex; align-items:flex-start; gap:11px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#622C7B" stroke-width="1.7" stroke-linecap="round" style="flex:0 0 18px; margin-top:2px"><path d="M12 3.5L22 20H2z"></path><path d="M12 10v4.5"></path><path d="M12 17.2v.2"></path></svg>
+          <div>
+            <div style="font-weight:700; font-size:16px">{{ rejectTitle }}</div>
+            <div style="font-size:12.5px; color:#7F768C; margin-top:4px">{{ rejectFile }}</div>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:5px">
+          <div style="font-weight:600; font-size:13.5px">{{ rejectReason }}</div>
+          <div style="font-size:13.5px; line-height:1.6; color:#0B0B0B; text-wrap:pretty">{{ rejectDetail }}</div>
+        </div>
+        <div style="font-size:12px; line-height:1.6; color:#7F768C; text-wrap:pretty">Formatos admitidos: PDF, DOC y DOCX. Peso máximo 20 MB por archivo.</div>
+        <div style="display:flex; justify-content:flex-end; margin-top:4px">
+          <button onClick="{{ rejectBack }}" style="background:#622C7B; border:none; border-radius:8px; padding:9px 16px; font-size:11px; color:#fff; cursor:pointer">{{ rejectCta }}</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ reportOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; inset:0; background:rgba(11,11,11,.18); display:flex; align-items:center; justify-content:center; z-index:26">
+      <div style="width:520px; background:#F7F6F8; border:1px solid #F3EDF7; border-radius:16px; box-shadow:0 18px 50px rgba(11,11,11,.16); padding:26px 28px 22px; display:flex; flex-direction:column; gap:16px; animation:riseIn .22s ease both">
+        <sc-if value="{{ reportSent }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex; flex-direction:column; gap:8px; padding:6px 0">
+            <div style="font-weight:700; font-size:16px">Reporte enviado</div>
+            <div style="font-size:13.5px; line-height:1.6; text-wrap:pretty">El equipo revisa el reporte junto con la respuesta y las fuentes citadas.</div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ reportForm }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <div style="font-weight:700; font-size:16px">Reportar esta respuesta</div>
+            <div style="font-size:12.5px; line-height:1.6; color:#7F768C; margin-top:5px; text-wrap:pretty">Se envía junto con la consulta, la respuesta y los documentos citados.</div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:7px">
+            <div style="font-size:12.5px">Motivo</div>
+            <select value="{{ reportReason }}" onChange="{{ onReason }}" style="width:100%; border:1px solid #F3EDF7; border-radius:9px; padding:11px 13px; font-size:13.5px; color:#0B0B0B; background:#fff; cursor:pointer">
+              <option value="">Seleccioná un motivo</option>
+              <option value="cita">La cita o el documento no corresponde</option>
+              <option value="fuente">La respuesta no refleja lo que dice la fuente</option>
+              <option value="desact">La norma o el criterio está desactualizado</option>
+              <option value="genero">Falta el enfoque de género en el análisis</option>
+              <option value="lenguaje">Lenguaje inadecuado o estereotipado</option>
+              <option value="datos">Expone datos sensibles</option>
+              <option value="otros">Otros</option>
+            </select>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:7px">
+            <div style="font-size:12.5px">Detalle</div>
+            <textarea value="{{ reportText }}" onChange="{{ onReportText }}" placeholder="Contá qué encontraste, con la mayor precisión posible" style="width:100%; height:120px; border:1px solid #F3EDF7; border-radius:9px; padding:11px 13px; font-size:13.5px; line-height:1.6; color:#0B0B0B; background:#fff; resize:none"></textarea>
+          </div>
+          <div style="display:flex; justify-content:flex-end; gap:8px">
+            <button onClick="{{ closeReport }}" style="border:1px solid #F3EDF7; background:transparent; border-radius:8px; padding:8px 14px; font-size:11px; color:#622C7B; cursor:pointer; transition:background .18s" style-hover="background:#F3EDF7">Cancelar</button>
+            <button onClick="{{ sendReport }}" style="{{ sendReportStyle }}">Enviar reporte</button>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ confirmOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; inset:0; background:rgba(11,11,11,.18); display:flex; align-items:center; justify-content:center; z-index:26">
+      <div style="width:400px; background:#F7F6F8; border:1px solid #F3EDF7; border-radius:16px; box-shadow:0 18px 50px rgba(11,11,11,.16); padding:26px 28px 20px; display:flex; flex-direction:column; gap:12px; animation:riseIn .22s ease both">
+        <div style="font-weight:700; font-size:16px">¿Eliminar de favoritos?</div>
+        <div style="font-size:13.5px; line-height:1.6; text-wrap:pretty">Se quitará <strong>{{ confirmName }}</strong> de tus favoritos.</div>
+        <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:6px">
+          <button onClick="{{ cancelDelete }}" style="border:1px solid #F3EDF7; background:transparent; border-radius:8px; padding:8px 14px; font-size:11px; color:#622C7B; cursor:pointer; transition:background .18s" style-hover="background:#F3EDF7">Cancelar</button>
+          <button onClick="{{ confirmDelete }}" style="background:#622C7B; border:none; border-radius:8px; padding:8px 14px; font-size:11px; color:#fff; cursor:pointer">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ shareOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; inset:0; background:rgba(11,11,11,.18); display:flex; align-items:center; justify-content:center; z-index:26">
+      <div style="width:460px; background:#F7F6F8; border:1px solid #F3EDF7; border-radius:16px; box-shadow:0 18px 50px rgba(11,11,11,.16); padding:26px 28px 22px; display:flex; flex-direction:column; gap:16px">
+        <div>
+          <div style="font-weight:700; font-size:16px">Compartir la conversación</div>
+          <div style="font-size:12.5px; line-height:1.6; color:#7F768C; margin-top:5px; text-wrap:pretty">La persona podrá leer las consultas, las respuestas y los documentos citados.</div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:7px">
+          <div style="font-size:12.5px; color:#0B0B0B">Correo electrónico</div>
+          <input value="{{ shareMail }}" onChange="{{ onShareMail }}" placeholder="nombre@institucion.gob.pe" style="width:100%; border:1px solid #F3EDF7; border-radius:9px; padding:11px 13px; font-size:13.5px; color:#0B0B0B; background:#fff" />
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:8px">
+          <button onClick="{{ closeShare }}" style="border:1px solid #F3EDF7; background:transparent; border-radius:8px; padding:8px 14px; font-size:11px; color:#622C7B; cursor:pointer; transition:background .18s" style-hover="background:#F3EDF7">Cancelar</button>
+          <button onClick="{{ closeShare }}" style="{{ shareSendStyle }}">Compartir</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <aside style="{{ docsAside }}">
+    <div style="width:414px; height:100%; padding:14px 14px 14px 0">
+      <div style="height:100%; border:1px solid #F3EDF7; border-radius:12px; background:#fff; padding:69px 22px 20px; display:flex; flex-direction:column; gap:14px; overflow:hidden">
+        <div style="position:relative; display:flex; align-items:center; gap:10px">
+          <button onClick="{{ toggleMenu }}" style="width:100%; display:flex; align-items:center; justify-content:space-between; gap:10px; border:1px solid #F3EDF7; border-radius:8px; padding:9px 12px; font-size:13px; color:#622C7B; background:#fff; cursor:pointer; transition:background .18s" style-hover="background:#F3EDF7">
+            <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ docName }}</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="{{ chevStyle }}"><path d="M6 9.5l6 6 6-6"></path></svg>
+          </button>
+          <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute; left:0; right:0; top:44px; z-index:8; background:#fff; border:1px solid #F3EDF7; border-radius:10px; box-shadow:0 10px 26px rgba(98,44,123,.12); padding:6px; display:flex; flex-direction:column; max-height:190px; overflow-y:auto">
+              <sc-for list="{{ docOptions }}" as="op" hint-placeholder-count="2">
+                <button onClick="{{ op.pick }}" onMouseEnter="{{ op.enter }}" onMouseLeave="{{ offHov }}" style="{{ op.style }}">{{ op.label }}</button>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+        <div>
+          <div style="font-weight:700; font-size:14.5px; line-height:1.5">{{ docTitle }}</div>
+          <div style="font-size:12px; color:#7F768C; margin-top:5px">{{ docMeta }}</div>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px">
+          <button onMouseEnter="{{ onDl1 }}" onMouseLeave="{{ offHov }}" style="{{ dl1Style }}">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5v12"></path><path d="M7 11l5 5 5-5"></path><path d="M4 20.5h16"></path></svg>
+            Descargar
+          </button>
+          <button onMouseEnter="{{ onDl2 }}" onMouseLeave="{{ offHov }}" style="{{ dl2Style }}">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4.5h5.5V10"></path><path d="M19.5 4.5L12 12"></path><path d="M18 14v5.5H4.5V6H10"></path></svg>
+            Abrir en pestaña
+          </button>
+        </div>
+        <div style="{{ docBodyStyle }}">
+          <div>Sobre el deber de prevención, la Corte sostiene que cuando el Estado tiene conocimiento de un riesgo real e inmediato para una mujer determinada, surge un deber de debida diligencia estricta que exige medidas exhaustivas de búsqueda y protección durante las primeras horas.</div>
+          <div>En materia de reparaciones, la Corte ordena estandarizar los protocolos de investigación con perspectiva de género, crear una base de datos de personas desaparecidas con información genética y capacitar a los operadores de justicia.</div>
+        </div>
+        <div style="display:flex; align-items:center; gap:6px; padding-top:10px">
+          <button onClick="{{ zoomOut }}" onMouseEnter="{{ onZoomOut }}" onMouseLeave="{{ offHov }}" title="Alejar" style="{{ zoomOutStyle }}">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"></circle><path d="M16 16l4.5 4.5"></path><path d="M8 11h6"></path></svg>
+          </button>
+          <button onClick="{{ zoomIn }}" onMouseEnter="{{ onZoomIn }}" onMouseLeave="{{ offHov }}" title="Acercar" style="{{ zoomInStyle }}">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"></circle><path d="M16 16l4.5 4.5"></path><path d="M8 11h6"></path><path d="M11 8v6"></path></svg>
+          </button>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between; padding-top:2px">
+          <span style="font-size:12px; color:#7F768C">{{ pageLabel }}</span>
+          <div style="display:flex; gap:7px">
+            <sc-if value="{{ hasPrev }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ prevPage }}" onMouseEnter="{{ onPrev }}" onMouseLeave="{{ offHov }}" style="{{ prevStyle }}">‹</button>
+            </sc-if>
+            <button onClick="{{ nextPage }}" onMouseEnter="{{ onNext }}" onMouseLeave="{{ offHov }}" style="{{ nextStyle }}">›</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;favoritosOpen&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Vista&quot;},&quot;defaultMode&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Búsqueda&quot;,&quot;Argumento&quot;],&quot;default&quot;:&quot;Búsqueda&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Vista&quot;},&quot;responseDelay&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1600,&quot;min&quot;:300,&quot;max&quot;:4000,&quot;step&quot;:100,&quot;unit&quot;:&quot;ms&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Comportamiento&quot;}}">
+const DOCS = [
+  { tab: "Corte IDH 2009", title: "N1 — Corte IDH, Caso González y otras vs. México (2009)", meta: "Sentencia · Serie C No. 205 · párr. 250–286" },
+  { tab: "Belém do Pará", title: "N2 — Convención de Belém do Pará", meta: "Tratado interamericano · 1994 · art. 7" },
+  { tab: "Ley 30364", title: "N3 — Ley 30364, prevención y sanción de la violencia", meta: "Ley nacional · 2015 · art. 10" },
+  { tab: "Espinoza Gonzáles", title: "N4 — Corte IDH, Espinoza Gonzáles vs. Perú (2014)", meta: "Sentencia · Serie C No. 289 · párr. 226–280" },
+  { tab: "Política Nacional", title: "N5 — Política Nacional de Igualdad de Género", meta: "Decreto Supremo 008-2019-MIMP" }
+];
+
+const FILES = [
+  { name: "Convención de Belém do Pará.pdf", size: "95 KB", kind: "PDF", date: "2 jun 2026, 8:35 p.m." },
+  { name: "Declaración y Plataforma de Acción de Beijing.pdf", size: "1,2 MB", kind: "PDF", date: "24 abr 2026, 8:42 a.m." },
+  { name: "Política Nacional de Igualdad de Género.pdf", size: "3,4 MB", kind: "PDF", date: "18 ago 2025, 8:17 a.m." },
+  { name: "Reglamento de la Ley 30364.pdf", size: "42 MB", kind: "PDF", date: "3 mar 2025, 9:04 a.m." },
+  { name: "Corte IDH, Espinoza Gonzáles vs. Perú.pdf", size: "870 KB", kind: "PDF", date: "17 feb 2024, 12:49 p.m." },
+  { name: "Registro de casos 2024.xlsx", size: "2,8 MB", kind: "Hoja de cálculo", date: "17 feb 2024, 12:38 p.m." },
+  { name: "Ley 27942, hostigamiento sexual.pdf", size: "42 MB", kind: "Documento", date: "17 feb 2024, 12:38 p.m." }
+];
+
+const REJECT = {
+  "Reglamento de la Ley 30364.pdf": {
+    reason: "El archivo supera el peso máximo",
+    detail: "Pesa 42 MB y el máximo es 20 MB. Podés adjuntar una versión más liviana o dividirlo en partes."
+  },
+  "Registro de casos 2024.xlsx": {
+    reason: "El formato no está admitido",
+    detail: "Los archivos .xlsx no se pueden leer. Convertilo a PDF y volvé a intentar."
+  },
+  "Ley 27942, hostigamiento sexual.pdf": {
+    reason: "El archivo no cumple los requisitos",
+    detail: "Pesa 42 MB y está en un formato que no se puede leer: supera el máximo de 20 MB y no está entre los formatos admitidos."
+  }
+};
+
+const BANK = [
+  "Los estándares interamericanos exigen que la valoración de la prueba en casos de violencia de género se realice sin estereotipos y otorgando valor central al relato de la víctima.",
+  "La obligación de investigar de oficio subsiste incluso cuando la víctima se retracta o desiste, porque el bien jurídico protegido excede el interés particular.",
+  "Las medidas de protección deben dictarse sobre la base de la valoración de riesgo y no pueden condicionarse a la existencia de un proceso penal en curso."
+];
+
+const ARG = "La valoración de los hechos debe realizarse con enfoque de género, atendiendo al contexto de desigualdad estructural en que se produjeron. La debida diligencia reforzada exige que el órgano jurisdiccional examine el riesgo conocido y adopte medidas idóneas y oportunas, sin trasladar a la víctima la carga de acreditar su propia protección.";
+
+const STEPS = {
+  1: { title: "Especialidad del caso:", hint: "" },
+  2: { title: "Derecho o tema central en cuestión:", hint: "¿Cuál es el derecho o tema principal que se está discutiendo (ej. violencia obstétrica, derecho a la identidad de género, protección a la madre trabajadora)?" },
+  3: { title: "Selecciona hechos relevantes del caso guardados en favoritos:", hint: "Selecciona hechos clave que deben ser considerados de tus favoritos" },
+  4: { title: "Agregar hechos relevantes del caso no guardados:", hint: "Puede agregar un breve resumen de los hechos clave que deben ser considerados." },
+  5: { title: "Objetivo del párrafo:", hint: "¿Qué se busca lograr con este párrafo dentro de la resolución (ej. fundamentar la existencia de discriminación, justificar una medida de protección)?" }
+};
+
+class Component extends DCLogic {
+  state = {
+    favOpen: null, docIdx: null, hoverFav: null, hov: null,
+    copied: false, saved: false, tip: false, reported1: false,
+    menuOpen: false, convMenu: false, shareOpen: false, shareMail: "",
+    zoom: 12, page: 0, mode: null, text: "",
+    favs: ["Estandares internacionales", "Precentes"],
+    confirmDel: null,
+    attach: [], pickerOpen: false, pickSel: null, firstAttach: true,
+    reject: null,
+    reportOpen: false, reportSent: false, reportReason: "", reportText: "", reportTarget: null,
+    turns: [], queries: 1,
+    wizard: 0, esp: "", tema: "", hechos: [], extra: "", obj: ""
+  };
+
+  timers = [];
+  turnEls = {};
+  blockEls = {};
+  componentWillUnmount() { this.timers.forEach(clearTimeout); }
+  wait(ms, fn) { this.timers.push(setTimeout(fn, ms)); }
+
+  get favOpen() { return this.state.favOpen ?? (this.props.favoritosOpen ?? false); }
+  get mode() { return this.state.mode ?? (this.props.defaultMode ?? "Búsqueda"); }
+  get delay() { return this.props.responseDelay ?? 1600; }
+
+  // ---- estilos
+  panel(open, w) {
+    return "flex:0 0 auto; position:relative; z-index:5; overflow:hidden; transition:width .34s cubic-bezier(.4,0,.2,1), opacity .28s ease; width:" +
+      (open ? w + "px" : "0px") + "; opacity:" + (open ? "1" : "0");
+  }
+  roundBtn(side, active, hover) {
+    const bg = active ? "#622C7B" : (hover ? "#F3EDF7" : "transparent");
+    return "display:flex; align-items:center; gap:7px; border:none; border-radius:8px; padding:8px 10px; font-size:11px; font-family:Inter,sans-serif; cursor:pointer; transition:background .18s, color .18s; background:" +
+      bg + "; color:" + (active ? "#fff" : "#622C7B");
+  }
+  pager(enabled, hover) {
+    return "width:30px; height:30px; border-radius:8px; font-size:14px; font-family:Inter,sans-serif; display:flex; align-items:center; justify-content:center; transition:background .18s, color .18s, border-color .18s; border:1px solid " +
+      (enabled ? "#F3EDF7" : "#F5F4F6") + "; background:" + (enabled && hover ? "#F3EDF7" : "#fff") +
+      "; color:" + (enabled ? "#622C7B" : "#7F768C") + "; cursor:" + (enabled ? "pointer" : "default");
+  }
+  pill(active, hover) {
+    const c = active ? "#622C7B" : (hover ? "#F3EDF7" : "transparent");
+    return "display:flex; align-items:center; gap:7px; border:1px solid " + c + "; border-radius:8px; padding:6px 12px; font-size:11px; font-family:Inter,sans-serif; cursor:pointer; transition:background .18s, color .18s, border-color .18s; background:" +
+      c + "; color:" + (active ? "#fff" : "#622C7B");
+  }
+  ghost(hover) {
+    return "display:flex; align-items:center; gap:6px; background:" + (hover ? "#F3EDF7" : "#fff") +
+      "; border:1px solid #F3EDF7; border-radius:8px; padding:6px 10px; font-size:11px; font-family:Inter,sans-serif; color:#622C7B; cursor:pointer; transition:background .18s";
+  }
+  wBtn(hover, solid, enabled) {
+    if (solid) {
+      return "border:none; border-radius:8px; padding:9px 20px; font-size:12px; font-family:Inter,sans-serif; transition:background .18s; background:" +
+        (enabled ? "#622C7B" : "#F3EDF7") + "; color:" + (enabled ? "#fff" : "#C7B3D2") + "; cursor:" + (enabled ? "pointer" : "default");
+    }
+    return "border:1px solid #F3EDF7; border-radius:8px; padding:9px 18px; font-size:12px; font-family:Inter,sans-serif; cursor:pointer; transition:background .18s; color:#622C7B; background:" +
+      (hover ? "#F3EDF7" : "transparent");
+  }
+  tab(active, hover) {
+    const bg = active ? (hover ? "#F3EDF7" : "#fff") : (hover ? "#F3EDF7" : "transparent");
+    return "border:1px solid " + (active ? "#E0D2EA" : "transparent") + "; cursor:pointer; border-radius:9px; font-size:13.5px; font-weight:400; padding:8px 17px; transition:background .2s, color .2s, border-color .2s; background:" +
+      bg + "; color:#622C7B" + (active ? "; box-shadow:0 1px 3px rgba(98,44,123,.16)" : "");
+  }
+  opt(active, hover) {
+    return "display:flex; align-items:center; gap:11px; text-align:left; width:100%; cursor:pointer; font-size:14px; font-family:Inter,sans-serif; padding:12px 14px; border-radius:9px; transition:background .18s, border-color .18s; border:1px solid " +
+      (active || hover ? "#E0D2EA" : "#F3EDF7") + "; background:" + (active ? "#F3EDF7" : (hover ? "#F5F4F6" : "#fff")) + "; color:#0B0B0B";
+  }
+
+  // ---- scroll
+  pin(key) { this.pinKey = key; requestAnimationFrame(() => requestAnimationFrame(() => this.runPin())); }
+  runPin() {
+    const el = this.scrollEl, key = this.pinKey;
+    if (!el || !key) return;
+    const t = this.turnEls[key] || this.blockEls[key];
+    if (!t) { requestAnimationFrame(() => this.runPin()); return; }
+    this.pinKey = null;
+    this.smoothTo(el, t.offsetTop - 16);
+  }
+  smoothTo(el, wanted) {
+    const max = Math.max(0, el.scrollHeight - el.clientHeight);
+    const target = Math.max(0, Math.min(wanted, max));
+    const from = el.scrollTop, dist = target - from;
+    if (Math.abs(dist) < 2) return;
+    const t0 = performance.now();
+    this.animating = true;
+    const step = (now) => {
+      const p = Math.min(1, (now - t0) / 520);
+      const e = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+      el.scrollTop = from + dist * e;
+      if (p < 1) requestAnimationFrame(step); else this.animating = false;
+    };
+    requestAnimationFrame(step);
+  }
+  componentDidUpdate() {
+    const el = this.scrollEl;
+    if (!el || this.pinKey || this.animating) return;
+    const turns = this.state.turns;
+    const last = turns.length ? this.turnEls[turns[turns.length - 1].id] : null;
+    if (!last) return;
+    const bottom = last.offsetTop + last.offsetHeight;
+    if (bottom > el.scrollTop + el.clientHeight - 40) el.scrollTop = bottom - el.clientHeight + 60;
+  }
+
+  // ---- turnos
+  upTurn(id, patch) {
+    this.setState(st => ({ turns: st.turns.map(t => t.id === id ? Object.assign({}, t, patch) : t) }));
+  }
+  typeTurn(id, full, then) {
+    let i = 0;
+    const tick = () => {
+      i += 4;
+      if (i >= full.length) { this.upTurn(id, { typed: full, typing: false }); then && then(); return; }
+      this.upTurn(id, { typed: full.slice(0, i), typing: true });
+      this.timers.push(setTimeout(tick, 14));
+    };
+    tick();
+  }
+  think(id, list, done) {
+    const step = Math.max(420, this.delay * 0.7);
+    list.slice(1).forEach((t, i) => this.wait(step * (i + 1), () => this.upTurn(id, { thought: t })));
+    this.wait(step * list.length, done);
+  }
+  pushTurn(kind, q, files) {
+    const id = "t" + Date.now() + Math.round(Math.random() * 99);
+    const n = this.state.turns.length;
+    const base = {
+      id: id, kind: kind, q: q, files: files || [], status: "thinking",
+      thought: kind === "doc" ? "Leyendo el documento" : (kind === "arg" ? "Ordenando los hechos del caso" : "Analizando la consulta"),
+      typed: "", typing: false, copied: false, fav: false, reported: false,
+      docIdx: [0, 2, 4][n % 3],
+      docLabel: ["N1 — Corte IDH, Caso González y otras vs. México (2009).pdf", "N3 — Ley 30364, prevención y sanción de la violencia.pdf", "N4 — Corte IDH, Espinoza Gonzáles vs. Perú (2014).pdf"][n % 3]
+    };
+    this.setState(st => ({ turns: st.turns.concat([base]), queries: st.queries + 1 }));
+    this.pin(id);
+    const flows = {
+      search: ["Analizando la consulta", "Buscando en la base verificada", "Contrastando fuentes y vinculatoriedad"],
+      doc: ["Leyendo el documento", "Detectando datos personales sensibles", "Preparando la respuesta"],
+      arg: ["Ordenando los hechos del caso", "Seleccionando estándares aplicables", "Redactando el párrafo"]
+    };
+    const body = kind === "arg" ? ARG : BANK[n % BANK.length];
+    this.think(id, flows[kind], () => {
+      this.upTurn(id, { status: "done" });
+      this.wait(180, () => this.typeTurn(id, body, () => this.upTurn(id, { full: true })));
+    });
+  }
+
+  canSend() { return this.state.text.trim().length > 0 || this.state.attach.some(a => !a.loading); }
+  atLimit() { return this.state.queries >= 5; }
+
+  send = () => {
+    if (this.atLimit() || !this.canSend()) return;
+    const t = this.state.text.trim();
+    const files = this.state.attach.filter(a => !a.loading).map(a => a.name);
+    if (files.length) {
+      this.setState({ text: "", attach: [] });
+      this.pushTurn("doc", t, files);
+      return;
+    }
+    this.setState({ text: "" });
+    this.pushTurn("search", t);
+  };
+  onKey = (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); this.send(); } };
+
+  // ---- adjuntos
+  addFile(name) {
+    const id = "a" + Date.now() + Math.round(Math.random() * 99);
+    this.setState(st => ({ attach: st.attach.concat([{ id: id, name: name, loading: true }]) }));
+    this.wait(1400, () => this.setState(st => ({ attach: st.attach.map(a => a.id === id ? { id: a.id, name: a.name, loading: false } : a) })));
+  }
+
+  // ---- wizard
+  finishWizard() {
+    this.setState({ wizard: 0, mode: "Búsqueda" });
+    const resumen = "Especialidad: " + (this.state.esp || "—") + " · Tema: " + (this.state.tema || "—") + " · Objetivo: " + (this.state.obj || "—");
+    this.pushTurn("arg", resumen);
+  }
+  wizardNext = () => {
+    const s = this.state.wizard;
+    if (s === 1 && !this.state.esp) return;
+    if (s === 2 && !this.state.tema.trim()) return;
+    if (s === 5 && !this.state.obj.trim()) return;
+    if (s < 5) { this.setState({ wizard: s + 1 }); return; }
+    this.finishWizard();
+  };
+  wizardSkip = () => {
+    const s = this.state.wizard;
+    if (s < 5) this.setState({ wizard: s + 1 }); else this.finishWizard();
+  };
+  toggleHecho(h) {
+    const cur = this.state.hechos;
+    this.setState({ hechos: cur.indexOf(h) > -1 ? cur.filter(x => x !== h) : cur.concat([h]) });
+  }
+  favLabelFor(q) {
+    const t = (q || "").trim();
+    if (!t) return "Consulta guardada";
+    return t.length > 34 ? t.slice(0, 33) + "…" : t;
+  }
+
+  renderVals() {
+    const s = this.state;
+    const idx = s.docIdx === null ? 0 : s.docIdx;
+    const CHK = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>';
+    const nextEnabled = !((s.wizard === 1 && !s.esp) || (s.wizard === 2 && !s.tema.trim()) || (s.wizard === 5 && !s.obj.trim()));
+    const meta = STEPS[s.wizard] || { title: "", hint: "" };
+
+    return {
+      // paneles y header
+      favAside: this.panel(this.favOpen, 238),
+      docsAside: this.panel(s.docIdx !== null, 414),
+      toggleFav: () => this.setState({ favOpen: !this.favOpen }),
+      favBtn: this.roundBtn("left", this.favOpen, s.hov === "favBtn"),
+      docsBtn: this.roundBtn("right", s.docIdx !== null, s.hov === "docsBtn"),
+      onFavBtn: () => this.setState({ hov: "favBtn" }),
+      onDocsBtn: () => this.setState({ hov: "docsBtn" }),
+      offHov: () => this.setState({ hov: null }),
+      toggleDocs: () => this.setState({ docIdx: s.docIdx === null ? 0 : null }),
+      openDoc1: (e) => { if (e) e.preventDefault(); this.setState({ docIdx: 0, page: 0 }); },
+      openDoc2: (e) => { if (e) e.preventDefault(); this.setState({ docIdx: 1, page: 0 }); },
+      docName: DOCS[idx].tab, docTitle: DOCS[idx].title, docMeta: DOCS[idx].meta,
+      sideShift: "flex:0 0 auto; transition:width .34s cubic-bezier(.4,0,.2,1); width:" + (this.favOpen ? "68px" : "0px"),
+      convShift: "flex:0 0 auto; transition:width .34s cubic-bezier(.4,0,.2,1); width:" + (this.favOpen ? "8px" : "0px"),
+      convBtn: this.roundBtn("left", s.convMenu, s.hov === "conv"),
+      onConv: () => this.setState({ hov: "conv" }),
+      convMenuOpen: s.convMenu,
+      toggleConvMenu: () => this.setState({ convMenu: !s.convMenu }),
+      convOptions: ["Renombrar", "Agregar a proyecto", "Eliminar de la carpeta", "Eliminar"].map((l, i) => ({
+        label: l, click: () => this.setState({ convMenu: false }),
+        enter: () => this.setState({ hov: "cv" + i }),
+        style: "text-align:left; border:none; cursor:pointer; border-radius:7px; padding:9px 10px; font-size:12.5px; font-family:Inter,sans-serif; transition:background .15s; color:#622C7B; background:" +
+          (s.hov === "cv" + i ? "#F3EDF7" : "transparent")
+      })),
+      shareBtn: "position:absolute; top:20px; display:flex; align-items:center; border:none; border-radius:8px; padding:8px 10px; cursor:pointer; color:#622C7B; transition:background .18s, right .34s cubic-bezier(.4,0,.2,1); right:" +
+        (s.docIdx !== null ? "422px" : "134px") + "; background:" + (s.hov === "share" ? "#F3EDF7" : "transparent"),
+      onShare: () => this.setState({ hov: "share" }),
+      shareOpen: s.shareOpen,
+      openShare: () => this.setState({ shareOpen: true, shareMail: "" }),
+      closeShare: () => this.setState({ shareOpen: false }),
+      shareMail: s.shareMail,
+      onShareMail: (e) => this.setState({ shareMail: e.target.value }),
+      shareSendStyle: "border:none; border-radius:8px; padding:8px 16px; font-size:11px; font-family:Inter,sans-serif; transition:background .18s; background:" +
+        (s.shareMail.trim() ? "#622C7B" : "#F3EDF7") + "; color:" + (s.shareMail.trim() ? "#fff" : "#C7B3D2") +
+        "; cursor:" + (s.shareMail.trim() ? "pointer" : "default"),
+
+      // favoritos
+      favItems: s.favs.map((label, i) => ({
+        label: label,
+        enter: () => this.setState({ hoverFav: i }),
+        leave: () => this.setState({ hoverFav: null }),
+        go: () => { this.pin(i === 0 ? "b1" : (s.turns[0] ? s.turns[0].id : "b1")); },
+        ask: (e) => { if (e) e.stopPropagation(); this.setState({ confirmDel: label }); },
+        style: "display:flex; align-items:center; justify-content:space-between; gap:8px; border:1px solid " +
+          (s.hoverFav === i ? "#F3EDF7" : "transparent") + "; border-radius:7px; padding:8px 10px; font-size:13px; cursor:pointer; transition:background .18s, border-color .18s; color:#622C7B; background:" +
+          (s.hoverFav === i ? "#F3EDF7" : "transparent"),
+        delStyle: "flex:0 0 auto; border:none; background:transparent; cursor:pointer; padding:0; display:flex; color:#622C7B; transition:opacity .18s; opacity:" + (s.hoverFav === i ? "1" : "0")
+      })),
+      confirmOpen: s.confirmDel !== null,
+      confirmName: s.confirmDel || "",
+      cancelDelete: () => this.setState({ confirmDel: null }),
+      confirmDelete: () => this.setState({ favs: s.favs.filter(x => x !== s.confirmDel), confirmDel: null, hoverFav: null }),
+
+      // primera respuesta
+      ref1: (el) => { if (el) this.blockEls.b1 = el; },
+      scrollRef: (el) => { this.scrollEl = el; },
+      copyLabel: s.copied ? "Copiado" : "Copiar",
+      copyStyle: this.pill(s.copied, s.hov === "copy"),
+      onCopy: () => this.setState({ hov: "copy" }),
+      copy: () => { this.setState({ copied: true }); this.wait(1600, () => this.setState({ copied: false })); },
+      favLabel: s.saved ? "En favoritos" : "Favorito",
+      favFill: s.saved ? "currentColor" : "none",
+      favStyle: this.pill(s.saved, s.hov === "fav"),
+      onFav: () => this.setState({ hov: "fav" }),
+      fav: () => {
+        const label = "Debida diligencia reforzada";
+        if (s.saved) this.setState({ saved: false, favs: s.favs.filter(x => x !== label) });
+        else this.setState({ saved: true, favOpen: true, favs: s.favs.indexOf(label) > -1 ? s.favs : s.favs.concat([label]) });
+      },
+      reported1: s.reported1,
+      notReported1: !s.reported1,
+      openReport1: () => this.setState({ reportOpen: true, reportSent: false, reportReason: "", reportText: "", reportTarget: "r1" }),
+
+      onQ: () => this.setState({ hov: "q" }),
+      qActionsStyle: "display:flex; align-items:center; gap:4px; transition:opacity .18s; opacity:" +
+        (s.hov && s.hov.indexOf("q") === 0 ? "1" : "0"),
+      qActions: [
+        { key: "retry", label: "Reintentar", icon: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 10-2.6 5.9"></path><path d="M20 4.5V11h-6"></path></svg>' },
+        { key: "edit", label: "Editar", icon: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4l10-10-4-4L4 16z"></path><path d="M14 6l4 4"></path></svg>' },
+        { key: "copyq", label: "Copiar", icon: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="3" width="13" height="16" rx="2"></rect><path d="M20 7v12a2 2 0 01-2 2H8"></path></svg>' }
+      ].map(a => ({
+        label: a.label, icon: { __html: a.icon },
+        enter: () => this.setState({ hov: "q" + a.key }),
+        click: () => {},
+        style: "display:flex; align-items:center; gap:5px; border:1px solid " + (s.hov === "q" + a.key ? "#F3EDF7" : "transparent") +
+          "; border-radius:8px; padding:5px 9px; font-size:11px; font-family:Inter,sans-serif; color:#622C7B; cursor:pointer; transition:background .18s, border-color .18s; background:" +
+          (s.hov === "q" + a.key ? "#F3EDF7" : "transparent")
+      })),
+
+      // turnos
+      turns: s.turns.map(t => ({
+        ref: (el) => { if (el) this.turnEls[t.id] = el; },
+        q: t.q, hasQ: !!t.q,
+        files: (t.files || []).map(n => ({
+          name: n,
+          open: () => { const i = DOCS.findIndex(d => n.indexOf(d.tab) > -1); this.setState({ docIdx: i === -1 ? t.docIdx : i, page: 0 }); }
+        })),
+        hasFiles: (t.files || []).length > 0,
+        thinking: t.status === "thinking",
+        done: t.status === "done",
+        thought: t.thought,
+        typed: t.typed, typing: t.typing,
+        hasTag: t.kind === "search",
+        hasKey: t.kind === "search",
+        keyTitle: "Idea clave",
+        plainBody: t.kind !== "search",
+        sensitive: t.kind === "doc" && !!t.full,
+        hasNorm: t.kind === "arg" && !!t.full,
+        hasDocs: t.kind === "search" && !!t.full,
+        isDraft: t.kind === "arg",
+        docLabel: t.docLabel,
+        openDoc: (e) => { if (e) e.preventDefault(); this.setState({ docIdx: t.docIdx, page: 0 }); },
+        showActions: !!t.full,
+        copyLabel: t.copied ? "Copiado" : "Copiar",
+        copyStyle: this.pill(t.copied, s.hov === "c" + t.id),
+        onCopy: () => this.setState({ hov: "c" + t.id }),
+        copy: () => { this.upTurn(t.id, { copied: true }); this.wait(1600, () => this.upTurn(t.id, { copied: false })); },
+        favLabel: t.fav ? "En favoritos" : "Favorito",
+        favFill: t.fav ? "currentColor" : "none",
+        favStyle: this.pill(t.fav, s.hov === "f" + t.id),
+        onFav: () => this.setState({ hov: "f" + t.id }),
+        fav: () => {
+          const label = this.favLabelFor(t.q);
+          if (t.fav) this.setState({ favs: this.state.favs.filter(x => x !== label) });
+          else this.setState({ favOpen: true, favs: this.state.favs.indexOf(label) > -1 ? this.state.favs : this.state.favs.concat([label]) });
+          this.upTurn(t.id, { fav: !t.fav });
+        },
+        dlStyle: this.pill(false, s.hov === "d" + t.id),
+        onDl: () => this.setState({ hov: "d" + t.id }),
+        reported: t.reported,
+        notReported: !t.reported,
+        openReport: () => { if (t.reported) return; this.setState({ reportOpen: true, reportSent: false, reportReason: "", reportText: "", reportTarget: t.id }); }
+      })),
+
+      // composer
+      text: s.text,
+      onText: (e) => {
+        const el = e.target;
+        this.setState({ text: el.value });
+        el.style.height = "auto";
+        el.style.height = Math.min(210, el.scrollHeight) + "px";
+      },
+      taRef: (el) => { this.taEl = el; },
+      onKey: this.onKey,
+      placeholder: this.atLimit() ? "Alcanzaste el límite de consultas de hoy" : "Realiza una consulta",
+      hasAttach: s.attach.length > 0,
+      attachList: s.attach.map(a => ({
+        name: a.name, loading: a.loading, ready: !a.loading,
+        enter: () => this.setState({ hov: "at" + a.id }),
+        remove: () => this.setState({ attach: s.attach.filter(x => x.id !== a.id) }),
+        style: "position:relative; flex:0 0 92px; width:92px; height:92px; background:#EEECF0; border-radius:8px; padding:10px 12px; overflow:hidden; transition:background .18s" +
+          (s.hov === "at" + a.id ? "; background:#F3EDF7" : ""),
+        delStyle: "position:absolute; top:5px; right:5px; width:18px; height:18px; border-radius:50%; border:none; background:#622C7B; color:#fff; font-size:11px; line-height:1; cursor:pointer; padding:0; display:flex; align-items:center; justify-content:center; transition:opacity .18s; opacity:" +
+          (s.hov === "at" + a.id ? "1" : "0")
+      })),
+      clipStyle: "width:42px; height:42px; border-radius:12px; border:1px solid #F3EDF7; cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0; color:#622C7B; transition:background .18s; background:" +
+        (s.hov === "clip" ? "#F3EDF7" : "transparent"),
+      onClip: () => this.setState({ hov: "clip" }),
+      tabBusqueda: this.tab(this.mode === "Búsqueda", s.hov === "tabB"),
+      tabArgumento: this.tab(this.mode === "Argumento", s.hov === "tabA"),
+      onTabB: () => this.setState({ hov: "tabB" }),
+      onTabA: () => this.setState({ hov: "tabA" }),
+      setBusqueda: () => this.setState({ mode: "Búsqueda" }),
+      setArgumento: () => this.setState({ mode: "Argumento", wizard: 1 }),
+      send: this.send,
+      sendStyle: "width:46px; height:46px; border-radius:13px; border:none; display:flex; align-items:center; justify-content:center; padding:0; transition:background .2s, color .2s; cursor:" +
+        (this.canSend() && !this.atLimit() ? "pointer" : "default") + "; background:" + (this.canSend() && !this.atLimit() ? "#622C7B" : "#F3EDF7") +
+        "; color:" + (this.canSend() && !this.atLimit() ? "#fff" : "#C7B3D2"),
+      nearLimit: s.queries >= 3 && s.queries < 5,
+      atLimit: this.atLimit(),
+
+      // selector de archivos
+      pickerOpen: s.pickerOpen,
+      openPicker: () => this.setState({ pickerOpen: true, pickSel: null }),
+      closePicker: () => this.setState({ pickerOpen: false }),
+      files: FILES.map((f, i) => Object.assign({}, f, {
+        pick: () => this.setState({ pickSel: i }),
+        rowStyle: "display:grid; grid-template-columns:1fr 90px 90px 150px; align-items:center; padding:6px 14px; cursor:pointer; font-size:12.5px; background:" +
+          (s.pickSel === i ? "#3F3F3F" : "transparent")
+      })),
+      openBtnStyle: "border:none; border-radius:6px; padding:6px 20px; font-size:13px; background:" +
+        (s.pickSel === null ? "#4A4A4A" : "#0A66D6") + "; color:" + (s.pickSel === null ? "#8f8f8f" : "#fff") +
+        "; cursor:" + (s.pickSel === null ? "default" : "pointer"),
+      confirmPick: () => {
+        if (s.pickSel === null) return;
+        const f = FILES[s.pickSel];
+        if (s.firstAttach) {
+          this.setState({ pickerOpen: false, firstAttach: false, reject: { kind: "info", file: f.name } });
+          return;
+        }
+        const r = REJECT[f.name];
+        if (r) { this.setState({ pickerOpen: false, reject: { kind: "error", file: f.name, reason: r.reason, detail: r.detail } }); return; }
+        this.setState({ pickerOpen: false });
+        this.addFile(f.name);
+      },
+      rejectOpen: s.reject !== null,
+      rejectTitle: s.reject && s.reject.kind === "info" ? "Antes de continuar" : "No se pudo adjuntar el documento",
+      rejectFile: s.reject ? s.reject.file : "",
+      rejectReason: s.reject && s.reject.kind === "info" ? "Límites y tratamiento de datos" : (s.reject ? s.reject.reason : ""),
+      rejectDetail: s.reject && s.reject.kind === "info"
+        ? "Se admiten PDF, DOC y DOCX de hasta 20 MB. Los nombres y datos personales del documento quedan bloqueados y no se utilizan en las respuestas."
+        : (s.reject ? s.reject.detail : ""),
+      rejectCta: s.reject && s.reject.kind === "info" ? "Entendido, adjuntar" : "Elegir otro archivo",
+      rejectBack: () => {
+        const r = s.reject;
+        if (r && r.kind === "info") {
+          const bad = REJECT[r.file];
+          if (bad) { this.setState({ reject: { kind: "error", file: r.file, reason: bad.reason, detail: bad.detail } }); return; }
+          this.setState({ reject: null });
+          this.addFile(r.file);
+          return;
+        }
+        this.setState({ reject: null, pickerOpen: true, pickSel: null });
+      },
+
+      // reporte
+      reportOpen: s.reportOpen,
+      reportSent: s.reportSent,
+      reportForm: !s.reportSent,
+      reportReason: s.reportReason,
+      reportText: s.reportText,
+      onReason: (e) => this.setState({ reportReason: e.target.value }),
+      onReportText: (e) => this.setState({ reportText: e.target.value }),
+      closeReport: () => this.setState({ reportOpen: false }),
+      sendReportStyle: "border:none; border-radius:8px; padding:8px 16px; font-size:11px; font-family:Inter,sans-serif; transition:background .18s; background:" +
+        (s.reportReason && s.reportText.trim() ? "#622C7B" : "#F3EDF7") + "; color:" + (s.reportReason && s.reportText.trim() ? "#fff" : "#C7B3D2") +
+        "; cursor:" + (s.reportReason && s.reportText.trim() ? "pointer" : "default"),
+      sendReport: () => {
+        if (!s.reportReason || !s.reportText.trim()) return;
+        if (s.reportTarget === "r1") this.setState({ reported1: true });
+        else if (s.reportTarget) this.upTurn(s.reportTarget, { reported: true });
+        this.setState({ reportSent: true });
+        this.wait(2200, () => this.setState({ reportOpen: false }));
+      },
+
+      // wizard
+      wizardOpen: s.wizard > 0,
+      stepLabel: s.wizard + "/5",
+      stepTitle: meta.title,
+      stepHint: meta.hint,
+      isStep1: s.wizard === 1, isStep2: s.wizard === 2, isStep3: s.wizard === 3,
+      isStep4: s.wizard === 4, isStep5: s.wizard === 5,
+      especialidades: ["Constitucional", "Civil", "Penal", "Familia", "Laboral"].map(l => ({
+        label: l,
+        pick: () => this.setState({ esp: l }),
+        enter: () => this.setState({ hov: "e" + l }),
+        style: this.opt(s.esp === l, s.hov === "e" + l),
+        dot: "width:13px; height:13px; border-radius:50%; flex:0 0 13px; border:1.5px solid #622C7B; box-shadow:" +
+          (s.esp === l ? "inset 0 0 0 2.5px #fff, inset 0 0 0 9px #622C7B" : "none")
+      })),
+      hechosOpts: s.favs.map(l => ({
+        label: l,
+        pick: () => this.toggleHecho(l),
+        enter: () => this.setState({ hov: "h" + l }),
+        style: this.opt(s.hechos.indexOf(l) > -1, s.hov === "h" + l),
+        box: "width:15px; height:15px; border-radius:4px; flex:0 0 15px; display:flex; align-items:center; justify-content:center; border:" +
+          (s.hechos.indexOf(l) > -1 ? "none" : "1.5px solid #622C7B") + "; background:" + (s.hechos.indexOf(l) > -1 ? "#622C7B" : "transparent"),
+        check: { __html: s.hechos.indexOf(l) > -1 ? CHK : "" }
+      })),
+      wTema: s.tema, wExtra: s.extra, wObj: s.obj,
+      onTema: (e) => this.setState({ tema: e.target.value }),
+      onExtra: (e) => this.setState({ extra: e.target.value }),
+      onObj: (e) => this.setState({ obj: e.target.value }),
+      showBack: s.wizard > 1,
+      showSkip: s.wizard === 3 || s.wizard === 4,
+      nextLabel: s.wizard === 5 ? "Finalizar" : "Siguiente",
+      nextBtnStyle: this.wBtn(false, true, nextEnabled),
+      backStyle: this.wBtn(s.hov === "back", false),
+      skipStyle: this.wBtn(s.hov === "skip", false),
+      onBack: () => this.setState({ hov: "back" }),
+      onSkip: () => this.setState({ hov: "skip" }),
+      wizardNext: this.wizardNext,
+      wizardBack: () => this.setState({ wizard: Math.max(1, s.wizard - 1) }),
+      wizardSkip: this.wizardSkip,
+      closeWizard: () => this.setState({ wizard: 0, mode: "Búsqueda" }),
+      wcloseStyle: "width:28px; height:28px; border-radius:50%; border:none; cursor:pointer; color:#622C7B; font-size:15px; line-height:1; padding:0; transition:background .18s; background:" +
+        (s.hov === "wclose" ? "#F3EDF7" : "transparent"),
+      onWclose: () => this.setState({ hov: "wclose" }),
+
+      // documentos
+      menuOpen: s.menuOpen,
+      toggleMenu: () => this.setState({ menuOpen: !s.menuOpen }),
+      chevStyle: "transition:transform .2s; transform:rotate(" + (s.menuOpen ? "180deg" : "0deg") + ")",
+      docOptions: DOCS.map((d, i) => ({
+        label: d.tab,
+        pick: () => this.setState({ docIdx: i, menuOpen: false, page: 0 }),
+        enter: () => this.setState({ hov: "op" + i }),
+        style: "text-align:left; border:none; cursor:pointer; border-radius:7px; padding:9px 10px; font-size:13px; font-family:Inter,sans-serif; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; transition:background .15s; color:#622C7B; background:" +
+          (idx === i || s.hov === "op" + i ? "#F3EDF7" : "transparent")
+      })),
+      dl1Style: this.ghost(s.hov === "dl1"),
+      dl2Style: this.ghost(s.hov === "dl2"),
+      onDl1: () => this.setState({ hov: "dl1" }),
+      onDl2: () => this.setState({ hov: "dl2" }),
+      docBodyStyle: "flex:1; min-height:0; overflow-y:auto; display:flex; flex-direction:column; gap:12px; line-height:1.65; color:#0B0B0B; transition:font-size .16s; font-size:" + s.zoom + "px",
+      onZoomIn: () => this.setState({ hov: "zin" }),
+      onZoomOut: () => this.setState({ hov: "zout" }),
+      zoomIn: () => this.setState({ zoom: Math.min(20, s.zoom + 1) }),
+      zoomOut: () => this.setState({ zoom: Math.max(9, s.zoom - 1) }),
+      zoomInStyle: this.pager(s.zoom < 20, s.hov === "zin"),
+      zoomOutStyle: this.pager(s.zoom > 9, s.hov === "zout"),
+      pageLabel: "Página " + (s.page + 1) + " de 3",
+      prevPage: () => this.setState({ page: Math.max(0, s.page - 1) }),
+      nextPage: () => this.setState({ page: Math.min(2, s.page + 1) }),
+      onPrev: () => this.setState({ hov: "prev" }),
+      onNext: () => this.setState({ hov: "next" }),
+      hasPrev: s.page > 0,
+      prevStyle: this.pager(true, s.hov === "prev"),
+      nextStyle: this.pager(s.page < 2, s.hov === "next"),
+
+      // tooltip
+      tipOn: () => this.setState({ tip: true }),
+      tipOff: () => this.setState({ tip: false }),
+      tipStyle: "position:absolute; left:-22px; top:calc(100% + 13px); z-index:5; background:#0B0B0B; color:#F5F4F6; border-radius:7px; padding:7px 10px; font-size:11px; line-height:1.45; white-space:nowrap; pointer-events:none; transition:opacity .16s; opacity:" +
+        (s.tip ? "1" : "0"),
+      tipArrowStyle: "position:absolute; left:6px; top:calc(100% + 7px); z-index:6; width:0; height:0; border-left:6px solid transparent; border-right:6px solid transparent; border-bottom:6px solid #0B0B0B; pointer-events:none; transition:opacity .16s; opacity:" +
+        (s.tip ? "1" : "0")
+    };
+  }
+}
+
+</script>
+</body>
+</html>
