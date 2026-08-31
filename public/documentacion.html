@@ -155,17 +155,7 @@
           </div>
         </sc-if>
 
-        <a href="#a11y" onClick="{{ openA11y }}" style="display:flex; align-items:center; justify-content:space-between; gap:8px; text-decoration:none; color:#111; font-weight:600; border-radius:8px; padding:9px 11px; font-size:14px; transition:background .18s" style-hover="background:#EFEFEF">Accesibilidad<span style="font-size:9px; color:#6B6377">▾</span></a>
-        <sc-if value="{{ a11yOpen }}" hint-placeholder-val="{{ false }}">
-          <div style="display:flex; flex-direction:column; gap:1px; padding:2px 0 8px 10px; margin-left:6px; border-left:1px solid #E4E4E4">
-          <a href="#x01" style="text-decoration:none; color:#6B6377; font-size:12px; border-radius:6px; padding:6px 10px; transition:background .16s, color .16s" style-hover="background:#F1F1F1; color:#111">Contraste</a>
-          <a href="#x02" style="text-decoration:none; color:#6B6377; font-size:12px; border-radius:6px; padding:6px 10px; transition:background .16s, color .16s" style-hover="background:#F1F1F1; color:#111">Foco</a>
-          <a href="#x03" style="text-decoration:none; color:#6B6377; font-size:12px; border-radius:6px; padding:6px 10px; transition:background .16s, color .16s" style-hover="background:#F1F1F1; color:#111">Targets</a>
-          <a href="#x04" style="text-decoration:none; color:#6B6377; font-size:12px; border-radius:6px; padding:6px 10px; transition:background .16s, color .16s" style-hover="background:#F1F1F1; color:#111">Formularios y errores</a>
-          <a href="#x05" style="text-decoration:none; color:#6B6377; font-size:12px; border-radius:6px; padding:6px 10px; transition:background .16s, color .16s" style-hover="background:#F1F1F1; color:#111">Reflow y zoom</a>
-          <a href="#x06" style="text-decoration:none; color:#6B6377; font-size:12px; border-radius:6px; padding:6px 10px; transition:background .16s, color .16s" style-hover="background:#F1F1F1; color:#111">Al agregar pantallas</a>
-          </div>
-        </sc-if>
+        <a href="#a11y" onClick="{{ openA11y }}" style="display:flex; align-items:center; justify-content:space-between; gap:8px; text-decoration:none; color:#111; font-weight:600; border-radius:8px; padding:9px 11px; font-size:14px; transition:background .18s" style-hover="background:#EFEFEF">Accesibilidad</a>
       </div>
     </aside>
 
@@ -1840,152 +1830,9 @@
     <div>
     <div id="a11y" style="display:flex; align-items:baseline; gap:14px; margin-top:56px; scroll-margin-top:20px">
       <div style="font-family:Georgia,'Times New Roman',serif; font-size:26px; font-weight:700">Accesibilidad</div>
-      <div style="font-size:14px; color:#6B6377">WCAG 2.1 AA, con los agregados de 2.2</div>
     </div>
-    <div style="max-width:640px; font-size:14px; line-height:1.7; color:#444; margin-top:10px; text-wrap:pretty">Las reglas que el diseño ya cumple y que hay que sostener en cualquier pantalla, componente o estado nuevo. Cada tarjeta da el valor exacto a usar y el criterio que lo respalda. Si una decisión de diseño no puede cumplir una de estas reglas, es la decisión la que se cambia.</div>
-
-    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:22px; margin-top:26px">
-
-      <div id="x01" style="scroll-margin-top:20px; background:#fff; border:1px solid #E4E4E4; border-radius:14px; padding:24px 26px; min-width:0">
-        <div style="font-size:15px; font-weight:700">Contraste</div>
-        <div style="font-size:12px; line-height:1.65; color:#555; margin-top:7px; text-wrap:pretty">Texto normal 4.5:1, texto grande 3:1 desde 18pt regular o 14pt bold, e íconos, bordes de input, estados y cualquier gráfico que transmita información 3:1. El color nunca es el único indicador: errores, links dentro de un párrafo y estados llevan además texto, ícono o forma.</div>
-        <div style="margin-top:12px">
-          <div style="font-size:10px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:#6B6377; padding:14px 0 2px">Texto · mínimo 4.5:1</div>
-          <div style="display:flex; align-items:center; gap:11px; padding:8px 0; border-top:1px solid #F1F1F1">
-            <div style="flex:0 0 74px; background:#fff; border:1px solid rgba(0,0,0,.06); border-radius:6px; padding:6px 8px; text-align:center"><span style="color:#0B0B0B; font-size:12px; font-weight:500">Aa</span></div>
-            <div style="min-width:0; flex:1"><div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#111">#0B0B0B</div><div style="font-size:12px; color:#6B6377; margin-top:2px">Tinta, texto principal · sobre blanco</div></div>
-            <div style="flex:0 0 auto; text-align:right"><div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#111">19.6:1</div><div style="font-size:10px; color:#0A7A5E; font-weight:600; margin-top:2px">AA</div></div>
-          </div>
-          <div style="display:flex; align-items:center; gap:11px; padding:8px 0; border-top:1px solid #F1F1F1">
-            <div style="flex:0 0 74px; background:#fff; border:1px solid rgba(0,0,0,.06); border-radius:6px; padding:6px 8px; text-align:center"><span style="color:#622C7B; font-size:12px; font-weight:500">Aa</span></div>
-            <div style="min-width:0; flex:1"><div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#111">#622C7B</div><div style="font-size:12px; color:#6B6377; margin-top:2px">Púrpura, texto de acción · sobre blanco</div></div>
-            <div style="flex:0 0 auto; text-align:right"><div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#111">9.7:1</div><div style="font-size:10px; color:#0A7A5E; font-weight:600; margin-top:2px">AA</div></div>
-          </div>
-          <div style="display:flex; align-items:center; gap:11px; padding:8px 0; border-top:1px solid #F1F1F1">
-            <div style="flex:0 0 74px; background:#fff; border:1px solid rgba(0,0,0,.06); border-radius:6px; padding:6px 8px; text-align:center"><span style="color:#A4143C; font-size:12px; font-weight:500">Aa</span></div>
-            <div style="min-width:0; flex:1"><div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#111">#A4143C</div><div style="font-size:12px; color:#6B6377; margin-top:2px">Rojo, mensajes de error · sobre blanco</div></div>
-            <div style="flex:0 0 auto; text-align:right"><div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#111">7.7:1</div><div style="font-size:10px; color:#0A7A5E; font-weight:600; margin-top:2px">AA</div></div>
-          </div>
-          <div style="display:flex; align-items:center; gap:11px; padding:8px 0; border-top:1px solid #F1F1F1">
-            <div style="flex:0 0 74px; background:#DFF0EA; border:1px solid rgba(0,0,0,.06); border-radius:6px; padding:6px 8px; text-align:center"><span style="color:#035D4A; font-size:12px; font-weight:500">Aa</span></div>
-            <div style="min-width:0; flex:1"><div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#111">#035D4A</div><div style="font-size:12px; color:#6B6377; margin-top:2px">Teal, procedencia verificada · sobre teal</div></div>
-            <div style="flex:0 0 auto; text-align:right"><div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#111">6.6:1</div><div style="font-size:10px; color:#0A7A5E; font-weight:600; margin-top:2px">AA</div></div>
-          </div>
-          <div style="display:flex; align-items:center; gap:11px; padding:8px 0; border-top:1px solid #F1F1F1">
-            <div style="flex:0 0 74px; background:#fff; border:1px solid rgba(0,0,0,.06); border-radius:6px; padding:6px 8px; text-align:center"><span style="color:#6B6377; font-size:12px; font-weight:500">Aa</span></div>
-            <div style="min-width:0; flex:1"><div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#111">#6B6377</div><div style="font-size:12px; color:#6B6377; margin-top:2px">Gris, texto secundario · sobre blanco</div></div>
-            <div style="flex:0 0 auto; text-align:right"><div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#111">5.7:1</div><div style="font-size:10px; color:#0A7A5E; font-weight:600; margin-top:2px">AA</div></div>
-          </div>
-          <div style="font-size:10px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:#6B6377; padding:14px 0 2px">Gráfico · mínimo 3:1</div>
-          <div style="display:flex; align-items:center; gap:11px; padding:8px 0; border-top:1px solid #F1F1F1">
-            <div style="flex:0 0 74px; display:flex; align-items:center; justify-content:center; gap:7px; padding:5px 0">
-              <span style="width:30px; height:22px; border:1px solid #8F86A0; border-radius:6px; background:#fff; display:block"></span>
-              <span style="display:flex; color:#622C7B"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2.5"></rect><path d="M9 4v16"></path></svg></span>
-            </div>
-            <div style="min-width:0; flex:1"><div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#111">#8F86A0</div><div style="font-size:12px; color:#6B6377; margin-top:2px">Bordes de input y de botón secundario · sobre blanco</div></div>
-            <div style="flex:0 0 auto; text-align:right"><div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#111">3.4:1</div><div style="font-size:10px; color:#0A7A5E; font-weight:600; margin-top:2px">AA · no texto</div></div>
-          </div>
-        </div>
-        <div style="font-size:12px; line-height:1.6; color:#666; margin-top:14px; text-wrap:pretty">Para texto solo los cinco del primer grupo. <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px">#8F86A0</span> es borde e ícono: no lleva texto. <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px">#F3EDF7</span>, <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px">#E0D2EA</span>, <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px">#DFF0EA</span> y <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px">#EFEDF1</span> son superficie y borde decorativo: nunca llevan texto encima ni comunican estado por sí solos.</div>
-        <div style="margin-top:14px; padding-top:12px; border-top:1px solid #F1F1F1"><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#6B6377; white-space:nowrap">1.4.1 1.4.3 1.4.11</span> <span style="font-size:12px; color:#666">Uso del color, contraste de texto y de componentes</span></div>
-      </div>
-
-      <div id="x02" style="scroll-margin-top:20px; background:#fff; border:1px solid #E4E4E4; border-radius:14px; padding:24px 26px; min-width:0">
-        <div style="font-size:15px; font-weight:700">Foco</div>
-        <div style="font-size:12px; line-height:1.65; color:#555; margin-top:7px; text-wrap:pretty">Todo lo alcanzable por teclado muestra un anillo. Se usa <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px">:focus-visible</span>, así aparece para teclado y no para clic, y ningún control puede declarar <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px">outline:none</span> sin reemplazo.</div>
-        <div style="display:flex; gap:26px; margin-top:20px; flex-wrap:wrap; align-items:flex-end">
-          <div style="display:flex; flex-direction:column; gap:9px">
-            <input value="Consulta" readonly style="width:120px; border:1px solid #8F86A0; border-radius:8px; padding:9px 11px; font-size:14px; font-family:Inter,sans-serif; color:#0B0B0B; outline:2px solid #4A1F5E; outline-offset:1px" />
-            <span style="font-size:12px; color:#6B6377">campo con foco</span>
-          </div>
-          <div style="display:flex; flex-direction:column; gap:9px">
-            <button style="border:1px solid #8F86A0; border-radius:8px; padding:9px 14px; font-size:14px; font-family:Inter,sans-serif; color:#622C7B; background:#fff; cursor:pointer">Tabulá hasta acá</button>
-            <span style="font-size:12px; color:#6B6377">probalo con teclado</span>
-          </div>
-        </div>
-        <div style="display:flex; flex-direction:column; gap:0; margin-top:18px">
-          <div style="display:flex; justify-content:space-between; gap:14px; border-top:1px solid #F1F1F1; padding:9px 0 0; font-size:12px"><span style="color:#111; min-width:0">Anillo</span><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#6B6377; text-align:right; flex:0 0 auto">2 px #4A1F5E</span></div>
-          <div style="display:flex; justify-content:space-between; gap:14px; border-top:1px solid #F1F1F1; padding:9px 0 0; font-size:12px"><span style="color:#111; min-width:0">Offset</span><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#6B6377; text-align:right; flex:0 0 auto">2 px · 1 px en input</span></div>
-          <div style="display:flex; justify-content:space-between; gap:14px; border-top:1px solid #F1F1F1; padding:9px 0 0; font-size:12px"><span style="color:#111; min-width:0">Selector</span><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#6B6377; text-align:right; flex:0 0 auto">:focus-visible</span></div>
-          <div style="display:flex; justify-content:space-between; gap:14px; border-top:1px solid #F1F1F1; padding:9px 0 0; font-size:12px"><span style="color:#111; min-width:0">Contraste del anillo</span><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#6B6377; text-align:right; flex:0 0 auto">12.7:1</span></div>
-          <div style="display:flex; justify-content:space-between; gap:14px; border-top:1px solid #F1F1F1; padding:9px 0 0; font-size:12px"><span style="color:#111; min-width:0">Alcance</span><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#6B6377; text-align:right; flex:0 0 auto">botón, link, input, textarea, tabindex</span></div>
-        </div>
-        <div style="font-size:12px; line-height:1.6; color:#666; margin-top:14px; text-wrap:pretty">El orden de foco sigue el orden visual. El header del chat es fijo, así que el contenedor de conversación reserva 58 px en mobile y 74 en desktop de padding superior: el foco nunca queda tapado detrás de una barra pegada.</div>
-        <div style="margin-top:14px; padding-top:12px; border-top:1px solid #F1F1F1"><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#6B6377; white-space:nowrap">2.4.3 2.4.7 2.4.11</span> <span style="font-size:12px; color:#666">Orden del foco, foco visible y no oscurecido</span></div>
-      </div>
-
-      <div id="x03" style="scroll-margin-top:20px; background:#fff; border:1px solid #E4E4E4; border-radius:14px; padding:24px 26px; min-width:0">
-        <div style="font-size:15px; font-weight:700">Targets</div>
-        <div style="font-size:12px; line-height:1.65; color:#555; margin-top:7px; text-wrap:pretty">Un control táctil primario mide 44 × 44 px. Un control secundario anidado dentro de otro elemento puede bajar a 24 × 24, que es el mínimo de 2.2. Y todo control declara su propia caja con <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px">width</span>, <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px">height</span> y <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px">flex-basis</span>: nunca deduce su tamaño del padding, porque al quitarle la etiqueta en mobile colapsa.</div>
-        <div style="display:flex; align-items:flex-end; gap:26px; margin-top:20px; flex-wrap:wrap">
-          <div style="display:flex; flex-direction:column; align-items:center; gap:9px">
-            <div style="width:44px; height:44px; border-radius:8px; background:#F3EDF7; color:#622C7B; display:flex; align-items:center; justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2.5"></rect><path d="M9 4v16"></path></svg></div>
-            <span style="font-size:12px; color:#6B6377">44 × 44 · primario</span>
-          </div>
-          <div style="display:flex; flex-direction:column; align-items:center; gap:9px">
-            <div style="width:24px; height:24px; border-radius:50%; background:#622C7B; color:#fff; display:flex; align-items:center; justify-content:center; font-size:12px">×</div>
-            <span style="font-size:12px; color:#6B6377">24 × 24 · anidado</span>
-          </div>
-        </div>
-        <div style="display:flex; flex-direction:column; gap:0; margin-top:18px">
-          <div style="display:flex; justify-content:space-between; gap:14px; border-top:1px solid #F1F1F1; padding:9px 0 0; font-size:12px"><span style="color:#111; min-width:0">Botones de ícono del header</span><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#6B6377; text-align:right; flex:0 0 auto">44 × 44</span></div>
-          <div style="display:flex; justify-content:space-between; gap:14px; border-top:1px solid #F1F1F1; padding:9px 0 0; font-size:12px"><span style="color:#111; min-width:0">Adjuntar y enviar</span><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#6B6377; text-align:right; flex:0 0 auto">44 × 44</span></div>
-          <div style="display:flex; justify-content:space-between; gap:14px; border-top:1px solid #F1F1F1; padding:9px 0 0; font-size:12px"><span style="color:#111; min-width:0">Cierre de drawer</span><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#6B6377; text-align:right; flex:0 0 auto">44 × 44</span></div>
-          <div style="display:flex; justify-content:space-between; gap:14px; border-top:1px solid #F1F1F1; padding:9px 0 0; font-size:12px"><span style="color:#111; min-width:0">Cierre de adjunto</span><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#6B6377; text-align:right; flex:0 0 auto">24 × 24, siempre visible</span></div>
-        </div>
-        <div style="font-size:12px; line-height:1.6; color:#666; margin-top:14px; text-wrap:pretty">Nada aparece solo en hover. Lo que se puede tocar está visible desde el principio, y lo que aparece al pasar el cursor se puede descartar, hoverear y queda en pantalla mientras se lo usa.</div>
-        <div style="margin-top:14px; padding-top:12px; border-top:1px solid #F1F1F1"><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#6B6377; white-space:nowrap">2.5.8 1.4.13</span> <span style="font-size:12px; color:#666">Tamaño de objetivo, contenido en hover o foco</span></div>
-      </div>
-
-      <div id="x04" style="scroll-margin-top:20px; background:#fff; border:1px solid #E4E4E4; border-radius:14px; padding:24px 26px; min-width:0">
-        <div style="font-size:15px; font-weight:700">Formularios y errores</div>
-        <div style="font-size:12px; line-height:1.65; color:#555; margin-top:7px; text-wrap:pretty">Cada campo tiene nombre accesible propio: el placeholder es una pista, nunca la etiqueta. Los campos de datos personales declaran <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px">autocomplete</span>. El error se identifica en texto, con un segundo indicador además del color y una sugerencia de cómo corregirlo.</div>
-        <div style="margin-top:18px; border:1px solid #E0D2EA; border-radius:10px; padding:14px; background:#F7F6F8">
-          <div style="font-size:12px; color:#0B0B0B; font-family:Inter,sans-serif">Repetir contraseña</div>
-          <input type="password" value="••••••" readonly aria-label="Repetir contraseña" style="width:100%; box-sizing:border-box; margin-top:6px; border:1px solid #8F86A0; border-radius:8px; padding:8px 11px; font-size:14px; font-family:Inter,sans-serif; color:#0B0B0B" />
-          <div style="display:flex; align-items:center; gap:5px; font-size:12px; font-weight:500; color:#A4143C; margin-top:9px; font-family:Inter,sans-serif">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" style="flex:0 0 13px"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5v5.5"></path><path d="M12 16.5v.4"></path></svg>
-            Las contraseñas no coinciden. Repetila igual que arriba.
-          </div>
-        </div>
-        <div style="display:flex; flex-direction:column; gap:0; margin-top:16px">
-          <div style="display:flex; justify-content:space-between; gap:14px; border-top:1px solid #F1F1F1; padding:9px 0 0; font-size:12px"><span style="color:#111; min-width:0">Correo</span><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#6B6377; text-align:right; flex:0 0 auto">autocomplete email</span></div>
-          <div style="display:flex; justify-content:space-between; gap:14px; border-top:1px solid #F1F1F1; padding:9px 0 0; font-size:12px"><span style="color:#111; min-width:0">Contraseña</span><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#6B6377; text-align:right; flex:0 0 auto">current-password / new-password</span></div>
-          <div style="display:flex; justify-content:space-between; gap:14px; border-top:1px solid #F1F1F1; padding:9px 0 0; font-size:12px"><span style="color:#111; min-width:0">Nombre</span><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#6B6377; text-align:right; flex:0 0 auto">autocomplete name</span></div>
-          <div style="display:flex; justify-content:space-between; gap:14px; border-top:1px solid #F1F1F1; padding:9px 0 0; font-size:12px"><span style="color:#111; min-width:0">Mensaje de error</span><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#6B6377; text-align:right; flex:0 0 auto">role="alert" · ícono · #A4143C</span></div>
-        </div>
-        <div style="font-size:12px; line-height:1.6; color:#666; margin-top:14px; text-wrap:pretty">Al implementar: no bloquear el pegado en los campos de contraseña, no pedir dos veces un dato ya provisto, y nada de pruebas cognitivas en la autenticación.</div>
-        <div style="margin-top:14px; padding-top:12px; border-top:1px solid #F1F1F1"><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#6B6377; white-space:nowrap">1.3.5 3.3.1 3.3.3 3.3.8</span> <span style="font-size:12px; color:#666">Propósito del campo, error, sugerencia y autenticación accesible</span></div>
-      </div>
-
-      <div id="x05" style="scroll-margin-top:20px; background:#fff; border:1px solid #E4E4E4; border-radius:14px; padding:24px 26px; min-width:0">
-        <div style="font-size:15px; font-weight:700">Reflow y zoom</div>
-        <div style="font-size:12px; line-height:1.65; color:#555; margin-top:7px; text-wrap:pretty">La aplicación funciona a 320 px de ancho sin scroll horizontal, que es lo mismo que 1280 px con zoom al 400 %. Ningún contenido tiene ancho fijo: los 690 y 560 px de desktop pasan a 100 % por debajo del punto de corte.</div>
-        <div style="display:flex; flex-direction:column; gap:0; margin-top:18px">
-          <div style="display:flex; justify-content:space-between; gap:14px; border-top:1px solid #F1F1F1; padding:9px 0 0; font-size:12px"><span style="color:#111; min-width:0">Ancho mínimo</span><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#6B6377; text-align:right; flex:0 0 auto">320 px, scroll horizontal 0</span></div>
-          <div style="display:flex; justify-content:space-between; gap:14px; border-top:1px solid #F1F1F1; padding:9px 0 0; font-size:12px"><span style="color:#111; min-width:0">Contenedor de conversación</span><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#6B6377; text-align:right; flex:0 0 auto">minmax(0,1fr)</span></div>
-          <div style="display:flex; justify-content:space-between; gap:14px; border-top:1px solid #F1F1F1; padding:9px 0 0; font-size:12px"><span style="color:#111; min-width:0">Descendientes</span><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#6B6377; text-align:right; flex:0 0 auto">min-width:0</span></div>
-          <div style="display:flex; justify-content:space-between; gap:14px; border-top:1px solid #F1F1F1; padding:9px 0 0; font-size:12px"><span style="color:#111; min-width:0">Alto de viewport</span><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#6B6377; text-align:right; flex:0 0 auto">100dvh</span></div>
-        </div>
-        <div style="font-size:12px; line-height:1.6; color:#666; margin-top:14px; text-wrap:pretty">La regla que hay que sostener: un ítem de grid o de flex hereda <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px">min-width:auto</span> y arrastra el ancho mínimo de su contenido. Todo contenedor que deba encogerse declara <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px">minmax(0,1fr)</span> o <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px">min-width:0</span>, sin excepción.</div>
-        <div style="margin-top:14px; padding-top:12px; border-top:1px solid #F1F1F1"><span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; color:#6B6377; white-space:nowrap">1.4.4 1.4.10</span> <span style="font-size:12px; color:#666">Redimensionado de texto y reflow</span></div>
-      </div>
-
-      <div id="x06" style="scroll-margin-top:20px; background:#fff; border:1px solid #E4E4E4; border-radius:14px; padding:24px 26px; min-width:0">
-        <div style="font-size:15px; font-weight:700">Al agregar pantallas</div>
-        <div style="font-size:12px; line-height:1.65; color:#555; margin-top:7px; text-wrap:pretty">La lista corta para revisar antes de dar por terminada una pantalla nueva.</div>
-        <div style="margin-top:18px; display:flex; flex-direction:column; gap:11px">
-          <div style="border-top:1px solid #F1F1F1; padding-top:11px; font-size:12px; line-height:1.6; color:#111">Los colores de texto salen de los cinco del primer grupo de <a href="#x01" style="color:#622C7B">x01</a>, y los bordes e íconos de <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px">#8F86A0</span>. Ningún valor nuevo.</div>
-          <div style="border-top:1px solid #F1F1F1; padding-top:11px; font-size:12px; line-height:1.6; color:#111">Todo control es alcanzable por teclado y muestra el anillo.</div>
-          <div style="border-top:1px solid #F1F1F1; padding-top:11px; font-size:12px; line-height:1.6; color:#111">Los targets llegan a 44 × 44, o a 24 × 24 si están anidados.</div>
-          <div style="border-top:1px solid #F1F1F1; padding-top:11px; font-size:12px; line-height:1.6; color:#111">Los campos tienen etiqueta visible o <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px">aria-label</span>, y autocompletado si piden datos personales.</div>
-          <div style="border-top:1px solid #F1F1F1; padding-top:11px; font-size:12px; line-height:1.6; color:#111">Entra a 320 px sin scroll horizontal y aguanta zoom al 200 %.</div>
-          <div style="border-top:1px solid #F1F1F1; padding-top:11px; font-size:12px; line-height:1.6; color:#111">La jerarquía de encabezados es real, no visual. Las imágenes con contenido llevan texto alternativo; las decorativas, <span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px">alt=""</span>.</div>
-          <div style="border-top:1px solid #F1F1F1; padding-top:11px; font-size:12px; line-height:1.6; color:#111">Nada parpadea más de tres veces por segundo, y toda animación de más de 5 segundos se puede pausar.</div>
-        </div>
-        <div style="font-size:12px; line-height:1.6; color:#666; margin-top:16px; text-wrap:pretty">El punto que más se rompe al forzar el espaciado de texto de 1.4.12 son los tamaños de 9 a 11 px del sidebar y de las tarjetas de adjunto: cualquier dato que deba leerse sin esfuerzo va en 12.5 px o más.</div>
-      </div>
-
+    <div style="margin-top:26px; background:#fff; border:1px solid #E4E4E4; border-radius:14px; padding:56px 26px; display:flex; align-items:center; justify-content:center">
+      <div style="font-size:14px; color:#6B6377; letter-spacing:.02em">Work in progress</div>
     </div>
     </div>
     </sc-if>
