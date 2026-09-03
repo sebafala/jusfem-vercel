@@ -52,7 +52,7 @@
           <button onClick="{{ doLogin }}" style="{{ loginStyle }}">Ingresar</button>
         </div>
         <div style="display:flex; flex-direction:column; align-items:center; gap:10px; font-size:12px; color:#6B6377">
-          <div>¿No tenés cuenta? <a href="#" onClick="{{ goRegister }}">Registrate</a></div>
+          <div>¿No tienes cuenta? <a href="#" onClick="{{ goRegister }}">Regístrate</a></div>
           <a href="#" onClick="{{ doGuest }}" style="{{ authLinkStyle }}">Entrar como invitado</a>
         </div>
       </div>
@@ -90,7 +90,7 @@
           <button onClick="{{ doRegister }}" style="{{ registerStyle }}">Crear cuenta</button>
         </div>
         <div style="display:flex; flex-direction:column; align-items:center; gap:10px; font-size:12px; color:#6B6377">
-          <div>¿Ya tenés cuenta? <a href="#" onClick="{{ goLogin }}">Ingresá</a></div>
+          <div>¿Ya tienes cuenta? <a href="#" onClick="{{ goLogin }}">Ingresar</a></div>
           <a href="#" onClick="{{ doGuest }}" style="{{ authLinkStyle }}">Entrar como invitado</a>
         </div>
       </div>
@@ -107,7 +107,7 @@
         <div style="background:#fff; border:1px solid #F3EDF7; border-radius:16px; padding:26px 26px 22px; display:flex; flex-direction:column; gap:16px; box-shadow:0 2px 10px rgba(98,44,123,.06)">
           <sc-if value="{{ resetPending }}" hint-placeholder-val="{{ true }}">
             <div style="font-weight:700; font-size:16px">Recuperar contraseña</div>
-            <div style="font-size:12px; line-height:1.6; color:#6B6377; text-wrap:pretty">Ingresá tu correo institucional y te enviamos un enlace para crear una contraseña nueva.</div>
+            <div style="font-size:12px; line-height:1.6; color:#6B6377; text-wrap:pretty">Ingresa tu correo institucional y te enviamos un enlace para crear una contraseña nueva.</div>
             <div style="display:flex; flex-direction:column; gap:7px">
               <div style="font-size:12px">Correo institucional</div>
               <input type="email" aria-label="Correo institucional" autoComplete="email" value="{{ mail }}" onChange="{{ onMail }}" placeholder="nombre@institucion.gob.pe" style="width:100%; border:1px solid #8F86A0; border-radius:8px; padding:11px 13px; font-size:14px; color:#0B0B0B; background:#fff">
@@ -119,8 +119,8 @@
               <div style="width:34px; height:34px; border-radius:50%; background:#DFF0EA; color:#035D4A; display:flex; align-items:center; justify-content:center">
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
               </div>
-              <div style="font-weight:700; font-size:16px">Revisá tu correo</div>
-              <div style="font-size:14px; line-height:1.6; text-wrap:pretty">Enviamos un enlace a <strong>{{ mail }}</strong>. Vence en 30 minutos. Si no llega, revisá spam o volvé a intentar.</div>
+              <div style="font-weight:700; font-size:16px">Revisa tu correo</div>
+              <div style="font-size:14px; line-height:1.6; text-wrap:pretty">Enviamos un enlace a <strong>{{ mail }}</strong>. Vence en 30 minutos. Si no llega, revisa spam o vuelve a intentar.</div>
             </div>
             <button onClick="{{ backToLogin }}" style="{{ resetBackStyle }}">Volver al ingreso</button>
           </sc-if>
@@ -158,7 +158,7 @@
         <div style="font-size:12px; color:#6B6377; font-style:italic; margin-top:-18px">JUSFEM es una herramienta de apoyo. Sus respuestas deben ser validadas por la persona responsable.</div>
 
         <div style="display:flex; flex-direction:column; gap:10px">
-          <div style="font-size:12px; color:#6B6377">Probá con uno de estos ejemplos</div>
+          <div style="font-size:12px; color:#6B6377">Prueba con uno de estos ejemplos</div>
           <div style="display:flex; flex-direction:column; align-items:flex-start; gap:8px">
             <button onClick="{{ example1 }}" onMouseEnter="{{ onEx1 }}" onMouseLeave="{{ offHov }}" style="{{ ex1Style }}">Estándares internacionales de DDHH sobre debida diligencia reforzada</button>
             <button onClick="{{ example2 }}" onMouseEnter="{{ onEx2 }}" onMouseLeave="{{ offHov }}" style="{{ ex2Style }}">Precedentes, casaciones y acuerdos plenarios sobre violencia de género</button>
@@ -254,7 +254,7 @@
                   </div>
                   </sc-for>
                       <sc-if value="{{ fo.empty }}" hint-placeholder-val="{{ false }}">
-                        <div style="font-size:12px; color:#6B6377; padding:4px 8px; line-height:1.5">Sin conversaciones. Usá el menú de una conversación para agregarla.</div>
+                        <div style="font-size:12px; color:#6B6377; padding:4px 8px; line-height:1.5">Sin conversaciones. Usa el menú de una conversación para agregarla.</div>
                       </sc-if>
                     </div>
                   </sc-if>
@@ -568,11 +568,11 @@
 
                 <sc-if value="{{ turn.hasOptions }}" hint-placeholder-val="{{ false }}">
                   <div style="display:flex; flex-direction:column; gap:9px; line-height:1.58">
-                    <div style="font-weight:700">Dónde podés buscarlo</div>
+                    <div style="font-weight:700">Dónde puedes buscarlo</div>
                     <div style="text-wrap:pretty"><a href="https://jurisprudencia.pj.gob.pe" target="_blank" rel="noreferrer">Sistema de consulta de jurisprudencia del Poder Judicial</a></div>
                     <div style="text-wrap:pretty"><a href="https://observatorioviolencia.pe" target="_blank" rel="noreferrer">Observatorio Nacional de la Violencia contra las Mujeres</a></div>
                     <div style="text-wrap:pretty"><a href="https://www.gob.pe/mimp" target="_blank" rel="noreferrer">Ministerio de la Mujer y Poblaciones Vulnerables</a></div>
-                    <div style="text-wrap:pretty">También podés consultarlo con el área especializada de tu despacho.</div>
+                    <div style="text-wrap:pretty">También puedes consultarlo con el área especializada de tu despacho.</div>
                   </div>
                 </sc-if>
 
@@ -671,7 +671,7 @@
         <sc-if value="{{ nearLimit }}" hint-placeholder-val="{{ false }}">
           <div style="display:flex; align-items:flex-start; gap:9px; background:#EAF5EE; border:1px solid #CFE7D8; border-radius:10px; padding:11px 13px; font-size:12px; line-height:1.55; color:#0B0B0B; margin-bottom:10px">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#035D4A" stroke-width="1.7" stroke-linecap="round" style="flex:0 0 14px; margin-top:1px"><path d="M12 3.5L22 20H2z"></path><path d="M12 10v4.5"></path><path d="M12 17.2v.2"></path></svg>
-            <span style="flex:1">Estás al 90% del límite de consultas de hoy. Al llegar al límite no vas a poder descargar el contexto de la conversación. Iniciá sesión para que la información se mantenga.</span>
+            <span style="flex:1">Estás al 90% del límite de consultas de hoy. Al llegar al límite podrás continuar mañana. Inicia sesión para que la información se mantenga.</span>
             <button onClick="{{ dismissNear }}" onMouseEnter="{{ onNearX }}" onMouseLeave="{{ offHov }}" title="Cerrar aviso" style="{{ nearXStyle }}">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg>
             </button>
@@ -680,7 +680,7 @@
 
         <sc-if value="{{ atLimit }}" hint-placeholder-val="{{ false }}">
           <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:14px; background:#0B0B0B; border-radius:10px; padding:12px 14px; font-size:12px; line-height:1.55; color:#fff; margin-bottom:10px">
-            <span style="flex:1">Alcanzaste el límite de consultas de hoy. Podés continuar mañana.</span>
+            <span style="flex:1">Alcanzaste el límite de consultas de hoy. Puedes continuar mañana.</span>
             <button onClick="{{ dismissLimit }}" onMouseEnter="{{ onLimitX }}" onMouseLeave="{{ offHov }}" title="Cerrar aviso" style="{{ limitXStyle }}">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg>
             </button>
@@ -761,7 +761,7 @@
             </sc-if>
 
             <sc-if value="{{ isStep2 }}" hint-placeholder-val="{{ false }}">
-              <input value="{{ wTema }}" onChange="{{ onTema }}" placeholder="Escriba acá su respuesta" style="width:83%; border:1px solid #8F86A0; border-radius:8px; padding:13px 15px; font-size:14px; background:#fff" />
+              <input value="{{ wTema }}" onChange="{{ onTema }}" placeholder="Escriba aquí su respuesta" style="width:83%; border:1px solid #8F86A0; border-radius:8px; padding:13px 15px; font-size:14px; background:#fff" />
             </sc-if>
 
             <sc-if value="{{ isStep3 }}" hint-placeholder-val="{{ false }}">
@@ -778,11 +778,11 @@
             </sc-if>
 
             <sc-if value="{{ isStep4 }}" hint-placeholder-val="{{ false }}">
-              <textarea value="{{ wExtra }}" onChange="{{ onExtra }}" placeholder="Escriba acá su respuesta" style="width:73%; height:225px; border:1px solid #8F86A0; border-radius:8px; padding:13px 15px; font-size:14px; resize:none; line-height:1.6; background:#fff"></textarea>
+              <textarea value="{{ wExtra }}" onChange="{{ onExtra }}" placeholder="Escriba aquí su respuesta" style="width:73%; height:225px; border:1px solid #8F86A0; border-radius:8px; padding:13px 15px; font-size:14px; resize:none; line-height:1.6; background:#fff"></textarea>
             </sc-if>
 
             <sc-if value="{{ isStep5 }}" hint-placeholder-val="{{ false }}">
-              <textarea value="{{ wObj }}" onChange="{{ onObj }}" placeholder="Escriba acá su respuesta" style="width:73%; height:195px; border:1px solid #8F86A0; border-radius:8px; padding:13px 15px; font-size:14px; resize:none; line-height:1.6; background:#fff"></textarea>
+              <textarea value="{{ wObj }}" onChange="{{ onObj }}" placeholder="Escriba aquí su respuesta" style="width:73%; height:195px; border:1px solid #8F86A0; border-radius:8px; padding:13px 15px; font-size:14px; resize:none; line-height:1.6; background:#fff"></textarea>
             </sc-if>
           </div>
 
@@ -890,7 +890,7 @@
           <sc-if value="{{ isMob }}" hint-placeholder-val="{{ false }}">
             <div style="position:relative; display:flex; align-items:center; justify-content:center; padding:14px 16px 12px; border-bottom:1px solid #3A3A3A">
               <span style="position:absolute; top:7px; left:50%; transform:translateX(-50%); width:38px; height:4px; border-radius:2px; background:#4A4A4A"></span>
-              <span style="font-size:14px; font-weight:500; color:#EDEDED">Elegí un documento</span>
+              <span style="font-size:14px; font-weight:500; color:#EDEDED">Elige un documento</span>
             </div>
           </sc-if>
           <sc-if value="{{ notMob }}" hint-placeholder-val="{{ true }}">
@@ -976,7 +976,7 @@
           <div style="display:flex; flex-direction:column; gap:7px">
             <div style="font-size:12px">Motivo</div>
             <select value="{{ reportReason }}" onChange="{{ onReason }}" style="width:100%; border:1px solid #8F86A0; border-radius:8px; padding:11px 13px; font-size:14px; color:#0B0B0B; background:#fff; cursor:pointer">
-              <option value="">Seleccioná un motivo</option>
+              <option value="">Selecciona un motivo</option>
               <option value="cita">La cita o el documento no corresponde</option>
               <option value="fuente">La respuesta no refleja lo que dice la fuente</option>
               <option value="desact">La norma o el criterio está desactualizado</option>
@@ -988,7 +988,7 @@
           </div>
           <div style="display:flex; flex-direction:column; gap:7px">
             <div style="font-size:12px">Detalle</div>
-            <textarea aria-label="Detalle del reporte" value="{{ reportText }}" onChange="{{ onReportText }}" placeholder="Contá qué encontraste, con la mayor precisión posible" style="width:100%; height:120px; border:1px solid #8F86A0; border-radius:8px; padding:11px 13px; font-size:14px; line-height:1.6; color:#0B0B0B; background:#fff; resize:none"></textarea>
+            <textarea aria-label="Detalle del reporte" value="{{ reportText }}" onChange="{{ onReportText }}" placeholder="Cuéntanos qué encontraste, con la mayor precisión posible" style="width:100%; height:120px; border:1px solid #8F86A0; border-radius:8px; padding:11px 13px; font-size:14px; line-height:1.6; color:#0B0B0B; background:#fff; resize:none"></textarea>
           </div>
           <div style="display:flex; justify-content:flex-end; gap:8px">
             <button onClick="{{ closeReport }}" style="{{ modalSecStyle }}" style-hover="background:#F3EDF7">Cancelar</button>
@@ -1003,7 +1003,7 @@
     <div style="{{ modalOverlayStyle }}">
       <div style="width:420px; background:#F7F6F8; border:1px solid #F3EDF7; border-radius:16px; box-shadow:0 18px 50px rgba(11,11,11,.16); margin:auto 0; padding:26px 28px 20px; display:flex; flex-direction:column; gap:14px; animation:riseIn .22s ease both">
         <div style="font-weight:700; font-size:16px">Eliminar "{{ deleteFolderLabel }}"</div>
-        <div style="font-size:14px; line-height:1.6; color:#6B6377; text-wrap:pretty">Esta carpeta tiene {{ deleteFolderCount }}. ¿Qué querés hacer con ellas?</div>
+        <div style="font-size:14px; line-height:1.6; color:#6B6377; text-wrap:pretty">Esta carpeta tiene {{ deleteFolderCount }}. ¿Qué quieres hacer con ellas?</div>
         <div style="display:flex; flex-direction:column; gap:8px">
           <button onClick="{{ pickMove }}" style="{{ moveOptStyle }}">Mover a otra carpeta</button>
           <sc-if value="{{ showMoveTargets }}" hint-placeholder-val="{{ false }}">
@@ -1105,11 +1105,11 @@ const FILES = [
 const REJECT = {
   "Reglamento de la Ley 30364.pdf": {
     reason: "El archivo supera el peso máximo",
-    detail: "Pesa 42 MB y el máximo es 20 MB. Podés adjuntar una versión más liviana o dividirlo en partes."
+    detail: "Pesa 42 MB y el máximo es 20 MB. Puedes adjuntar una versión más liviana o dividirlo en partes."
   },
   "Registro de casos 2024.xlsx": {
     reason: "El formato no está admitido",
-    detail: "Los archivos .xlsx no se pueden leer. Convertilo a PDF y volvé a intentar."
+    detail: "Los archivos .xlsx no se pueden leer. Conviértelo a PDF y vuelve a intentar."
   },
   "Ley 27942, hostigamiento sexual.pdf": {
     reason: "El archivo no cumple los requisitos",
