@@ -42,7 +42,10 @@
           <div style="font-weight:700; font-size:16px">Ingresar</div>
           <div style="display:flex; flex-direction:column; gap:7px">
             <div style="font-size:12px">Correo institucional</div>
-            <input type="email" aria-label="Correo institucional" autoComplete="email" value="{{ mail }}" onChange="{{ onMail }}" placeholder="nombre@institucion.gob.pe" style="width:100%; border:1px solid #8F86A0; border-radius:8px; padding:11px 13px; font-size:14px; color:#0B0B0B; background:#fff">
+            <input type="email" aria-label="Correo institucional" autoComplete="email" value="{{ mail }}" onChange="{{ onMail }}" placeholder="nombre@institucion.gob.pe" style="{{ loginMailStyle }}">
+            <sc-if value="{{ loginMailError }}" hint-placeholder-val="{{ false }}">
+              <div role="alert" style="display:flex; align-items:center; gap:5px; font-size:12px; font-weight:500; color:#A4143C"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" style="flex:0 0 13px"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5v5.5"></path><path d="M12 16.5v.4"></path></svg>Escribe un correo válido, con @ y dominio.</div>
+            </sc-if>
           </div>
           <div style="display:flex; flex-direction:column; gap:7px">
             <div style="font-size:12px">Contraseña</div>
@@ -110,7 +113,10 @@
             <div style="font-size:12px; line-height:1.6; color:#6B6377; text-wrap:pretty">Ingresa tu correo institucional y te enviamos un enlace para crear una contraseña nueva.</div>
             <div style="display:flex; flex-direction:column; gap:7px">
               <div style="font-size:12px">Correo institucional</div>
-              <input type="email" aria-label="Correo institucional" autoComplete="email" value="{{ mail }}" onChange="{{ onMail }}" placeholder="nombre@institucion.gob.pe" style="width:100%; border:1px solid #8F86A0; border-radius:8px; padding:11px 13px; font-size:14px; color:#0B0B0B; background:#fff">
+              <input type="email" aria-label="Correo institucional" autoComplete="email" value="{{ mail }}" onChange="{{ onMail }}" placeholder="nombre@institucion.gob.pe" style="{{ resetMailStyle }}">
+              <sc-if value="{{ resetMailError }}" hint-placeholder-val="{{ false }}">
+                <div role="alert" style="display:flex; align-items:center; gap:5px; font-size:12px; font-weight:500; color:#A4143C"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" style="flex:0 0 13px"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5v5.5"></path><path d="M12 16.5v.4"></path></svg>No encontramos una cuenta con ese correo. Revísalo o regístrate.</div>
+              </sc-if>
             </div>
             <button onClick="{{ sendReset }}" style="{{ resetStyle }}">Enviar enlace</button>
           </sc-if>
@@ -1059,9 +1065,17 @@
     </div>
   </sc-if>
 
+  <sc-if value="{{ toastOpen }}" hint-placeholder-val="{{ false }}">
+    <div role="status" aria-live="polite" style="{{ toastStyle }}">
+      <span style="width:18px; height:18px; border-radius:50%; background:#DFF0EA; color:#035D4A; display:inline-flex; align-items:center; justify-content:center"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span>
+      <span>{{ toastText }}</span>
+    </div>
+  </sc-if>
+
   <sc-if value="{{ shareOpen }}" hint-placeholder-val="{{ false }}">
     <div style="{{ modalOverlayStyle }}">
       <div style="width:460px; background:#F7F6F8; border:1px solid #F3EDF7; border-radius:16px; box-shadow:0 18px 50px rgba(11,11,11,.16); margin:auto 0; padding:26px 28px 22px; display:flex; flex-direction:column; gap:16px">
+        <sc-if value="{{ sharePending }}" hint-placeholder-val="{{ true }}">
         <div>
           <div style="font-weight:700; font-size:16px">Compartir la conversación</div>
           <div style="font-size:12px; line-height:1.6; color:#6B6377; margin-top:5px; text-wrap:pretty">La persona podrá leer las consultas, las respuestas y los documentos citados.</div>
@@ -1072,8 +1086,21 @@
         </div>
         <div style="display:flex; justify-content:flex-end; gap:8px">
           <button onClick="{{ closeShare }}" style="{{ modalSecStyle }}" style-hover="background:#F3EDF7">Cancelar</button>
-          <button onClick="{{ closeShare }}" style="{{ shareSendStyle }}">Compartir</button>
+          <button onClick="{{ doShare }}" style="{{ shareSendStyle }}">Compartir</button>
         </div>
+        </sc-if>
+        <sc-if value="{{ shareDone }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex; flex-direction:column; gap:10px; padding:4px 0; animation:riseIn .22s ease both">
+          <div style="width:34px; height:34px; border-radius:50%; background:#DFF0EA; color:#035D4A; display:flex; align-items:center; justify-content:center">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+          </div>
+          <div style="font-weight:700; font-size:16px">Conversación compartida</div>
+          <div style="font-size:14px; line-height:1.6; text-wrap:pretty"><strong>{{ shareMail }}</strong> va a recibir un correo con el enlace. Puede leerla pero no escribir en ella.</div>
+        </div>
+        <div style="display:flex; justify-content:flex-end">
+          <button onClick="{{ closeShare }}" style="{{ shareCloseStyle }}">Listo</button>
+        </div>
+        </sc-if>
       </div>
     </div>
   </sc-if>
@@ -1164,7 +1191,7 @@ class Component extends DCLogic {
     vw: typeof window !== "undefined" ? window.innerWidth : 1280,
     favOpen: null, docIdx: null, hoverFav: null, hov: null,
     copied: false, saved: false, tip: false, reported1: false,
-    menuOpen: false, convMenu: false, shareOpen: false, shareMail: "",
+    menuOpen: false, convMenu: false, shareOpen: false, shareMail: "", shareSent: false, toast: null, loginErr: false, resetErr: false, resetTries: 0,
     convSubId: null, convSubConv: null, subPos: null, confirmConv: null, userMenu: false, nearDismissed: false, limitDismissed: false,
     zoom: 12, page: 0, pageInput: null, mode: null, text: "",
     favsByConv: { c1: ["Estandares internacionales", "Precentes"] },
@@ -1229,6 +1256,22 @@ class Component extends DCLogic {
   }
   get mob() { return this.state.vw <= 760; }
   wait(ms, fn) { this.timers.push(setTimeout(fn, ms)); }
+  toast(text) {
+    const id = Date.now();
+    this.setState({ toast: { id, text, on: false } });
+    this.wait(30, () => { if (this.state.toast && this.state.toast.id === id) this.setState({ toast: { id, text, on: true } }); });
+    this.wait(2600, () => { if (this.state.toast && this.state.toast.id === id) this.setState({ toast: null }); });
+  }
+  moveConvTo(cid, fid, extra) {
+    const s = this.state; const fo = s.folders.find(f => f.id === fid);
+    this.setState(Object.assign({
+      convs: s.convs.map(x => x.id === cid ? Object.assign({}, x, { folder: fid }) : x),
+      openFolders: s.openFolders.indexOf(fid) > -1 ? s.openFolders : s.openFolders.concat([fid])
+    }, extra || {}));
+    if (fo) this.toast("Movida a " + fo.label);
+  }
+  fieldStyle(err) { return "width:100%; border:1px solid " + (err ? "#A4143C" : "#8F86A0") + "; border-radius:8px; padding:11px 13px; font-size:14px; color:#0B0B0B; background:#fff" + (err ? "; box-shadow:0 0 0 3px rgba(164,20,60,.12)" : ""); }
+  validMail(m) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test((m || "").trim()); }
 
   get screen() { return this.state.screen ?? (this.props.startScreen ?? "login"); }
   favsFor(convId) { return this.state.favsByConv[convId] || []; }
@@ -1546,18 +1589,22 @@ class Component extends DCLogic {
       onGuest: () => this.setState({ hov: "guest" }),
       guestStyle: "border:1px solid #8F86A0; border-radius:8px; padding:11px 18px; font-size:12px; font-family:Inter,sans-serif; width:100%; color:#622C7B; cursor:pointer; transition:background .18s; background:" +
         (s.hov === "guest" ? "#F3EDF7" : "transparent"),
-      goForgot: (e) => { if (e) e.preventDefault(); this.setState({ screen: "forgot", resetSent: false }); },
+      goForgot: (e) => { if (e) e.preventDefault(); this.setState({ screen: "forgot", resetSent: false, resetErr: false, resetTries: 0, loginErr: false }); },
       isForgot: this.screen === "forgot",
       resetPending: !s.resetSent,
       resetDone: s.resetSent,
-      sendReset: () => { if (!s.mail.trim()) return; this.setState({ resetSent: true }); },
+      sendReset: () => { if (!s.mail.trim()) return; if (s.resetTries === 0) { this.setState({ resetErr: true, resetTries: 1 }); return; } this.setState({ resetSent: true, resetErr: false }); },
+      resetMailError: s.resetErr,
+      resetMailStyle: this.fieldStyle(s.resetErr),
       resetStyle: this.solid(!!s.mail.trim()),
       resetBackStyle: this.solid(true),
       backToLogin: () => this.setState({ screen: "login", resetSent: false }),
-      doLogin: () => { if (!s.mail.trim() || !s.pass.trim()) return; this.setState({ screen: "home", entered: true, curConv: null, turns: [], queries: 0, text: "", attach: [] }); },
+      loginMailError: s.loginErr,
+      loginMailStyle: this.fieldStyle(s.loginErr),
+      doLogin: () => { if (!s.mail.trim() || !s.pass.trim()) return; if (!this.validMail(s.mail)) { this.setState({ loginErr: true }); return; } this.setState({ loginErr: false, screen: "home", entered: true, curConv: null, turns: [], queries: 0, text: "", attach: [] }); },
       doRegister: () => { if (!s.nombre.trim() || !s.mail.trim() || !s.pass.trim() || s.pass !== s.pass2) return; this.setState({ screen: "home", entered: true, curConv: null, turns: [], queries: 0, text: "", attach: [] }); },
       mail: s.mail, pass: s.pass, pass2: s.pass2, nombre: s.nombre,
-      onMail: (e) => this.setState({ mail: e.target.value }),
+      onMail: (e) => this.setState({ mail: e.target.value, loginErr: false, resetErr: false }),
       onPass: (e) => this.setState({ pass: e.target.value }),
       onPass2: (e) => this.setState({ pass2: e.target.value }),
       onNombre: (e) => this.setState({ nombre: e.target.value }),
@@ -1743,7 +1790,7 @@ class Component extends DCLogic {
         label: fo.label,
         pick: () => {
           const c = this.curConvObj();
-          if (c) this.setState({ convs: s.convs.map(x => x.id === c.id ? Object.assign({}, x, { folder: fo.id }) : x), openFolders: s.openFolders.indexOf(fo.id) > -1 ? s.openFolders : s.openFolders.concat([fo.id]), convMenu: false });
+          if (c) this.moveConvTo(c.id, fo.id, { convMenu: false });
         },
         enter: () => this.setState({ hov: "cvft" + i }),
         style: "text-align:left; border:none;" + (this.mob ? " min-height:44px; display:flex; align-items:center;" : "") + " cursor:pointer; border-radius:6px; padding:8px 10px; font-size:12px; font-family:Inter,sans-serif; transition:background .15s; color:#622C7B; background:" +
@@ -1770,8 +1817,16 @@ class Component extends DCLogic {
         (s.docIdx !== null ? "422px" : "134px") + "; background:" + (s.hov === "share" ? "#DED9E4" : "transparent"),
       onShare: () => this.setState({ hov: "share" }),
       shareOpen: s.shareOpen,
-      openShare: () => this.setState({ shareOpen: true, shareMail: "" }),
-      closeShare: () => this.setState({ shareOpen: false }),
+      openShare: () => this.setState({ shareOpen: true, shareMail: "", shareSent: false }),
+      closeShare: () => this.setState({ shareOpen: false, shareSent: false }),
+      sharePending: !s.shareSent,
+      shareDone: s.shareSent,
+      doShare: () => { if (!s.shareMail.trim()) return; this.setState({ shareSent: true }); },
+      shareCloseStyle: "border:none; border-radius:8px; padding:8px 16px; font-size:12px; font-family:Inter,sans-serif; background:#622C7B; color:#fff; cursor:pointer",
+      toastOpen: !!s.toast,
+      toastText: s.toast ? s.toast.text : "",
+      toastStyle: "position:fixed; top:14px; left:50%; z-index:40; display:flex; align-items:center; gap:9px; background:#0B0B0B; color:#fff; border-radius:8px; padding:10px 14px 10px 12px; font-size:12px; font-weight:500; box-shadow:0 12px 30px rgba(11,11,11,.22); white-space:nowrap; transition:opacity .22s ease, transform .22s ease; opacity:" +
+        (s.toast && s.toast.on ? "1" : "0") + "; transform:translate(-50%," + (s.toast && s.toast.on ? "0" : "-14px") + ")",
       shareMail: s.shareMail,
       onShareMail: (e) => this.setState({ shareMail: e.target.value }),
       shareSendStyle: "border:none; border-radius:8px; padding:8px 16px; font-size:12px; font-family:Inter,sans-serif; transition:background .18s; background:" +
@@ -1823,11 +1878,7 @@ class Component extends DCLogic {
           click: (e) => {
             if (e) e.stopPropagation();
             if (!fo.id || !c) { this.setState({ convSubId: null }); return; }
-            this.setState({
-              convs: s.convs.map(x => x.id === c.id ? Object.assign({}, x, { folder: fo.id }) : x),
-              openFolders: s.openFolders.indexOf(fo.id) > -1 ? s.openFolders : s.openFolders.concat([fo.id]),
-              convSubId: null, convMenuId: null
-            });
+            this.moveConvTo(c.id, fo.id, { convSubId: null, convMenuId: null });
           },
           enter: () => this.setState({ hov: "csub" + i }),
           style: "text-align:left; border:none;" + (this.mob ? " min-height:44px; display:flex; align-items:center;" : "") + " cursor:" + (fo.id ? "pointer" : "default") + "; border-radius:6px; padding:8px 10px; font-size:12px; font-family:Inter,sans-serif; transition:background .15s; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:" +
@@ -2245,7 +2296,7 @@ class Component extends DCLogic {
     const folderOpts = s.folders.filter(fo => fo.id !== c.folder).map(fo => ({
       label: fo.label,
       keepOpen: false,
-      run: () => this.setState({ convs: s.convs.map(x => x.id === c.id ? Object.assign({}, x, { folder: fo.id }) : x), openFolders: s.openFolders.indexOf(fo.id) > -1 ? s.openFolders : s.openFolders.concat([fo.id]), convSubId: null })
+      run: () => this.moveConvTo(c.id, fo.id, { convSubId: null, convMenuId: null })
     }));
     const actions = [{ label: c.fav ? "Quitar de favoritos" : "Marcar como favorita", run: () => this.setState({ convSubId: null, convs: s.convs.map(x => x.id === c.id ? Object.assign({}, x, { fav: !x.fav }) : x) }) }]
         .concat([{ label: "Agregar a carpeta  ›", keepOpen: true, run: (e) => {
