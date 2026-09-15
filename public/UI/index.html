@@ -26,6 +26,7 @@
   @keyframes spin { to { transform:rotate(360deg) } }
   @keyframes blink { 0%,49% { opacity:1 } 50%,100% { opacity:0 } }
   @keyframes fadeIn { from { opacity:0 } to { opacity:1 } }
+  @keyframes favIn { from { opacity:0; transform:translateX(-10px) } to { opacity:1; transform:none } }
   @keyframes riseIn { from { opacity:0; transform:translateY(8px) } to { opacity:1; transform:none } }
 </style>
 </helmet>
@@ -344,9 +345,21 @@
         </div>
         </sc-if>
         <sc-if value="{{ notMob }}" hint-placeholder-val="{{ true }}"><div style="{{ sideShift }}"></div></sc-if>
-        <button onClick="{{ toggleFav }}" onMouseEnter="{{ onFavBtn }}" onMouseLeave="{{ offHov }}" title="Sidebar" style="{{ favBtn }}">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2.5"></rect><path d="M9 4v16"></path></svg>
+        <div style="position:relative; display:flex">
+        <button onClick="{{ toggleFav }}" onMouseEnter="{{ onFavBtn }}" onMouseLeave="{{ offHov }}" title="{{ favBtnTitle }}" style="{{ favBtn }}">
+          <sc-if value="{{ favIsOpen }}" hint-placeholder-val="{{ false }}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg>
+          </sc-if>
+          <sc-if value="{{ favIsClosed }}" hint-placeholder-val="{{ true }}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2.5"></rect><path d="M9 4v16"></path></svg>
+          </sc-if>
         </button>
+        <div style="{{ favTipArrowStyle }}"></div>
+        <div role="status" style="{{ favTipStyle }}">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="#fff" style="flex:0 0 12px"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"></path></svg>
+          <span>Guardado en favoritos. Los encuentras aquí, dentro de la conversación.</span>
+        </div>
+        </div>
         <sc-if value="{{ notMob }}" hint-placeholder-val="{{ true }}"><div style="{{ convShift }}"></div></sc-if>
         <sc-if value="{{ renaming }}" hint-placeholder-val="{{ false }}">
           <input value="{{ renameDraft }}" onChange="{{ onRename }}" onKeyDown="{{ onRenameKey }}" onBlur="{{ commitRename }}" aria-label="Nuevo nombre de la conversación" style="{{ renameInputStyle }}" />
@@ -454,20 +467,26 @@
               <div style="text-wrap:pretty">Convención de Belém do Pará, artículo 7, literal b.</div>
             </div>
 
-            <div style="display:flex; flex-direction:column; gap:9px; line-height:1.58; color:#0B0B0B">
+            <div style="display:flex; flex-direction:column; gap:12px; line-height:1.58; color:#0B0B0B">
               <div style="font-weight:700">Documentos consultados</div>
-              <div style="display:flex; align-items:center; gap:10px">
-                <a href="#" onClick="{{ openDoc1 }}">N1 — Corte IDH, Caso González y otras vs. México (2009).pdf</a>
-                <button onClick="{{ openDoc1 }}" title="Ver documento" style="{{ citeBtnStyle }}" style-hover="color:#0B0B0B">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1.8 12S5.5 5.8 12 5.8 22.2 12 22.2 12 18.5 18.2 12 18.2 1.8 12 1.8 12z"></path><circle cx="12" cy="12" r="2.6"></circle></svg>
-                </button>
-              </div>
-              <div style="display:flex; align-items:center; gap:10px">
-                <a href="#" onClick="{{ openDoc2 }}">N2 — Convención de Belém do Pará.pdf</a>
-                <button onClick="{{ openDoc2 }}" title="Ver documento" style="{{ citeBtnStyle }}" style-hover="color:#0B0B0B">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1.8 12S5.5 5.8 12 5.8 22.2 12 22.2 12 18.5 18.2 12 18.2 1.8 12 1.8 12z"></path><circle cx="12" cy="12" r="2.6"></circle></svg>
-                </button>
-              </div>
+              <sc-for list="{{ docLinks0 }}" as="d" hint-placeholder-count="2">
+                <div style="display:flex; flex-direction:column; gap:6px">
+                  <div style="display:flex; align-items:center; gap:8px">
+                    <button onClick="{{ d.open }}" style="border:none; background:transparent; padding:0; text-align:left; font-family:inherit; font-size:17px; color:#622C7B; text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:4px; cursor:pointer">{{ d.title }}</button>
+                    <button onClick="{{ d.open }}" title="Ver documento" style="{{ citeBtnStyle }}" style-hover="color:#0B0B0B"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1.8 12S5.5 5.8 12 5.8 22.2 12 22.2 12 18.5 18.2 12 18.2 1.8 12 1.8 12z"></path><circle cx="12" cy="12" r="2.6"></circle></svg></button>
+                  </div>
+                  <button onClick="{{ d.toggle }}" aria-expanded="{{ d.expanded }}" style="border:none; background:transparent; padding:0; text-align:left; display:flex; align-items:center; gap:6px; font-size:14px; color:#622C7B; font-family:Inter,sans-serif; cursor:pointer">
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true" style="{{ d.chevStyle }}"><path d="M2 1l6 4-6 4z"></path></svg>
+                    <span>{{ d.label }}</span>
+                  </button>
+                  <sc-if value="{{ d.expanded }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:flex; flex-direction:column; gap:10px; margin-top:6px; animation:riseIn .22s ease both">
+                      <button onClick="{{ d.openPassage }}" title="Abrir en el documento" style="border:none; background:transparent; text-align:left; font-family:inherit; color:#622C7B; cursor:pointer; border-left:3px solid #E0D2EA; padding:6px 0 6px 22px; font-size:14px; line-height:1.7; text-wrap:pretty; border-radius:0; transition:background .16s" style-hover="background:#F7F6F8">{{ d.passage }}</button>
+                      <div style="font-size:12px; color:#6B6377; font-family:Inter,sans-serif">{{ d.footer }}</div>
+                    </div>
+                  </sc-if>
+                </div>
+              </sc-for>
             </div>
 
             <div style="display:flex; align-items:center; gap:5px; margin-top:2px; margin-left:-10px">
@@ -611,23 +630,29 @@
                   </div>
                 </sc-if>
 
-                <sc-if value="{{ turn.hasDocs }}" hint-placeholder-val="{{ false }}">
-                  <div style="display:flex; flex-direction:column; gap:9px; line-height:1.58">
-                    <div style="font-weight:700">Documentos consultados</div>
-                    <div style="display:flex; align-items:center; gap:10px">
-                      <a href="#" onClick="{{ openDoc1 }}">N1 — Corte IDH, Caso González y otras vs. México (2009).pdf</a>
-                      <button onClick="{{ openDoc1 }}" title="Ver documento" style="{{ citeBtnStyle }}" style-hover="color:#0B0B0B">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1.8 12S5.5 5.8 12 5.8 22.2 12 22.2 12 18.5 18.2 12 18.2 1.8 12 1.8 12z"></path><circle cx="12" cy="12" r="2.6"></circle></svg>
-                      </button>
+                  <sc-if value="{{ turn.hasDocs }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:flex; flex-direction:column; gap:12px; line-height:1.58">
+                      <div style="font-weight:700">Documentos consultados</div>
+                      <sc-for list="{{ turn.docLinks }}" as="d" hint-placeholder-count="2">
+                        <div style="display:flex; flex-direction:column; gap:6px">
+                          <div style="display:flex; align-items:center; gap:8px">
+                            <button onClick="{{ d.open }}" style="border:none; background:transparent; padding:0; text-align:left; font-family:inherit; font-size:17px; color:#622C7B; text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:4px; cursor:pointer">{{ d.title }}</button>
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#622C7B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12s3.5-6.5 9.5-6.5S21.5 12 21.5 12s-3.5 6.5-9.5 6.5S2.5 12 2.5 12z"></path><circle cx="12" cy="12" r="2.6"></circle></svg>
+                          </div>
+                          <button onClick="{{ d.toggle }}" aria-expanded="{{ d.expanded }}" style="border:none; background:transparent; padding:0; text-align:left; display:flex; align-items:center; gap:6px; font-size:14px; color:#622C7B; font-family:Inter,sans-serif; cursor:pointer">
+                            <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true" style="{{ d.chevStyle }}"><path d="M2 1l6 4-6 4z"></path></svg>
+                            <span>{{ d.label }}</span>
+                          </button>
+                          <sc-if value="{{ d.expanded }}" hint-placeholder-val="{{ false }}">
+                            <div style="display:flex; flex-direction:column; gap:10px; margin-top:6px; animation:riseIn .22s ease both">
+                              <button onClick="{{ d.openPassage }}" title="Abrir en el documento" style="border:none; background:transparent; text-align:left; font-family:inherit; color:#622C7B; cursor:pointer; border-left:3px solid #E0D2EA; padding:6px 0 6px 22px; font-size:14px; line-height:1.7; text-wrap:pretty; border-radius:0; transition:background .16s" style-hover="background:#F7F6F8">{{ d.passage }}</button>
+                              <div style="font-size:12px; color:#6B6377; font-family:Inter,sans-serif">{{ d.footer }}</div>
+                            </div>
+                          </sc-if>
+                        </div>
+                      </sc-for>
                     </div>
-                    <div style="display:flex; align-items:center; gap:10px">
-                      <a href="#" onClick="{{ openDoc2 }}">N2 — Convención de Belém do Pará.pdf</a>
-                      <button onClick="{{ openDoc2 }}" title="Ver documento" style="{{ citeBtnStyle }}" style-hover="color:#0B0B0B">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1.8 12S5.5 5.8 12 5.8 22.2 12 22.2 12 18.5 18.2 12 18.2 1.8 12 1.8 12z"></path><circle cx="12" cy="12" r="2.6"></circle></svg>
-                      </button>
-                    </div>
-                  </div>
-                </sc-if>
+                  </sc-if>
 
                 <sc-if value="{{ turn.isDraft }}" hint-placeholder-val="{{ false }}">
                   <div style="display:flex; align-items:flex-start; gap:8px; font-size:12px; color:#6B6377; font-family:Inter,sans-serif; line-height:1.6; text-wrap:pretty">
@@ -855,7 +880,7 @@
         <sc-if value="{{ isText }}" hint-placeholder-val="{{ true }}">
           <div style="{{ docBodyStyle }}">
             <sc-for list="{{ docPage }}" as="par" hint-placeholder-count="2">
-              <div style="text-wrap:pretty">{{ par }}</div>
+              <div style="{{ par.style }}">{{ par.text }}</div>
             </sc-for>
           </div>
         </sc-if>
@@ -1111,7 +1136,7 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;startScreen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;login&quot;,&quot;register&quot;,&quot;home&quot;,&quot;chat&quot;],&quot;default&quot;:&quot;login&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Vista&quot;},&quot;favoritosOpen&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Vista&quot;},&quot;defaultMode&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Búsqueda&quot;,&quot;Argumento&quot;],&quot;default&quot;:&quot;Búsqueda&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Vista&quot;},&quot;respuesta&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Secuencia&quot;,&quot;Verificada&quot;,&quot;No verificada&quot;,&quot;Sin respuesta&quot;,&quot;Límite&quot;],&quot;default&quot;:&quot;Secuencia&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Comportamiento&quot;},&quot;responseDelay&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1600,&quot;min&quot;:300,&quot;max&quot;:4000,&quot;step&quot;:100,&quot;unit&quot;:&quot;ms&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Comportamiento&quot;}}">
 const DOCS = [
-  { tab: "Corte IDH 2009", title: "N1 — Corte IDH, Caso González y otras vs. México (2009)", meta: "Sentencia · Serie C No. 205 · párr. 250–286", pages: [["La Corte establece que, en un contexto de violencia contra las mujeres, el deber de debida diligencia adquiere carácter reforzado desde que las autoridades toman conocimiento de una situación de riesgo real e inmediato para una persona determinada (párr. 258).","La ausencia de una respuesta estatal inmediata frente a la denuncia de desaparición constituye una forma de discriminación en el acceso a la justicia, porque revela que el Estado no valoró el riesgo con la seriedad que el contexto exigía (párr. 400)."],["Sobre el deber de prevención, la Corte precisa que las primeras horas son decisivas: exige medidas exhaustivas de búsqueda, coordinación entre instituciones y actuación de oficio, sin trasladar a la familia la carga de impulsar la investigación (párr. 283).","La investigación debe descartar de plano el uso de estereotipos de género en la valoración de la conducta de la víctima; toda inferencia basada en su vida personal vicia la línea investigativa (párr. 401)."],["En materia de reparaciones, la Corte ordena estandarizar los protocolos de investigación con perspectiva de género, crear una base de datos de personas desaparecidas con información genética y capacitar de forma permanente a los operadores de justicia (párr. 502).","Las garantías de no repetición se distinguen de las reparaciones individuales: buscan modificar la práctica estatal, y su cumplimiento se verifica mediante informes periódicos ante la Corte (párr. 541)."]] },
+  { tab: "Corte IDH 2009", title: "N1 — Corte IDH, Caso González y otras vs. México (2009)", meta: "Sentencia · Serie C No. 205 · párr. 250–286", pages: [["Los Estados deben adoptar medidas integrales para cumplir con la debida diligencia en casos de violencia contra las mujeres. En particular, deben contar con un adecuado marco jurídico de protección, con una aplicación efectiva del mismo y con políticas de prevención y prácticas que permitan actuar de una manera eficaz ante las denuncias (párr. 258).","La Corte establece que, en un contexto de violencia contra las mujeres, el deber de debida diligencia adquiere carácter reforzado desde que las autoridades toman conocimiento de una situación de riesgo real e inmediato para una persona determinada (párr. 258).","La ausencia de una respuesta estatal inmediata frente a la denuncia de desaparición constituye una forma de discriminación en el acceso a la justicia, porque revela que el Estado no valoró el riesgo con la seriedad que el contexto exigía (párr. 400)."],["Sobre el deber de prevención, la Corte precisa que las primeras horas son decisivas: exige medidas exhaustivas de búsqueda, coordinación entre instituciones y actuación de oficio, sin trasladar a la familia la carga de impulsar la investigación (párr. 283).","La investigación debe descartar de plano el uso de estereotipos de género en la valoración de la conducta de la víctima; toda inferencia basada en su vida personal vicia la línea investigativa (párr. 401)."],["En materia de reparaciones, la Corte ordena estandarizar los protocolos de investigación con perspectiva de género, crear una base de datos de personas desaparecidas con información genética y capacitar de forma permanente a los operadores de justicia (párr. 502).","Las garantías de no repetición se distinguen de las reparaciones individuales: buscan modificar la práctica estatal, y su cumplimiento se verifica mediante informes periódicos ante la Corte (párr. 541)."]] },
   { tab: "Belém do Pará", title: "N2 — Convención de Belém do Pará", meta: "Tratado interamericano · 1994 · art. 7", pages: [["Artículo 7, literal b. Los Estados Parte condenan todas las formas de violencia contra la mujer y convienen en adoptar, por todos los medios apropiados, medidas para actuar con la debida diligencia para prevenir, investigar y sancionar la violencia contra la mujer.","Artículo 7, literal d. Adoptar medidas jurídicas para conminar al agresor a abstenerse de hostigar, intimidar, amenazar, dañar o poner en peligro la vida de la mujer de cualquier forma que atente contra su integridad."],["Artículo 8. Los Estados convienen en adoptar programas para modificar los patrones socioculturales de conducta de hombres y mujeres, incluyendo el diseño de programas de educación formales y no formales apropiados a todo nivel del proceso educativo.","Artículo 9. Los Estados tendrán especialmente en cuenta la situación de vulnerabilidad a la violencia que pueda sufrir la mujer en razón, entre otras, de su raza, condición étnica, condición de migrante, refugiada o desplazada."],["Artículo 12. Cualquier persona o grupo de personas, o entidad no gubernamental legalmente reconocida, puede presentar a la Comisión Interamericana peticiones que contengan denuncias por violación del artículo 7 de esta Convención.","El mecanismo de seguimiento (MESECVI) elabora informes por país con recomendaciones concretas, que los tribunales locales citan como parámetro de interpretación al aplicar la Convención en casos individuales."]] },
   { tab: "Ley 30364", title: "N3 — Ley 30364, prevención y sanción de la violencia", meta: "Ley nacional · 2015 · art. 10", pages: [["Artículo 10. Las víctimas de violencia tienen derecho al acceso a la información, a la asistencia jurídica gratuita y a la atención integral en salud física y mental, sin que se les exija denuncia previa para recibir esos servicios.","Artículo 15. La denuncia puede presentarse por escrito o verbalmente, por la víctima o por cualquier persona en su favor, sin necesidad de firma de abogado, tasa o formalidad alguna."],["Artículo 22. Las medidas de protección se dictan sobre la base de la ficha de valoración de riesgo y no pueden condicionarse a la existencia de un proceso penal en curso ni a la ratificación de la denuncia.","La ficha debe completarse en la primera intervención y actualizarse ante cualquier hecho nuevo. Su resultado condiciona el tipo de medida a dictar, de modo que una valoración incompleta compromete la validez de la decisión posterior."],["Artículo 26. El certificado médico o informe psicológico emitido por establecimientos públicos de salud tiene valor probatorio, sin que se requiera pericia ratificatoria para su admisión.","Artículo 45. El Ministerio de la Mujer y Poblaciones Vulnerables reporta al Registro Único de Víctimas los casos atendidos; esa información alimenta reportes públicos y permite planificar la cobertura territorial de los servicios."]] },
   { tab: "Espinoza Gonzáles", title: "N4 — Corte IDH, Espinoza Gonzáles vs. Perú (2014)", meta: "Sentencia · Serie C No. 289 · párr. 226–280", pages: [["La Corte reitera que la violación sexual cometida por agentes estatales durante la privación de libertad constituye tortura, con independencia de que exista o no un fin de obtener información (párr. 226).","La declaración de la víctima es prueba fundamental sobre el hecho; su ausencia de detalle o las imprecisiones sobre fechas no la desacreditan, porque son consecuencia esperable del trauma (párr. 150)."],["El deber de investigar de oficio surge desde que el Estado toma conocimiento del hecho, sin que la falta de denuncia formal ni el paso del tiempo lo eximan de esa obligación (párr. 241).","La Corte declara que los estereotipos de género aplicados a la conducta de la víctima durante el proceso constituyen una forma de discriminación que vicia la valoración probatoria (párr. 272)."],["Ordena, como garantía de no repetición, incorporar formación obligatoria en investigación con perspectiva de género y protocolos de atención que impidan reproducir esos preconceptos en la práctica judicial (párr. 322).","Sobre reparaciones, dispone atención médica y psicológica gratuita, un acto público de reconocimiento de responsabilidad y la publicación de la sentencia en medios de circulación nacional (párr. 330)."]] },
@@ -1189,7 +1214,7 @@ const STEPS = {
 class Component extends DCLogic {
   state = {
     vw: typeof window !== "undefined" ? window.innerWidth : 1280,
-    favOpen: null, docIdx: null, hoverFav: null, hov: null,
+    favOpen: null, docIdx: null, hoverFav: null, hov: null, passOpen: {}, hilite: null, favNew: null, favTip: null,
     copied: false, saved: false, tip: false, reported1: false,
     menuOpen: false, convMenu: false, shareOpen: false, shareMail: "", shareSent: false, toast: null, loginErr: false, resetErr: false, resetTries: 0,
     convSubId: null, convSubConv: null, subPos: null, confirmConv: null, userMenu: false, nearDismissed: false, limitDismissed: false,
@@ -1255,7 +1280,40 @@ class Component extends DCLogic {
     if (this.ro) this.ro.disconnect();
   }
   get mob() { return this.state.vw <= 760; }
+  docLinks(tid) {
+    const s = this.state;
+    return [
+      { i: 0, page: 0, par: 1, title: "N1 — Corte IDH, González y otras vs. México: debida diligencia reforzada", passage: "La Corte establece que, en un contexto de violencia contra las mujeres, el deber de debida diligencia adquiere carácter reforzado desde que las autoridades toman conocimiento de una situación de riesgo real e inmediato para una persona determinada (párr. 258).", frag: 3 },
+      { i: 1, page: 0, par: 0, title: "N2 — Convención de Belém do Pará: debida diligencia", passage: "Artículo 7 […] b. actuar con la debida diligencia para prevenir, investigar y sancionar la violencia contra la mujer; c. incluir en su legislación interna normas penales, civiles y administrativas, así como las de otra naturaleza que sean necesarias para prevenir, sancionar y erradicar la violencia contra la mujer y adoptar las medidas administrativas apropiadas que sean del caso;", frag: 7 }
+    ].map(d => {
+      const k = tid + ":" + d.i, on = !!s.passOpen[k];
+      return {
+        title: d.title, passage: d.passage, expanded: on,
+        label: "Ver pasaje de la fuente",
+        footer: "Fragmento " + d.frag + " del texto recuperado",
+        chevStyle: "flex:0 0 10px; color:#622C7B; transition:transform .18s; transform:rotate(" + (on ? "90deg" : "0deg") + ")",
+        open: (e) => { if (e) e.preventDefault(); this.setState({ docIdx: d.i, page: 0, pageInput: null, hilite: null }); },
+        openPassage: () => this.setState({ docIdx: d.i, page: d.page, pageInput: null, hilite: { doc: d.i, page: d.page, par: d.par } }),
+        toggle: () => this.setState({ passOpen: Object.assign({}, s.passOpen, { [k]: !on }) })
+      };
+    });
+  }
   wait(ms, fn) { this.timers.push(setTimeout(fn, ms)); }
+  addFav(label) {
+    const s = this.state, cid = s.curConv;
+    const cur = this.favsFor(cid);
+    this.setFavsFor(cid, cur.indexOf(label) > -1 ? cur : cur.concat([label]));
+    if (this.favOpen && !this.mob) {
+      const key = cid + ":" + label;
+      this.setState({ favNew: key, openFolders: (() => { const c = s.convs.find(x => x.id === cid); return c && c.folder && s.openFolders.indexOf(c.folder) === -1 ? s.openFolders.concat([c.folder]) : s.openFolders; })() });
+      this.wait(1400, () => { if (this.state.favNew === key) this.setState({ favNew: null }); });
+    } else {
+      const id = Date.now();
+      this.setState({ favTip: { id, on: false } });
+      this.wait(30, () => { if (this.state.favTip && this.state.favTip.id === id) this.setState({ favTip: { id, on: true } }); });
+      this.wait(3200, () => { if (this.state.favTip && this.state.favTip.id === id) this.setState({ favTip: null }); });
+    }
+  }
   toast(text) {
     const id = Date.now();
     this.setState({ toast: { id, text, on: false } });
@@ -1756,14 +1814,22 @@ class Component extends DCLogic {
 
       favAside: this.panel(this.screen === "chat" && this.favOpen, 262),
       docsAside: this.panel(this.screen === "chat" && s.docIdx !== null, 414, "right"),
-      toggleFav: () => this.setState({ favOpen: !this.favOpen }),
-      favBtn: this.roundBtn("left", this.favOpen, s.hov === "favBtn"),
+      toggleFav: () => this.setState({ favOpen: !this.favOpen, favTip: null }),
+      favIsOpen: !!this.favOpen,
+      favIsClosed: !this.favOpen,
+      favBtnTitle: this.favOpen ? "Cerrar sidebar" : "Abrir sidebar",
+      favTipStyle: "position:absolute; left:0; top:calc(100% + 10px); z-index:30; width:220px; display:flex; align-items:flex-start; gap:8px; background:#0B0B0B; color:#F5F4F6; border-radius:8px; padding:9px 11px; font-size:12px; line-height:1.45; font-family:Inter,sans-serif; box-shadow:0 12px 30px rgba(11,11,11,.22); pointer-events:none; transition:opacity .22s ease, transform .22s ease; opacity:" +
+        (s.favTip && s.favTip.on ? "1" : "0") + "; transform:translateY(" + (s.favTip && s.favTip.on ? "0" : "-8px") + ")",
+      favTipArrowStyle: "position:absolute; left:14px; top:calc(100% + 4px); z-index:31; width:0; height:0; border-left:6px solid transparent; border-right:6px solid transparent; border-bottom:6px solid #0B0B0B; pointer-events:none; transition:opacity .22s ease; opacity:" +
+        (s.favTip && s.favTip.on ? "1" : "0"),
+      favBtn: this.roundBtn("left", false, s.hov === "favBtn"),
       docsBtn: this.roundBtn("right", s.docIdx !== null, s.hov === "docsBtn"),
       onFavBtn: () => this.setState({ hov: "favBtn" }),
       onDocsBtn: () => this.setState({ hov: "docsBtn" }),
       offHov: () => this.setState({ hov: null }),
       toggleDocs: () => this.setState({ docIdx: s.docIdx === null ? 0 : null }),
       closeDocs: () => this.setState({ docIdx: null }),
+      docLinks0: this.docLinks("t0"),
       openDoc1: (e) => { if (e) e.preventDefault(); this.setState({ docIdx: 0, page: 0, pageInput: null }); },
       openDoc2: (e) => { if (e) e.preventDefault(); this.setState({ docIdx: 1, page: 0, pageInput: null }); },
       docName: DOCS[idx].tab, docTitle: DOCS[idx].title, docMeta: DOCS[idx].meta,
@@ -1917,7 +1983,7 @@ class Component extends DCLogic {
         const label = "Debida diligencia reforzada";
         const cur = this.favsFor(s.curConv);
         if (s.saved) { this.setFavsFor(s.curConv, cur.filter(x => x !== label)); this.setState({ saved: false }); }
-        else { this.setFavsFor(s.curConv, cur.indexOf(label) > -1 ? cur : cur.concat([label])); this.setState({ saved: true, favOpen: true }); }
+        else { this.addFav(label); this.setState({ saved: true }); }
       },
       reported1: s.reported1,
       notReported1: !s.reported1,
@@ -1976,6 +2042,7 @@ class Component extends DCLogic {
         hasStd: t.kind === "search" && !!t.full,
         hasNorm: t.kind === "arg" && !!t.full,
         hasDocs: t.kind === "search" && !!t.full,
+        docLinks: this.docLinks(t.id),
         isDraft: t.kind === "arg",
         showActions: !!t.full,
         copyLabel: t.copied ? "Copiado" : "Copiar",
@@ -1990,7 +2057,7 @@ class Component extends DCLogic {
           const label = this.favLabelFor(t.q);
           const cur = this.favsFor(s.curConv);
           if (t.fav) this.setFavsFor(s.curConv, cur.filter(x => x !== label));
-          else { this.setFavsFor(s.curConv, cur.indexOf(label) > -1 ? cur : cur.concat([label])); this.setState({ favOpen: true }); }
+          else this.addFav(label);
           this.upTurn(t.id, { fav: !t.fav });
         },
         dlStyle: this.pill(false, s.hov === "d" + t.id),
@@ -2219,7 +2286,10 @@ class Component extends DCLogic {
       isPdf: !!DOCS[idx].file,
       isText: !DOCS[idx].file,
       docFile: (DOCS[idx].file || "") + "?p=" + (s.page + 1) + "&z=" + s.zoom + "#page=" + (s.page + 1) + "&zoom=" + Math.round(s.zoom * 8) + "&toolbar=0&navpanes=0",
-      docPage: (DOCS[idx].pages || [])[Math.min(s.page, (DOCS[idx].pages || []).length - 1)] || [],
+      docPage: ((DOCS[idx].pages || [])[Math.min(s.page, (DOCS[idx].pages || []).length - 1)] || []).map((p, pi) => {
+        const on = s.hilite && s.hilite.doc === idx && s.hilite.page === s.page && s.hilite.par === pi;
+        return { text: p, style: "text-wrap:pretty; border-radius:2px; box-decoration-break:clone; transition:background .3s; padding:" + (on ? "2px 4px" : "0") + "; margin:" + (on ? "-2px -4px" : "0") + "; background:" + (on ? "#DFF0EA" : "transparent") };
+      }),
       docBodyStyle: "flex:1; min-height:0; overflow-y:auto; display:flex; flex-direction:column; gap:12px; line-height:1.65; color:#0B0B0B; transition:font-size .16s; font-size:" + s.zoom + "px",
       pageLabel: (DOCS[idx].pages || []).length + " páginas",
       pageInput: s.pageInput === null ? String(s.page + 1) : s.pageInput,
@@ -2341,7 +2411,7 @@ class Component extends DCLogic {
         go: (e) => { if (e) e.stopPropagation(); this.pin("b1"); },
         enter: () => this.setState({ hov: p + "fv" + c.id + i }),
         style: "display:flex; align-items:center; gap:6px; border-radius:6px; padding:6px 8px; font-size:12px; cursor:pointer; transition:background .18s; color:#622C7B; background:" +
-          (s.hov === p + "fv" + c.id + i ? "#E4E1E8" : "transparent"),
+          (s.hov === p + "fv" + c.id + i ? "#E4E1E8" : "transparent") + (s.favNew === c.id + ":" + label ? "; animation:favIn .4s ease both" : ""),
         ask: (e) => { if (e) e.stopPropagation(); this.setState({ confirmDel: label }); },
         delStyle: this.hoverIcon(s.hov === p + "fv" + c.id + i)
       }))
