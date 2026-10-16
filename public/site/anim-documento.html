@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="/support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,700;1,8..60,400&amp;display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#E9E4EE; }
+  * { box-sizing:border-box; }
+  a { color:#622C7B; }
+  a:hover { color:#0B0B0B; }
+</style>
+<script>window.OM_SCENES = '[{"name":"Documento","dur":2.8,"desc":"Click en el documento consultado N1"},{"name":"Visor","dur":4.6,"desc":"Se abre Documentos con la cita resaltada"},{"name":"Pagina","dur":7.6,"desc":"Cambio a la página 2"}]';</script>
+<script>window.OM_PLAYBACK = '{"mode":"loop"}';</script>
+</helmet>
+<div data-screen-label="JusfemIA Anim Documento" style="position:fixed; inset:0">
+  <x-import component-from-global-scope="JusfemDocumento" from="/site/animations-v3.jsx /site/jusfem-anims.jsx" hint-size="100%,100%"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;motionEditor&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}"></script>
+</body>
+</html>
