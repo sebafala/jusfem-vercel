@@ -32,28 +32,29 @@
     </nav>
   </header>
 
-  <section data-screen-label="JUSFEM IA" style="padding:110px 70px; background:#fff;">
-    <div style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.05fr); gap:80px; align-items:center; max-width:1200px; margin:0 auto;">
+  <section data-screen-label="JUSFEM IA" style="padding:35px 70px 110px; background:#fff;">
+    <div style="display:grid; grid-template-columns:minmax(0,0.8fr) minmax(0,1.2fr); gap:48px; align-items:start; max-width:1200px; margin:0 auto;">
       <div style="display:flex; flex-direction:column; gap:36px;">
         <div style="display:flex; flex-direction:column; gap:16px;">
-          <span style="font-size:14px; font-weight:600; letter-spacing:0.08em; color:#3E5E4E;">NUEVO · JUSFEM IA</span>
-          <h2 style="margin:0; font-size:38px; line-height:1.12; font-weight:600; color:#5B3280; text-wrap:pretty;">Consultá los estándares y armá tu argumento en una conversación</h2>
-          <p style="margin:0; font-size:18px; line-height:1.55; text-wrap:pretty;">Hacé una pregunta y JUSFEM IA responde con base en los documentos del observatorio.</p>
+          <span style="align-self:flex-start; display:inline-flex; align-items:center; padding:6px 12px; border-radius:6px; background:#3E5E4E; border:1px solid #3E5E4E; font-size:14px; font-weight:600; color:#fff;">Nueva herramienta. JusfemIA</span>
+          <h2 style="margin:0; font-size:32px; line-height:1.12; font-weight:600; color:#5B3280; text-wrap:pretty;">Fortalece la argumentación jurídica en una sola conversación.</h2>
+          <p style="margin:0; font-size:14px; line-height:1.55; text-wrap:pretty;">Haz una pregunta y obtén respuestas con fuentes curadas por el Observatorio Jusfem. Argumenta con un asistente jurídico gratuito y especializado, pensado para juezas, jueces y operadores/as de justicia, con énfasis en derechos sexuales y reproductivos y violencia de género.</p>
+          <button style="align-self:flex-start; margin-top:8px; padding:11px 26px; border:0; border-radius:14px; background:#5B3280; color:#fff; font:500 15px 'Raleway', sans-serif; letter-spacing:0.04em; cursor:pointer;" style-hover="background:#4A2868;">Probar herramienta gratis</button>
         </div>
         <div style="display:flex; flex-direction:column; gap:12px;">
           <sc-for list="{{ items }}" as="it" hint-placeholder-count="3">
             <div onClick="{{ it.pick }}" style="display:flex; flex-direction:column; gap:8px; padding:18px 22px; border:1px solid {{ it.bar }}; border-radius:12px; background:{{ it.bg }}; cursor:pointer;">
-              <div style="font-size:20px; font-weight:600; color:{{ it.titleColor }};">{{ it.title }}</div>
+              <div style="font-size:15px; font-weight:600; color:{{ it.titleColor }};">{{ it.title }}</div>
               <sc-if value="{{ it.active }}" hint-placeholder-val="{{ false }}">
-                <div style="font-size:16px; line-height:1.5; text-wrap:pretty;">{{ it.text }}</div>
+                <div style="font-size:12px; line-height:1.5; text-wrap:pretty;">{{ it.text }}</div>
               </sc-if>
             </div>
           </sc-for>
         </div>
       </div>
-      <div style="display:flex; justify-content:center;">
-        <div style="position:relative; width:480px; height:540px; border-radius:18px; overflow:hidden; background:#E9E4EE; box-shadow:0 30px 60px -30px rgba(91,50,128,0.45);">
-          <iframe src="{{ src }}" title="Animación JUSFEM IA" style="position:absolute; left:0; top:0; width:960px; height:1080px; border:0; transform:scale(0.5); transform-origin:0 0; pointer-events:none;"></iframe>
+      <div style="display:flex; justify-content:center; margin-top:47px;">
+        <div style="position:relative; width:576px; max-width:100%; aspect-ratio:1152 / 1080; border-radius:18px; overflow:hidden; background:transparent;">
+          <iframe src="{{ src }}" title="Animación JUSFEM IA" style="position:absolute; left:0; top:0; width:100%; height:100%; border:0; pointer-events:none;"></iframe>
         </div>
       </div>
     </div>
@@ -122,17 +123,16 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 const ITEMS = [
-  { title: "Consultá y argumentá", text: "Hacé tu consulta y, desde la respuesta, generá un párrafo argumentativo paso a paso.", src: "/site/anim-argumento.html?embed=1", dur: 40 },
-  { title: "Revisá la fuente", text: "Abrí el documento citado y mirá el fragmento resaltado de donde sale la respuesta.", src: "/site/anim-documento.html?embed=1", dur: 15 },
-  { title: "Guardá tus favoritos", text: "Guardá ideas clave y estándares para volver a ellos desde el lateral.", src: "/site/anim-favoritos.html?embed=1", dur: 15 },
+  { title: "Realiza consultas y genera argumentos", text: "Encuentra el estándar de derechos humanos, la norma, la jurisprudencia y la literatura especializada. Además, construye tu argumento paso a paso.", src: "/site/anim-argumento.html?embed=1", dur: 40 },
+  { title: "Revisa y contrasta las fuentes", text: "Cada respuesta muestra las fuentes utilizadas. Verifícalas antes de citar y, si lo necesitas, descarga el documento.", src: "/site/anim-documento.html?embed=1", dur: 15 },
+  { title: "Destaca tus conversaciones", text: "Marca una conversación como favorita para que aparezca al inicio de tu historial. Retoma o revisa tu trabajo cuando lo necesites.", src: "/site/anim-favoritos.html?embed=1", dur: 15 },
 ];
 class Component extends DCLogic {
   state = { i: 0, t0: Date.now(), now: Date.now() };
   componentDidMount() {
     this.iv = setInterval(() => {
       const now = Date.now(), it = ITEMS[this.state.i];
-      if (now - this.state.t0 > it.dur * 1000) this.setState({ i: (this.state.i + 1) % ITEMS.length, t0: now, now });
-      else this.setState({ now });
+      this.setState({ now });
     }, 100);
   }
   componentWillUnmount() { clearInterval(this.iv); }
@@ -140,7 +140,7 @@ class Component extends DCLogic {
     const { i, t0, now } = this.state, it = ITEMS[i];
     const p = Math.min(1, (now - t0) / (it.dur * 1000));
     return {
-      src: it.src,
+      src: it.src + "&r=" + t0,
       progressBar: React.createElement("div", { style: { height: "100%", width: (p * 100) + "%", background: "#5B3280" } }),
       items: ITEMS.map((x, k) => ({ ...x, active: k === i, bar: k === i ? "#5B3280" : "#E0D2EA", bg: k === i ? "#F3EDF7" : "#fff", titleColor: k === i ? "#5B3280" : "#9A94A0",
         pick: () => this.setState({ i: k, t0: Date.now(), now: Date.now() }) })),

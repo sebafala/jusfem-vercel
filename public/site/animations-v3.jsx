@@ -371,6 +371,7 @@ function Stage({
 
   const [time, setTime] = React.useState(() => {
     try {
+      if (/[?&]embed=1/.test(location.search)) return 0;
       const v = parseFloat(localStorage.getItem(persistKey + ':t') || '0');
       return isFinite(v) ? clamp(v, 0, duration) : 0;
     } catch { return 0; }
@@ -395,6 +396,7 @@ function Stage({
 
   // Persist playhead
   React.useEffect(() => {
+    if (/[?&]embed=1/.test(location.search)) return;
     try { localStorage.setItem(persistKey + ':t', String(time)); } catch {}
   }, [time, persistKey]);
 

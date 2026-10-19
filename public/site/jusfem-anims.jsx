@@ -1,5 +1,5 @@
 // JUSFEM — tres animaciones (Argumento, Documento, Favoritos). Producto 1440×810 a escala 1920×1080, cámara 960×1080.
-const AW = 1440, AH = 810, SW = 960, SH = 1080, BASE = 1920 / AW;
+const AW = 1440, AH = 810, SW = 1152, SH = 1080, BASE = 1920 / AW;
 const SERIF = "'Source Serif 4',Georgia,serif";
 const INTER = "Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,sans-serif";
 const EZ = { move: Easing.easeInOutCubic, enter: Easing.easeOutCubic };
@@ -122,7 +122,7 @@ function Camera({ cam, children, op = 1 }) {
   const tx = fit(cam[0], SW, AW), ty = fit(cam[1], SH, AH);
   const r = 14 * clamp((1 - cam[2]) / 0.5, 0, 1);
   return (
-    <div style={{ position: "absolute", inset: 0, background: "#E9E4EE", overflow: "hidden" }}>
+    <div style={{ position: "absolute", inset: 0, background: "#F7F6F8", overflow: "hidden" }}>
       <div style={{ position: "absolute", left: 0, top: 0, width: AW, height: AH, transformOrigin: "0 0", transform: `translate(${tx}px, ${ty}px) scale(${S})`, opacity: op, borderRadius: r, overflow: "hidden", boxShadow: `0 18px 50px rgba(98,44,123,${0.18 * clamp((1 - cam[2]) / 0.5, 0, 1)})` }}>
         {children}
       </div>
@@ -173,7 +173,7 @@ function App(p) {
         <div ref={R.comp} style={{ width: 690, margin: "0 auto", border: `1px solid ${p.focused ? "#E0D2EA" : "#F3EDF7"}`, borderRadius: 18, padding: "20px 20px 14px", background: "#fff", boxShadow: p.focused ? "0 4px 18px rgba(98,44,123,.12)" : "0 2px 10px rgba(98,44,123,.06)" }}>
           <div ref={R.ta} style={{ fontSize: 14, lineHeight: 1.5, minHeight: 21, margin: "0 0 20px", color: p.draft ? "#0B0B0B" : "#6B6377", textWrap: "pretty" }}>
             {p.draft || (p.focused ? "" : "Escribe tu consulta")}
-            {p.caret && <span style={{ display: "inline-block", width: 1.5, height: 17, background: "#0B0B0B", verticalAlign: "-3px", marginLeft: 1 }}></span>}
+            {p.caret && <span ref={R.caret} style={{ display: "inline-block", width: 1.5, height: 17, background: "#0B0B0B", verticalAlign: "-3px", marginLeft: 1 }}></span>}
           </div>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <div style={{ width: 36, height: 36, display: "flex", alignItems: "center", justifyContent: "center", color: "#622C7B" }}>{Icon.clip}</div>
@@ -423,8 +423,16 @@ function PieceArgumento({ flat }) {
   const [R, P0] = useMeasure(["col", "comp", "ta", "send", "tabA", "ans", "ans2", "wiz", "opt", "field", "omit", "next", "favOpt", "field2", "field4", "field5"],
     Object.assign({}, FB, { ans: { x: 440, y: 260, w: 560, h: 520 }, ans2: { x: 440, y: 820, w: 560, h: 380 }, wiz: { x: 375, y: 237, w: 690, h: 530 }, opt: { x: 409, y: 400, w: 270, h: 40 }, field2: { x: 409, y: 384, w: 570, h: 50 }, field4: { x: 409, y: 450, w: 454, h: 195 }, field5: { x: 409, y: 400, w: 454, h: 195 }, omit: { x: 870, y: 720, w: 80, h: 34 }, next: { x: 960, y: 720, w: 72, h: 34 }, favOpt: { x: 409, y: 464, w: 340, h: 40 } }), stepKey);
   const P = P0;
+  if (!R.caret) R.caret = React.createRef();
+  const [caretX, setCaretX] = React.useState(null);
+  React.useLayoutEffect(() => {
+    const el = R.caret.current, root = R.root.current;
+    if (!el || !root) return;
+    const x = offsetIn(el, root).x;
+    if (caretX == null || Math.abs(x - caretX) > 0.5) setCaretX(x);
+  });
   const Q = C.Consulta, Rs = C.Respuesta, A = C.Argumento, W = C.Asistente, Pa = C.Parrafo;
-  const tFocus = Q + 0.3, tA = Q + 0.45, tB = Q + 2.1, tSend = Q + 2.45, tTab = A + 0.75;
+  const tFocus = Q + 0.3, tA = Q + 0.45, tB = Q + 1.55, tSend = Q + 2.45, tTab = A + 0.75;
   const tOpt = W + 0.75, tN1 = tN1_, tC2 = W + 2.15, tN2 = tN2_, tF = W + 4.45, tN3 = tN3_, tC4 = W + 5.85, tN4 = tN4_, tC5 = W + 8.75, tFin = W + 10.0;
   const sent = T >= tSend;
   const draft = sent ? "" : typed(QUERY_CI, T, tA, tB);
@@ -447,15 +455,28 @@ function PieceArgumento({ flat }) {
   ], T);
   const press = pressAt(T, [tFocus, tSend, tTab, tOpt, tN1, tC2, tN2, tF, tN3, tC4, tN4, tC5, tFin]);
   const a2c = P.ans2.y + P.ans2.h / 2 - s2, wc = ctr(P.wiz);
-  const cam = kf([
-    [0, [ta[0] + 170, ta[1], 1.35]], [Q + 0.35, [ta[0] + 170, ta[1], 1.35]], [Q + 1.72, [ta[0] + 430, ta[1], 1.35]], [Q + 2.0, [ta[0] + 245, ta[1] + 20, 1.05]], [tSend, [ta[0] + 245, ta[1] + 20, 1.05]],
-    [Rs + 0.5, [720, 405, 1.0]], [A + 0.2, [720, 405, 1.0]], [tTab - 0.1, [tb[0] - 120, tb[1] - 60, 1.3]], [W + 0.2, [wc[0], wc[1], 1.0]], [W + 0.8, [wc[0], wc[1] + 10, 1.06]], [tFin, [wc[0], wc[1] + 10, 1.06]],
-    [Pa + 0.4, [720, 405, 1.0]], [Pa + 1.6, [720, a2c, 1.12]],
+  const fitZ = (w, z) => Math.min(z, SW / (BASE * (w + 50)));
+  const wy = (y, z) => Math.max(y, 68 + SH / (BASE * z) / 2); // deja la barra superior fuera de cuadro
+  const cc = ctr(P.comp), zq = fitZ(P.comp.w, 1.62), colX = P.col.x + P.col.w / 2, zc = fitZ(Math.max(P.col.w, P.ans.w), 1.2);
+  // seguimiento del texto mientras se escribe
+  const ZT = 1.62, zf = SW / (BASE * (P.comp.w + 40)), half = SW / (BASE * ZT) / 2;
+  const fLo = P.ta.x + half - 30, fHi = P.ta.x + P.ta.w - half + 30, fx = x => clamp(x, fLo, fHi);
+  const fx0 = fLo, fx1 = fx(caretX != null ? caretX - half * 0.4 : fLo);
+  const followX = () => fx(caretX != null ? caretX - half * 0.4 : fLo); // centro siguiendo el cursor real
+  const cam0 = kf([
+    [0, [fx0, cc[1], ZT]], [tA, [fx0, cc[1], ZT]], [tB + 0.15, [fx1, cc[1], ZT]], [tB + 0.8, [cc[0], cc[1], zf]], [tSend, [cc[0], cc[1], zf]],
+    [Rs + 0.5, [colX, 405, zc]], [A + 0.2, [colX, 405, zc]], [tTab - 0.1, [tb[0] - 120, tb[1] - 60, 1.56]], [W + 0.2, [wc[0], wy(wc[1], 1.2), 1.2]], [W + 0.8, [wc[0], wy(wc[1] + 10, 1.27), 1.27]], [tFin, [wc[0], wy(wc[1] + 10, 1.27), 1.27]],
+    [Pa + 0.4, [colX, 405, zc]], [Pa + 1.6, [colX, a2c, fitZ(Math.max(P.col.w, P.ans2.w), 1.34)]],
   ], T);
+  const cam = T >= tA && T <= tB + 0.15 ? [followX(), cc[1], ZT] : cam0;
+  const camU = flat ? [720, cam[1], 1.0] : cam;
+  const camS = BASE * camU[2], camLo = SW - AW * camS;
+  const camLeft = -(camLo > 0 ? camLo / 2 : clamp(SW / 2 - camU[0] * camS, camLo, 0)) / camS;
+  const titleIn = clamp((60 - camLeft) / 16, 0, 1); // el título solo se ve si entra completo
   const think1 = between(T, Rs + 0.15, Rs + 0.85, 0.2), think2 = between(T, Pa + 0.0, Pa + 0.7, 0.2);
   return (
-    <Camera cam={flat ? [720, cam[1], 1.0] : cam} op={Math.min(fade(Tr, 0, 0.6), 1 - fade(Tr, ((JSON.parse(window.OM_SCENES || "[]")).reduce((a, x) => a + x.dur, 0) || 40) - 0.7, 0.6))}>
-      <App refs={R} title="Consentimiento informado y autonomía reproductiva" titleOp={fade(T, Rs + 0.4)} scroll={scroll} draft={draft} focused={focused} caret={caret}
+    <Camera cam={camU} op={Math.min(fade(Tr, 0, 0.6), 1 - fade(Tr, ((JSON.parse(window.OM_SCENES || "[]")).reduce((a, x) => a + x.dur, 0) || 40) - 0.7, 0.6))}>
+      <App refs={R} title="Consentimiento informado y autonomía reproductiva" titleOp={fade(T, Rs + 0.4) * titleIn} scroll={scroll} draft={draft} focused={focused} caret={caret}
         mode={T >= tTab ? "Argumento" : "Búsqueda"} tabAHover={T > tTab - 0.3} wizard={wiz}
         overlay={<React.Fragment><Ripples T={T} dur={0.2} list={[[...ta, tFocus], [...sb, tSend], [...tb, tTab], [...op, tOpt], [...nx, tN1], [...f2, tC2], [...nx, tN2], [...fo, tF], [...nx, tN3], [...f4, tC4], [...nx, tN4], [...f5, tC5], [...nx, tFin]]} /><Cursor x={cur[0]} y={cur[1]} press={press} /></React.Fragment>}>
         <Bubble text={QUERY_CI} style={rise(T, tSend + 0.02, 0.35)} />
@@ -516,8 +537,8 @@ function PieceDocumento() {
     [0, [lk[0] + 140, lk[1] - 120]], [0.25, [lk[0] + 140, lk[1] - 120]], [tLink - 0.15, lk], [tLink + 0.65, lkAfter], [V + 0.7, lkAfter], [V + 1.5, pr], [Pg + 0.1, pr], [tNext - 0.12, nx], [Pg + 2.2, [nx[0] - 120, nx[1] - 200]],
   ], T);
   const cam = kf([
-    [0, [620, 405, 1.0]], [0.3, [620, 405, 1.0]], [tLink - 0.1, [lk[0], lk[1] - 40, 1.35]], [tLink + 0.15, [lk[0], lk[1] - 40, 1.35]],
-    [V + 0.6, [AW - 360, 405, 1.0]], [V + 1.6, [pr[0] - 20, pr[1], 1.3]], [Pg + 0.2, [pr[0] - 20, pr[1], 1.3]], [tNext - 0.1, [AW - 300, 560, 1.15]], [Pg + 1.6, [AW - 230, 420, 1.3]],
+    [0, [620, 405, 1.2]], [0.3, [620, 405, 1.2]], [tLink - 0.1, [lk[0], lk[1] - 40, 1.62]], [tLink + 0.15, [lk[0], lk[1] - 40, 1.62]],
+    [V + 0.6, [AW - 360, 405, 1.2]], [V + 1.6, [pr[0] - 20, pr[1], 1.56]], [Pg + 0.2, [pr[0] - 20, pr[1], 1.56]], [tNext - 0.1, [AW - 300, 560, 1.38]], [Pg + 1.6, [AW - 230, 420, 1.56]],
   ], T);
   return (
     <Camera cam={cam} op={op}>
@@ -556,8 +577,8 @@ function PieceFavoritos() {
     [L + 2.6, fr], [N + 0.3, fr], [tS2 - D, r2], [tS2 + H, r2], [N + 2.0, [640, 430]], [N + 3.3, [640, 430]], [tS3 - D, r3], [tS3 + H, r3], [N + 6.0, [660, 450]],
   ], T);
   const cam = kf([
-    [0, [720, 405, 1.0]], [tFav - 0.7, [720, 405, 1.0]], [tFav - 0.1, [fv[0], fv[1] - 40, 1.3]], [tFav + 0.5, [fv[0], fv[1] - 40, 1.3]], [tFav + 1.2, [360, 405, 1.0]],
-    [tS2 + 0.3, [360, 405, 1.0]], [tS2 + 1.2, [851, 405, 1.0]], [N + 3.0, [851, 405, 1.0]], [N + 3.8, [360, 405, 1.0]], [tS3 + 0.3, [360, 405, 1.0]], [tS3 + 1.2, [851, 405, 1.0]],
+    [0, [720, 405, 1.2]], [tFav - 0.7, [720, 405, 1.2]], [tFav - 0.1, [fv[0], fv[1] - 40, 1.56]], [tFav + 0.5, [fv[0], fv[1] - 40, 1.56]], [tFav + 1.2, [360, 405, 1.2]],
+    [tS2 + 0.3, [360, 405, 1.2]], [tS2 + 1.2, [851, 405, 1.2]], [N + 3.0, [851, 405, 1.2]], [N + 3.8, [360, 405, 1.2]], [tS3 + 0.3, [360, 405, 1.2]], [tS3 + 1.2, [851, 405, 1.2]],
   ], T);
   const total = (JSON.parse(window.OM_SCENES || "[]")).reduce((a, x) => a + x.dur, 0) || N + 9;
   const op = Math.min(fade(T, 0, 0.6), 1 - fade(T, total - 0.7, 0.6));
@@ -589,7 +610,7 @@ function PieceFavoritos() {
 }
 
 const mk = (Piece, extra) => function () {
-  return <CompositionStage width={SW} height={SH} bg="#E9E4EE" scenes={window.OM_SCENES} playback={window.OM_PLAYBACK}><Piece {...extra} /></CompositionStage>;
+  return <CompositionStage width={SW} height={SH} bg="#F7F6F8" scenes={window.OM_SCENES} playback={window.OM_PLAYBACK}><Piece {...extra} /></CompositionStage>;
 };
 window.JusfemArgumento = mk(PieceArgumento);
 window.JusfemArgumentoFlat = mk(PieceArgumento, { flat: true });
