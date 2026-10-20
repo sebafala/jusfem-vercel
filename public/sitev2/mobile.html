@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jusfem — Observatorio (v2 mobile)</title>
+<script src="/support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#E4E1E6; font-family:'Raleway', sans-serif; }
+  * { box-sizing:border-box; }
+  a { color:#5B3280; text-decoration:none; }
+  a:hover { color:#3E5E4E; }
+</style>
+</helmet>
+<div style="display:flex; justify-content:center; padding:40px 0;">
+<div data-screen-label="Home Mobile" style="width:390px; background:#fff; color:#6E6A70; box-shadow:0 20px 60px rgba(0,0,0,0.12); overflow:hidden;">
+  <header style="display:flex; align-items:center; justify-content:space-between; padding:14px 20px; height:68px;">
+    <a href="https://www.jusfem.com"><img src="https://www.jusfem.com/wp-content/uploads/2023/12/logo-color.png" alt="Jusfem" style="height:38px; display:block;"></a>
+    <button aria-label="Menú" style="width:44px; height:44px; border:0; background:transparent; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:5px; cursor:pointer;">
+      <span style="width:22px; height:2px; background:#5B3280; border-radius:2px;"></span>
+      <span style="width:22px; height:2px; background:#5B3280; border-radius:2px;"></span>
+      <span style="width:22px; height:2px; background:#5B3280; border-radius:2px;"></span>
+    </button>
+  </header>
+
+  <section data-screen-label="JUSFEM IA" style="padding:16px 20px 56px; display:flex; flex-direction:column; gap:24px;">
+    <div style="display:flex; flex-direction:column; gap:14px;">
+      <span style="align-self:flex-start; display:inline-flex; align-items:center; padding:5px 10px; border-radius:6px; background:#3E5E4E; font-size:13px; font-weight:600; color:#fff;">Nueva herramienta. JusfemIA</span>
+      <h2 style="margin:0; font-size:26px; line-height:1.15; font-weight:600; color:#5B3280; text-wrap:pretty;">Fortalece la argumentación jurídica en una sola conversación.</h2>
+      <p style="margin:0; font-size:14px; line-height:1.55; text-wrap:pretty;">Haz una pregunta y obtén respuestas con fuentes curadas por el Observatorio Jusfem. Argumenta con un asistente jurídico gratuito y especializado, pensado para juezas, jueces y operadores/as de justicia, con énfasis en derechos sexuales y reproductivos y violencia de género.</p>
+      <button style="margin-top:6px; height:48px; border:0; border-radius:14px; background:#5B3280; color:#fff; font:500 15px 'Raleway', sans-serif; letter-spacing:0.04em; cursor:pointer;" style-hover="background:#4A2868;">Probar herramienta libre</button>
+    </div>
+    <div style="position:relative; width:100%; aspect-ratio:1152 / 1080; border-radius:14px; overflow:hidden; background:transparent;">
+      <iframe src="{{ src }}" title="Animación JUSFEM IA" style="position:absolute; left:0; top:0; width:100%; height:100%; border:0; pointer-events:none;"></iframe>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:10px;">
+      <sc-for list="{{ items }}" as="it" hint-placeholder-count="3">
+        <div onClick="{{ it.pick }}" style="display:flex; flex-direction:column; gap:6px; min-height:48px; justify-content:center; padding:14px 16px; border:1px solid {{ it.bar }}; border-radius:12px; background:{{ it.bg }}; cursor:pointer;">
+          <div style="font-size:15px; font-weight:600; color:{{ it.titleColor }};">{{ it.title }}</div>
+          <sc-if value="{{ it.active }}" hint-placeholder-val="{{ false }}">
+            <div style="font-size:13px; line-height:1.5; text-wrap:pretty;">{{ it.text }}</div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="position:relative; background:#5B3280; color:#fff; padding:56px 20px 64px; clip-path:polygon(0 6%, 30% 0, 100% 8%, 100% 100%, 0 100%);">
+    <img src="https://www.jusfem.com/wp-content/uploads/2024/02/estatua2.png" alt="" style="height:72px; display:block; margin-bottom:18px;">
+    <h1 style="margin:0 0 16px; font-size:24px; line-height:1.15; font-weight:600;">Bienvenidas/os al observatorio de decisiones y recomendaciones</h1>
+    <p style="margin:0; font-size:15px; line-height:1.5;">El observatorio recopila estándares jurídicos en materia de derechos sexuales y reproductivos producidos en el ámbito internacional: interamericano y universal. Además, desde este parámetro recopilamos y analizamos la producción jurisprudencial nacional.</p>
+  </section>
+
+  <section style="display:grid; grid-template-columns:1fr 1fr; gap:28px 16px; padding:40px 20px 48px; text-align:center;">
+    <a href="#" style="display:flex; flex-direction:column; align-items:center; gap:12px; color:#6E6A70;"><img src="https://www.jusfem.com/wp-content/uploads/2023/12/obs-jurisprudencia.png" alt="" style="width:110px; height:110px;"><span style="font-size:13px; line-height:1.3;">Jurisprudencia de la Corte IDH y dictámenes de Comités de la ONU</span></a>
+    <a href="#" style="display:flex; flex-direction:column; align-items:center; gap:12px; color:#6E6A70;"><img src="https://www.jusfem.com/wp-content/uploads/2023/12/obs-generales3.png" alt="" style="width:110px; height:110px;"><span style="font-size:13px; line-height:1.3;">Observaciones Generales de los Comités de la ONU e informes temáticos de los relatores de la ONU y la CIDH</span></a>
+    <a href="#" style="display:flex; flex-direction:column; align-items:center; gap:12px; color:#6E6A70;"><img src="https://www.jusfem.com/wp-content/uploads/2023/12/observaciones-finales-completo.png" alt="" style="width:110px; height:110px;"><span style="font-size:13px; line-height:1.3;">Observaciones finales a informes periódicos</span></a>
+    <a href="#" style="display:flex; flex-direction:column; align-items:center; gap:12px; color:#6E6A70;"><img src="https://www.jusfem.com/wp-content/uploads/2024/02/obs-sentencias-regionales3.png" alt="" style="width:110px; height:110px;"><span style="font-size:13px; line-height:1.3;">Sentencias y resoluciones nacionales</span></a>
+  </section>
+
+  <section style="background:#DEDBDE; padding:48px 20px 56px; display:flex; flex-direction:column; gap:24px; font-size:15px; line-height:1.6;">
+    <h2 style="margin:0; font-size:24px; line-height:1.2; font-weight:600; color:#5B3280;">Un paso adelante por la justicia sexual y reproductiva</h2>
+    <p style="margin:0;">Durante ocho años, el Proyecto Jusfem ha trabajado junto a jueces, juezas y personal jurisdiccional, identificando una necesidad clave: fortalecer sus conocimientos en materia de estándares de protección de derechos sexuales y reproductivos (DSDR), producidos en el ámbito nacional, comparado e internacional.</p>
+    <p style="margin:0;">En 2022, dimos vida a una idea transformadora: crear una herramienta que acerque estos estándares a las personas que los necesitan.</p>
+    <p style="margin:0;">Hoy, ese sueño es una realidad. El Observatorio JUSFEM es la primera plataforma gratuita de su tipo en la región.</p>
+    <div style="display:flex; flex-direction:column; gap:14px;">
+      <h3 style="margin:0; font-size:19px; font-weight:600; color:#3E5E4E;">El Observatorio ofrece:</h3>
+      <sc-for list="{{ offers }}" as="o" hint-placeholder-count="3">
+        <div style="display:flex; gap:12px;"><svg width="18" height="18" viewBox="0 0 24 24" style="flex:0 0 18px; margin-top:3px;"><circle cx="12" cy="12" r="12" fill="#5B3280"></circle><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>{{ o }}</span></div>
+      </sc-for>
+    </div>
+  </section>
+
+  <footer id="contacto" style="background:#EFEFEF; padding:40px 20px; display:flex; flex-direction:column; gap:36px; font-size:15px;">
+    <div style="display:flex; flex-direction:column; gap:12px;">
+      <div style="font-size:15px; font-weight:600; color:#5B3280;">CONTÁCTANOS</div>
+      <p style="margin:0 0 6px;">Si deseas, puedes dejarnos un mensaje y nos pondremos en contacto contigo lo antes posible. ¡Gracias!</p>
+      <label style="display:flex; flex-direction:column; gap:6px; color:#4A4650;">Nombre y apellido <input style="height:44px; border:0; border-radius:14px; background:#A38DB5;"></label>
+      <label style="display:flex; flex-direction:column; gap:6px; color:#4A4650;">Celular <input style="height:44px; border:0; border-radius:14px; background:#A38DB5;"></label>
+      <label style="display:flex; flex-direction:column; gap:6px; color:#4A4650;">Correo electrónico <input style="height:44px; border:0; border-radius:14px; background:#A38DB5;"></label>
+      <label style="display:flex; flex-direction:column; gap:6px; color:#4A4650;">Mensaje <textarea style="height:90px; border:0; border-radius:14px; background:#A38DB5; resize:none;"></textarea></label>
+      <button style="margin-top:6px; height:48px; border:0; border-radius:14px; background:#5B3280; color:#fff; font:500 15px 'Raleway', sans-serif; letter-spacing:0.04em; cursor:pointer;">Enviar</button>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:12px;">
+      <div style="font-size:15px; font-weight:600; color:#5B3280;">NAVEGACIÓN SENCILLA</div>
+      <a href="#" style="color:#6E6A70;">Observatorio</a><a href="#" style="color:#6E6A70;">Recursos de aprendizaje</a><a href="#" style="color:#6E6A70;">Infografías</a><a href="#" style="color:#6E6A70;">Materiales de aprendizaje</a><a href="#" style="color:#6E6A70;">Socias</a><a href="#" style="color:#6E6A70;">Quiénes Somos</a>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:12px;">
+      <div style="font-size:15px; font-weight:600; color:#5B3280;">COMUNÍCATE</div>
+      <span>www.jusfem.com</span>
+      <span style="overflow-wrap:anywhere;">observatorioproyectojusfem@gmail.com</span>
+    </div>
+  </footer>
+  <div style="background:#5B3280; color:#fff; text-align:center; padding:12px; font-size:13px;">2026 | Jusfem. Todos los derechos reservados.</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const ITEMS = [
+  { title: "Realiza consultas y genera argumentos", text: "Encuentra el estándar de derechos humanos, la norma, la jurisprudencia y la literatura especializada. Además, construye tu argumento paso a paso.", src: "/sitev2/anim-argumento.html?embed=1" },
+  { title: "Revisa y contrasta las fuentes", text: "Cada respuesta muestra las fuentes utilizadas. Verifícalas antes de citar y, si lo necesitas, descarga el documento.", src: "/sitev2/anim-documento.html?embed=1" },
+  { title: "Destaca tus conversaciones", text: "Marca una conversación como favorita para que aparezca al inicio de tu historial. Retoma o revisa tu trabajo cuando lo necesites.", src: "/sitev2/anim-favoritos.html?embed=1" },
+];
+class Component extends DCLogic {
+  state = { i: 0, t0: Date.now() };
+  renderVals() {
+    const { i, t0 } = this.state;
+    return {
+      src: ITEMS[i].src + "&r=" + t0,
+      items: ITEMS.map((x, k) => ({ ...x, active: k === i, bar: k === i ? "#5B3280" : "#E0D2EA", bg: k === i ? "#F3EDF7" : "#fff", titleColor: k === i ? "#5B3280" : "#9A94A0",
+        pick: () => this.setState({ i: k, t0: Date.now() }) })),
+      offers: ["Casos organizados: Acceso fácil a los casos y una ficha que identifica y resume los estándares de protección.", "Jurisprudencia por país: Información clara y accesible.", "Ruta de aprendizaje y materiales educativos: Recursos para aprender y aplicar los DSDR."],
+    };
+  }
+}
+</script>
+</body>
+</html>

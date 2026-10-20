@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="/support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,700;1,8..60,400&amp;display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#F7F6F8; }
+  * { box-sizing:border-box; }
+  a { color:#622C7B; }
+  a:hover { color:#0B0B0B; }
+</style>
+<script>window.OM_SCENES = '[{"name":"Guardar","dur":2.6,"desc":"Click en Favorito y aparece el aviso"},{"name":"Lateral","dur":3.4,"desc":"Se abre el lateral y aparece el favorito guardado"},{"name":"Navegar","dur":9,"desc":"Click en otros dos favoritos; el chat se desplaza a cada parte"}]';</script>
+<script>window.OM_PLAYBACK = '{"mode":"loop"}';</script>
+</helmet>
+<div data-screen-label="JusfemIA Anim Favoritos" style="position:fixed; inset:0">
+  <x-import component-from-global-scope="JusfemFavoritos" from="/sitev2/animations-v3.jsx /sitev2/jusfem-anims.jsx" hint-size="100%,100%"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;motionEditor&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}"></script>
+</body>
+</html>
