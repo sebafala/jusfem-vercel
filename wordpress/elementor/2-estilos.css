@@ -233,3 +233,13 @@ body:has(.jia-visual) .e-con.e-parent:has(.jia-visual) .e-con-inner{ overflow:vi
 .elementor-location-header > *{ position:relative; z-index:1; }
 @keyframes jiaGlowD{0%,100%{transform:translate(0,0)}50%{transform:translate(20px,-40px)}}
 @media (prefers-reduced-motion:reduce){ .elementor-location-header::before{ animation:none; } }
+
+/* --- alinear las tarjetas con el resto de la columna ---
+   El padding-left reservaba lugar para la barrita y dejaba los títulos
+   sangrados respecto del título, la bajada y el botón. Como en el
+   prototipo, la barra va por fuera (left:-18px) y el texto arranca en 0. */
+.jia-tarjetas .elementor-tab-title{ padding-left:0 !important; }
+.jia-tarjetas .elementor-tab-title::before{ left:-18px; }
+.jia-tarjetas .elementor-tab-content{ padding-left:0 !important; }
+.jia-tarjetas .e-n-accordion-item-title{ padding-left:0; }
+.jia-tarjetas .e-n-accordion-item-title::before{ left:-18px; }
