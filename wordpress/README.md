@@ -10,8 +10,9 @@ La home (`page-id=97`) usa plantilla `elementor_header_footer`, así que se edit
 
 | Archivo | Qué es |
 |---|---|
-| `seccion-jusfemia.html` | El bloque completo: HTML + CSS + JS. Esto es lo que se pega en Elementor. |
-| `prueba.html` | Página de prueba local (el bloque entre dos franjas grises). No se sube. |
+| `elementor/` | **Versión recomendada**: textos como widgets de Elementor, editables por el cliente. Empezar por `elementor/GUIA-DE-MONTAJE.md`. |
+| `seccion-jusfemia.html` | Alternativa: un solo bloque HTML. Más rápido de montar, pero los textos solo se cambian tocando código. |
+| `prueba.html` | Página de prueba local. No se sube. |
 
 ## Por qué no se usa el prototipo tal cual
 
@@ -84,8 +85,6 @@ franjas o recortes.
 
 ## Pendientes de decisión
 
-- El botón **"Probar JusfemIA" no tiene destino** — en el prototipo tampoco
-  enlaza a ningún lado. Definir a dónde va.
 - En la versión mobile del prototipo el mismo botón dice **"Probar herramienta
   libre"**. Acá se unificó a "Probar JusfemIA"; si el texto correcto es el otro,
   cambiarlo en el HTML.

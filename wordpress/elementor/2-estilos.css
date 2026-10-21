@@ -1,0 +1,197 @@
+/* ====================================================================
+   JUSFEM IA — estilos de la sección
+   Pegar en: Elementor → ⚙ (abajo izq.) → Avanzado → CSS personalizado
+   (o en Apariencia → Personalizar → CSS adicional)
+
+   Todo está prefijado con .jia-seccion / .jia-visual, así que no toca
+   nada más del sitio. La sección necesita la clase CSS "jia-seccion"
+   (se pone en Avanzado → Clases CSS de la sección).
+   ==================================================================== */
+
+/* ---------- Sección ---------- */
+.jia-seccion{
+  background:#F8F5FB;
+  overflow-x:clip;
+}
+
+/* ---------- Badge "Nueva herramienta. JusfemIA" ---------- */
+.jia-badge .elementor-widget-container{
+  /* inline-block y no inline-flex: con flex, el espacio entre
+     "Nueva herramienta." y "JusfemIA" se colapsa. */
+  display:inline-block;
+  padding:6px 12px;
+  border-radius:6px;
+  background:#E3EEE8;
+  font-size:14px;
+  font-weight:700;
+  color:#3E5E4E;
+  line-height:1.2;
+}
+
+/* ---------- Título ---------- */
+.jia-titulo .elementor-heading-title{
+  margin:0;
+  font-size:32px;
+  line-height:1.12;
+  font-weight:700;
+  color:#5B3280;
+  text-wrap:pretty;
+}
+
+/* ---------- Bajada ---------- */
+.jia-bajada{
+  font-size:14px;
+  line-height:1.55;
+  color:#6E6A70;
+  text-wrap:pretty;
+}
+
+/* ---------- Botón ---------- */
+.jia-cta .elementor-button{
+  padding:11px 26px;
+  border:0;
+  border-radius:999px;
+  background:#5B3280;
+  color:#fff;
+  font-size:15px;
+  font-weight:500;
+  letter-spacing:.04em;
+  box-shadow:0 10px 24px -8px rgba(91,50,128,.55);
+  transition:transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+.jia-cta .elementor-button:hover,
+.jia-cta .elementor-button:focus-visible{
+  background:#4A2868;
+  color:#fff;
+  transform:translateY(-3px);
+  box-shadow:0 16px 30px -8px rgba(91,50,128,.65);
+}
+
+/* ---------- Acordeón (las 3 tarjetas) ----------
+   Se le quita la caja de Elementor y se deja solo título + texto
+   con la barrita violeta del diseño.                              */
+.jia-tarjetas .elementor-accordion,
+.jia-tarjetas .elementor-accordion-item{
+  border:0 !important;
+  background:transparent !important;
+}
+.jia-tarjetas .elementor-accordion-item{
+  margin-bottom:24px;
+}
+.jia-tarjetas .elementor-tab-title{
+  position:relative;
+  border:0 !important;
+  background:transparent !important;
+  padding:0 0 0 18px !important;
+  cursor:pointer;
+}
+.jia-tarjetas .elementor-tab-title::before{
+  content:"";
+  position:absolute;
+  left:0; top:2px; bottom:2px;
+  width:3px;
+  border-radius:2px;
+  background:transparent;
+  transition:background .25s ease;
+}
+.jia-tarjetas .elementor-tab-title.elementor-active::before{
+  background:#5B3280;
+}
+.jia-tarjetas .elementor-accordion-title,
+.jia-tarjetas .elementor-tab-title a{
+  font-size:15px;
+  font-weight:600;
+  color:#9A94A0;
+  text-decoration:none;
+  transition:color .25s ease;
+}
+.jia-tarjetas .elementor-tab-title.elementor-active .elementor-accordion-title,
+.jia-tarjetas .elementor-tab-title.elementor-active a{
+  color:#5B3280;
+}
+/* el ícono +/- de Elementor no va en este diseño */
+.jia-tarjetas .elementor-accordion-icon{ display:none !important; }
+
+.jia-tarjetas .elementor-tab-content{
+  border:0 !important;
+  background:transparent !important;
+  padding:8px 0 0 18px !important;
+  font-size:12px;
+  line-height:1.5;
+  color:#6E6A70;
+  text-wrap:pretty;
+}
+
+/* Variante por si se usa el acordeón nuevo (nested) de Elementor Pro */
+.jia-tarjetas .e-n-accordion-item-title{
+  position:relative;
+  padding-left:18px;
+  background:transparent;
+  border:0;
+}
+.jia-tarjetas .e-n-accordion-item-title::before{
+  content:"";
+  position:absolute;
+  left:0; top:2px; bottom:2px;
+  width:3px; border-radius:2px;
+  background:transparent;
+  transition:background .25s ease;
+}
+.jia-tarjetas details[open] > .e-n-accordion-item-title::before{ background:#5B3280; }
+.jia-tarjetas .e-n-accordion-item-title-text{ font-size:15px; font-weight:600; color:#9A94A0; }
+.jia-tarjetas details[open] > .e-n-accordion-item-title .e-n-accordion-item-title-text{ color:#5B3280; }
+.jia-tarjetas .e-n-accordion-item-title-icon{ display:none !important; }
+
+/* ---------- Visual (widget HTML) ---------- */
+.jia-visual{ position:relative; display:flex; justify-content:center; }
+.jia-visual *{ box-sizing:border-box; }
+
+.jia-visual__glows{ position:absolute; inset:-60px -40px; pointer-events:none; }
+.jia-visual__glow{ position:absolute; border-radius:50%; display:block; }
+.jia-visual__glow--a{ left:-4%; top:2%; width:62%; height:62%; background:#5B3280;
+  filter:blur(70px); opacity:.35; animation:jiaGlowA 9s ease-in-out infinite; }
+.jia-visual__glow--b{ right:-6%; bottom:100px; width:60%; height:60%; background:#3D5BD9;
+  filter:blur(80px); opacity:.5; animation:jiaGlowB 11s ease-in-out infinite; }
+.jia-visual__glow--c{ right:calc(14% + 50px); top:calc(-4% + 70px); width:38%; height:40%;
+  background:#A06BD0; filter:blur(60px); animation:jiaGlowC 7s ease-in-out infinite; }
+
+@keyframes jiaGlowA{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(40px,30px) scale(1.12)}}
+@keyframes jiaGlowB{0%,100%{transform:translate(0,0) scale(1.05)}50%{transform:translate(-50px,-25px) scale(.92)}}
+@keyframes jiaGlowC{0%,100%{transform:translate(0,0);opacity:.55}50%{transform:translate(20px,-40px);opacity:.85}}
+
+.jia-visual__marco{
+  position:relative;
+  width:576px;
+  max-width:100%;
+  aspect-ratio:1152 / 1080;
+  border-radius:18px;
+  overflow:hidden;
+}
+.jia-visual__video,
+.jia-visual__respaldo{
+  position:absolute; left:0; top:0; width:100%; height:100%;
+  border:0; opacity:0; pointer-events:none;
+  transform:scale(.98); filter:blur(4px);
+  transition:opacity .6s ease, transform .6s cubic-bezier(.2,.8,.2,1), filter .6s ease;
+}
+.jia-visual__video.is-active,
+.jia-visual__respaldo.is-active{ opacity:1; transform:none; filter:none; }
+.jia-visual__respaldo{ display:none; }
+.jia-visual__marco.sin-videos .jia-visual__video{ display:none; }
+.jia-visual__marco.sin-videos .jia-visual__respaldo{ display:block; }
+
+/* ---------- Responsive ---------- */
+@media (max-width:1024px){
+  .jia-titulo .elementor-heading-title{ font-size:28px; }
+  .jia-visual__marco{ width:100%; }
+}
+@media (max-width:767px){
+  .jia-titulo .elementor-heading-title{ font-size:24px; }
+  /* border-box: sin esto el padding se suma al 100% y el botón desborda */
+  .jia-cta .elementor-button{ width:100%; box-sizing:border-box; justify-content:center; }
+  .jia-visual__glow{ display:none; }
+}
+@media (prefers-reduced-motion:reduce){
+  .jia-visual__glow{ animation:none; }
+  .jia-visual__video,.jia-visual__respaldo{ transition:none; }
+}

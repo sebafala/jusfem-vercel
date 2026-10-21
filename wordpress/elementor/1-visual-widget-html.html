@@ -1,0 +1,149 @@
+<!--
+  JUSFEM IA — VISUAL (videos + fondo animado)
+  Va en un widget HTML de Elementor, en la columna DERECHA de la sección.
+
+  Esto es lo único que queda como código. Todos los textos de la sección
+  (badge, título, bajada, botón y las 3 tarjetas) son widgets normales de
+  Elementor y se editan haciendo clic. Ver la guía de montaje.
+
+  QUÉ TOCAR ACÁ: solo los tres src de los videos.
+-->
+
+<div class="jia-visual" data-jia-visual>
+
+  <div class="jia-visual__glows" aria-hidden="true">
+    <span class="jia-visual__glow jia-visual__glow--a"></span>
+    <span class="jia-visual__glow jia-visual__glow--b"></span>
+    <span class="jia-visual__glow jia-visual__glow--c"></span>
+  </div>
+
+  <div class="jia-visual__marco">
+
+    <!-- 1 · Realiza consultas y genera argumentos -->
+    <video class="jia-visual__video is-active" data-i="0" muted loop playsinline preload="metadata">
+      <source src="" type="video/mp4">
+    </video>
+
+    <!-- 2 · Revisa y contrasta las fuentes -->
+    <video class="jia-visual__video" data-i="1" muted loop playsinline preload="none">
+      <source src="" type="video/mp4">
+    </video>
+
+    <!-- 3 · Destaca tus conversaciones -->
+    <video class="jia-visual__video" data-i="2" muted loop playsinline preload="none">
+      <source src="" type="video/mp4">
+    </video>
+
+    <!-- Respaldo mientras no haya videos cargados. Quitar al publicar. -->
+    <iframe class="jia-visual__respaldo" title="Animación JusfemIA" loading="lazy"
+            data-src="https://jusfem.vercel.app/sitev2/anim-argumento.html?embed=1"></iframe>
+
+  </div>
+</div>
+
+<script>
+(function(){
+  function init(){
+    var vis = document.querySelector('[data-jia-visual]');
+    if (!vis || vis.dataset.listo) return;
+    vis.dataset.listo = '1';
+
+    var videos = [].slice.call(vis.querySelectorAll('.jia-visual__video'));
+    var marco  = vis.querySelector('.jia-visual__marco');
+    var resp   = vis.querySelector('.jia-visual__respaldo');
+    var DUR    = [40000, 15000, 15000];   // duración de cada video
+    var i = 0, timer = null, visible = false;
+
+    var hayVideos = videos.length && videos.every(function(v){
+      var s = v.querySelector('source');
+      return s && s.getAttribute('src');
+    });
+
+    if (!hayVideos){
+      marco.classList.add('sin-videos');
+      if (resp){
+        resp.src = resp.getAttribute('data-src');
+        resp.onload = function(){ resp.classList.add('is-active'); };
+      }
+    }
+
+    // --- Puente con el acordeón de Elementor ---------------------------
+    // Busca los títulos del acordeón que esté en la misma sección.
+    // Soporta el acordeón clásico y el nuevo (nested). Si no encuentra
+    // ninguno, el visual igual rota solo.
+    function buscarTitulos(){
+      var raiz = vis.closest('.elementor-section, .e-con, .elementor-container') || document;
+      var sel = [
+        '.elementor-accordion .elementor-tab-title',          // acordeón clásico
+        '.e-n-accordion-item > .e-n-accordion-item-title',    // acordeón nested (Pro)
+        '.elementor-tabs .elementor-tab-title'                // pestañas
+      ];
+      for (var k = 0; k < sel.length; k++){
+        var found = [].slice.call(raiz.querySelectorAll(sel[k]));
+        if (found.length >= 2) return found;
+      }
+      return [];
+    }
+
+    var titulos = buscarTitulos();
+
+    titulos.forEach(function(t, k){
+      t.addEventListener('click', function(){ mostrar(k, true); });
+      t.addEventListener('keydown', function(e){
+        if (e.key === 'Enter' || e.key === ' ') setTimeout(function(){ mostrar(k, true); }, 0);
+      });
+    });
+
+    function abrirAcordeon(n){
+      var t = titulos[n];
+      if (!t) return;
+      // nested: <details open>
+      var det = t.closest('details');
+      if (det){ if (!det.open) t.click(); return; }
+      // clásico: la clase activa la pone Elementor
+      if (!t.classList.contains('elementor-active')) t.click();
+    }
+
+    function mostrar(n, desdeClic){
+      i = n;
+      if (hayVideos){
+        videos.forEach(function(v, k){
+          v.classList.toggle('is-active', k === n);
+          if (k === n && visible){
+            try { v.currentTime = 0; } catch(e){}
+            var p = v.play(); if (p && p.catch) p.catch(function(){});
+          } else { v.pause(); }
+        });
+      }
+      if (!desdeClic) abrirAcordeon(n);
+      reiniciar();
+    }
+
+    function reiniciar(){
+      clearTimeout(timer);
+      // Sin videos no rota: el respaldo remoto tarda en montar y quedaría en blanco.
+      if (!hayVideos || !visible) return;
+      var total = titulos.length || videos.length;
+      timer = setTimeout(function(){ mostrar((i + 1) % total, false); }, DUR[i] || 15000);
+    }
+
+    // Arranca al entrar en pantalla, pausa al salir.
+    if ('IntersectionObserver' in window){
+      new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          visible = en.isIntersecting;
+          if (visible) mostrar(i, false);
+          else { clearTimeout(timer); videos.forEach(function(v){ v.pause(); }); }
+        });
+      }, { threshold: 0.25 }).observe(vis);
+    } else {
+      visible = true; mostrar(0, false);
+    }
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+  // Elementor reconstruye el DOM al editar: re-inicializar en el editor.
+  if (window.elementorFrontend) jQuery(window).on('elementor/frontend/init', init);
+})();
+</script>
