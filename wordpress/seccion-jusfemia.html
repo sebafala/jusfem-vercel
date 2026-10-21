@@ -1,0 +1,227 @@
+<!--
+  JUSFEM IA — sección para la home de jusfem.com
+  Pegar en un widget "HTML" de Elementor. No requiere plugins ni librerías.
+
+  CONFIGURACIÓN (editar solo este bloque):
+  - Los 3 <source> de los videos: subí los .mp4 a Medios y pegá acá sus URLs.
+  - El href del botón: a dónde va "Probar JusfemIA".
+  Mientras no haya videos, el bloque muestra las animaciones desde Vercel
+  (ver nota data-fallback más abajo).
+-->
+
+<section class="jia" aria-labelledby="jia-titulo">
+  <div class="jia__wrap">
+
+    <div class="jia__col jia__col--texto">
+      <span class="jia__badge">Nueva herramienta. <strong>JusfemIA</strong></span>
+
+      <h2 class="jia__titulo" id="jia-titulo">Fortalece la argumentación jurídica en una sola conversación.</h2>
+
+      <p class="jia__bajada">Haz una pregunta y obtén respuestas con fuentes curadas por el Observatorio Jusfem. Argumenta con un asistente jurídico gratuito y especializado, pensado para juezas, jueces y operadores/as de justicia, con énfasis en derechos sexuales y reproductivos y violencia de género.</p>
+
+      <a class="jia__cta" href="#CAMBIAR-DESTINO">
+        Probar JusfemIA
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg>
+      </a>
+
+      <div class="jia__tabs" role="tablist" aria-label="Funciones de JusfemIA">
+        <button class="jia__tab is-active" role="tab" id="jia-tab-0" aria-selected="true" aria-controls="jia-panel-0" data-i="0">
+          <span class="jia__tab-titulo">Realiza consultas y genera argumentos</span>
+          <span class="jia__tab-texto" id="jia-panel-0">Encuentra el estándar de derechos humanos, la norma, la jurisprudencia y la literatura especializada. Además, construye tu argumento paso a paso.</span>
+        </button>
+        <button class="jia__tab" role="tab" id="jia-tab-1" aria-selected="false" aria-controls="jia-panel-1" data-i="1">
+          <span class="jia__tab-titulo">Revisa y contrasta las fuentes</span>
+          <span class="jia__tab-texto" id="jia-panel-1">Cada respuesta muestra las fuentes utilizadas. Verifícalas antes de citar y, si lo necesitas, descarga el documento.</span>
+        </button>
+        <button class="jia__tab" role="tab" id="jia-tab-2" aria-selected="false" aria-controls="jia-panel-2" data-i="2">
+          <span class="jia__tab-titulo">Destaca tus conversaciones</span>
+          <span class="jia__tab-texto" id="jia-panel-2">Marca una conversación como favorita para que aparezca al inicio de tu historial. Retoma o revisa tu trabajo cuando lo necesites.</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="jia__col jia__col--visual">
+      <div class="jia__glows" aria-hidden="true">
+        <span class="jia__glow jia__glow--a"></span>
+        <span class="jia__glow jia__glow--b"></span>
+        <span class="jia__glow jia__glow--c"></span>
+      </div>
+
+      <div class="jia__marco">
+        <!--
+          Reemplazar cada src por la URL del .mp4 subido a Medios.
+          Si un src queda vacío, el bloque usa el iframe de respaldo.
+        -->
+        <video class="jia__video is-active" data-i="0" muted loop playsinline preload="metadata" poster="">
+          <source src="" type="video/mp4">
+        </video>
+        <video class="jia__video" data-i="1" muted loop playsinline preload="none" poster="">
+          <source src="" type="video/mp4">
+        </video>
+        <video class="jia__video" data-i="2" muted loop playsinline preload="none" poster="">
+          <source src="" type="video/mp4">
+        </video>
+
+        <!-- Respaldo temporal mientras no haya videos cargados -->
+        <iframe class="jia__fallback" title="Animación JusfemIA" loading="lazy"
+                data-src-0="https://jusfem.vercel.app/sitev2/anim-argumento.html?embed=1"
+                data-src-1="https://jusfem.vercel.app/sitev2/anim-documento.html?embed=1"
+                data-src-2="https://jusfem.vercel.app/sitev2/anim-favoritos.html?embed=1"></iframe>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+.jia{position:relative;z-index:1;padding:35px 20px 110px;background:#F8F5FB;overflow-x:clip;
+     font-family:'Raleway',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,sans-serif;color:#6E6A70}
+.jia *{box-sizing:border-box}
+.jia__wrap{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:48px;
+           align-items:start;max-width:1200px;margin:0 auto}
+
+.jia__col--texto{display:flex;flex-direction:column;gap:16px}
+.jia__badge{align-self:flex-start;display:inline-flex;align-items:center;padding:6px 12px;border-radius:6px;
+            background:#E3EEE8;font-size:14px;font-weight:700;color:#3E5E4E;white-space:pre}
+.jia__badge strong{font-weight:700}
+.jia__titulo{margin:0;font-size:32px;line-height:1.12;font-weight:700;color:#5B3280;text-wrap:pretty}
+.jia__bajada{margin:0;font-size:14px;line-height:1.55;text-wrap:pretty}
+
+.jia__cta{align-self:flex-start;margin-top:8px;padding:11px 26px;border:0;border-radius:999px;
+          background:#5B3280;color:#fff;font-size:15px;font-weight:500;letter-spacing:.04em;cursor:pointer;
+          display:inline-flex;align-items:center;gap:10px;text-decoration:none;
+          box-shadow:0 10px 24px -8px rgba(91,50,128,.55);
+          transition:transform .2s ease,box-shadow .2s ease,background .2s ease}
+.jia__cta:hover,.jia__cta:focus-visible{background:#4A2868;color:#fff;transform:translateY(-3px);
+          box-shadow:0 16px 30px -8px rgba(91,50,128,.65)}
+
+.jia__tabs{display:flex;flex-direction:column;gap:24px;margin-top:20px;padding-left:18px}
+.jia__tab{position:relative;display:flex;flex-direction:column;gap:8px;cursor:pointer;
+          background:none;border:0;padding:0;text-align:left;font:inherit;color:inherit}
+.jia__tab::before{content:"";position:absolute;left:-18px;top:2px;bottom:2px;width:3px;border-radius:2px;
+          background:transparent;transition:background .25s ease}
+.jia__tab.is-active::before{background:#5B3280}
+.jia__tab-titulo{font-size:15px;font-weight:600;color:#9A94A0;transition:color .25s ease}
+.jia__tab.is-active .jia__tab-titulo{color:#5B3280}
+.jia__tab-texto{display:none;font-size:12px;line-height:1.5;text-wrap:pretty}
+.jia__tab.is-active .jia__tab-texto{display:block}
+.jia__tab:focus-visible{outline:2px solid #5B3280;outline-offset:4px;border-radius:4px}
+
+.jia__col--visual{position:relative;display:flex;justify-content:center;margin-top:7px}
+.jia__glows{position:absolute;inset:-60px -40px;pointer-events:none}
+.jia__glow{position:absolute;border-radius:50%;display:block}
+.jia__glow--a{left:-4%;top:2%;width:62%;height:62%;background:#5B3280;filter:blur(70px);opacity:.35;
+              animation:jiaGlowA 9s ease-in-out infinite}
+.jia__glow--b{right:-6%;bottom:100px;width:60%;height:60%;background:#3D5BD9;filter:blur(80px);opacity:.5;
+              animation:jiaGlowB 11s ease-in-out infinite}
+.jia__glow--c{right:calc(14% + 50px);top:calc(-4% + 70px);width:38%;height:40%;background:#A06BD0;
+              filter:blur(60px);animation:jiaGlowC 7s ease-in-out infinite}
+@keyframes jiaGlowA{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(40px,30px) scale(1.12)}}
+@keyframes jiaGlowB{0%,100%{transform:translate(0,0) scale(1.05)}50%{transform:translate(-50px,-25px) scale(.92)}}
+@keyframes jiaGlowC{0%,100%{transform:translate(0,0);opacity:.55}50%{transform:translate(20px,-40px);opacity:.85}}
+
+.jia__marco{position:relative;width:576px;max-width:100%;aspect-ratio:1152/1080;
+            border-radius:18px;overflow:hidden;background:transparent}
+.jia__video,.jia__fallback{position:absolute;left:0;top:0;width:100%;height:100%;border:0;
+            opacity:0;pointer-events:none;
+            transition:opacity .6s ease,transform .6s cubic-bezier(.2,.8,.2,1),filter .6s ease;
+            transform:scale(.98);filter:blur(4px)}
+.jia__video.is-active,.jia__fallback.is-active{opacity:1;transform:none;filter:none}
+.jia__fallback{display:none}
+.jia.is-fallback .jia__video{display:none}
+.jia.is-fallback .jia__fallback{display:block}
+
+@media (max-width:1024px){
+  /* minmax(0,1fr) y no 1fr: si no, el ancho mínimo del visual (576px)
+     estira toda la columna y desborda en pantallas angostas. */
+  .jia__wrap{grid-template-columns:minmax(0,1fr);gap:36px}
+  .jia__col,.jia__col--texto{min-width:0}
+  .jia__col--visual{margin-top:0}
+  .jia__marco{width:100%}
+  .jia__titulo{font-size:28px}
+}
+@media (max-width:767px){
+  .jia{padding:28px 18px 64px}
+  .jia__titulo{font-size:24px}
+  .jia__cta{width:100%;justify-content:center}
+  .jia__glow{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .jia__glow{animation:none}
+  .jia__video,.jia__fallback{transition:none}
+}
+</style>
+
+<script>
+(function(){
+  var sec = document.currentScript.previousElementSibling;
+  while (sec && !sec.classList.contains('jia')) sec = sec.previousElementSibling;
+  if (!sec) sec = document.querySelector('.jia');
+  if (!sec || sec.dataset.jiaReady) return;
+  sec.dataset.jiaReady = '1';
+
+  var tabs   = [].slice.call(sec.querySelectorAll('.jia__tab'));
+  var videos = [].slice.call(sec.querySelectorAll('.jia__video'));
+  var frame  = sec.querySelector('.jia__fallback');
+  var DUR    = [40000, 15000, 15000];   // duración de cada animación
+  var i = 0, timer = null;
+
+  // Si los <source> están vacíos, usar el iframe de respaldo.
+  var tieneVideos = videos.every(function(v){
+    var s = v.querySelector('source');
+    return s && s.getAttribute('src');
+  });
+  if (!tieneVideos){
+    sec.classList.add('is-fallback');
+    if (frame){
+      frame.src = frame.getAttribute('data-src-0');
+      frame.onload = function(){ frame.classList.add('is-active'); };
+    }
+  }
+
+  function mostrar(n){
+    i = n;
+    tabs.forEach(function(t, k){
+      t.classList.toggle('is-active', k === n);
+      t.setAttribute('aria-selected', k === n ? 'true' : 'false');
+    });
+    if (tieneVideos){
+      videos.forEach(function(v, k){
+        v.classList.toggle('is-active', k === n);
+        if (k === n){ v.currentTime = 0; var p = v.play(); if (p && p.catch) p.catch(function(){}); }
+        else v.pause();
+      });
+    }
+    // En modo respaldo el iframe se carga UNA sola vez: la animación remota
+    // tarda varios segundos en montar, así que recargarla en cada cambio
+    // dejaría el recuadro siempre en blanco. Es solo una vista previa.
+    reiniciar();
+  }
+
+  function reiniciar(){
+    clearTimeout(timer);
+    if (!tieneVideos) return;          // sin videos no rota: evita parpadeos
+    timer = setTimeout(function(){ mostrar((i + 1) % tabs.length); }, DUR[i] || 15000);
+  }
+
+  tabs.forEach(function(t){
+    t.addEventListener('click', function(){ mostrar(+t.dataset.i); });
+    t.addEventListener('keydown', function(e){
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight'){ e.preventDefault(); tabs[(+t.dataset.i + 1) % tabs.length].focus(); }
+      if (e.key === 'ArrowUp'   || e.key === 'ArrowLeft'){  e.preventDefault(); tabs[(+t.dataset.i + tabs.length - 1) % tabs.length].focus(); }
+    });
+  });
+
+  // Arrancar solo cuando la sección entra en pantalla; pausar al salir.
+  if ('IntersectionObserver' in window){
+    new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (en.isIntersecting){ mostrar(i); }
+        else { clearTimeout(timer); videos.forEach(function(v){ v.pause(); }); }
+      });
+    }, { threshold: 0.25 }).observe(sec);
+  } else {
+    mostrar(0);
+  }
+})();
+</script>
