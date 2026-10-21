@@ -369,13 +369,10 @@ function Stage({
   const playTimes = playback && playback.mode === 'times' ? playback.count : null;
   const loopEff = playback ? playback.mode === 'loop' : loop;
 
-  const [time, setTime] = React.useState(() => {
-    try {
-      if (/[?&]embed=1/.test(location.search)) return 0;
-      const v = parseFloat(localStorage.getItem(persistKey + ':t') || '0');
-      return isFinite(v) ? clamp(v, 0, duration) : 0;
-    } catch { return 0; }
-  });
+  // PARCHE (uso fuera del editor): arrancar siempre en 0. El original
+  // retomaba el playhead de localStorage salvo con ?embed=1 en la URL,
+  // y en una pagina normal eso hacia que la animacion empezara por la mitad.
+  const [time, setTime] = React.useState(0);
   const [playing, setPlaying] = React.useState(autoplay);
   // The external-playback latch: true while the HOST play bar is driving
   // time forward as genuine continuous playback (its play-loop seeks
@@ -396,8 +393,7 @@ function Stage({
 
   // Persist playhead
   React.useEffect(() => {
-    if (/[?&]embed=1/.test(location.search)) return;
-    try { localStorage.setItem(persistKey + ':t', String(time)); } catch {}
+    return;   // PARCHE: no se persiste el playhead fuera del editor
   }, [time, persistKey]);
 
   // Auto-scale to fit viewport
