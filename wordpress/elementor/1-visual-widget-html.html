@@ -10,6 +10,15 @@
   jusfem-anims.min.js (este archivo lo deja aparte para que se pueda leer).
 -->
 
+<!--
+  NOTA IMPORTANTE SOBRE EL ESCALADO
+  El SVG que genera el stage trae width/height en px pero NO trae viewBox,
+  y sin viewBox un SVG no escala su contenido: solo lo recorta. Por eso,
+  si el contenedor es mas chico que 1152x1080, cada animacion muestra una
+  porcion distinta (una se ve bien y otra aparece en blanco).
+  Solucion: montar a tamano nativo y escalar el contenedor con transform.
+-->
+
 <div class="jia-visual" data-jia-visual>
   <div class="jia-visual__glows" aria-hidden="true">
     <span class="jia-visual__glow jia-visual__glow--a"></span>
@@ -65,7 +74,7 @@
     function mostrar(n,desdeClic){
       i=n; cont.style.opacity="0";
       raiz.render(React.createElement(window.JusfemAnim,
-        {pieza:PIEZAS[n], scenes:window.JusfemEscenas[PIEZAS[n]]}));
+        {key:PIEZAS[n], pieza:PIEZAS[n], scenes:window.JusfemEscenas[PIEZAS[n]]}));
       setTimeout(function(){ escalar(); cont.style.opacity="1"; },60);
       if(!desdeClic&&T[n]&&!T[n].classList.contains("elementor-active")){
         var d=T[n].closest("details"); if(!d||!d.open) T[n].click();
