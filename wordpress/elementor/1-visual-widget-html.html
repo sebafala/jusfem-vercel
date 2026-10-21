@@ -51,7 +51,18 @@
     cont.style.width=NW+"px"; cont.style.height=NH+"px";
     cont.style.transformOrigin="0 0"; cont.style.position="absolute";
     cont.style.left="0"; cont.style.top="0";
-    function escalar(){ cont.style.transform="scale("+(marco.clientWidth/NW)+")"; }
+    // El stage se auto-escala y centra su svg dentro del contenedor, dejando
+    // un borde donde asoma su fondo (se veia como un doble marco). Se mide el
+    // svg real y se compensa escala y desplazamiento para que llene el marco.
+    function escalar(){
+      var sv=cont.querySelector("svg");
+      if(!sv){ cont.style.transform="scale("+(marco.clientWidth/NW)+")"; return; }
+      cont.style.transform="none";
+      var rs=sv.getBoundingClientRect(), rc=cont.getBoundingClientRect();
+      if(!rs.width){ cont.style.transform="scale("+(marco.clientWidth/NW)+")"; return; }
+      var k=marco.clientWidth/rs.width;
+      cont.style.transform="scale("+k+") translate("+(-(rs.left-rc.left))+"px,"+(-(rs.top-rc.top))+"px)";
+    }
     escalar();
     if(window.ResizeObserver) new ResizeObserver(escalar).observe(marco);
     else window.addEventListener("resize",escalar);
