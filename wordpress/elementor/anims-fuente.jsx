@@ -369,7 +369,7 @@ function Stage({
   const playTimes = playback && playback.mode === 'times' ? playback.count : null;
   const loopEff = playback ? playback.mode === 'loop' : loop;
 
-  // PARCHE: arrancar siempre en 0 (el original retomaba el playhead guardado).
+  // PARCHE: arrancar siempre en 0.
   const [time, setTime] = React.useState(0);
   const [playing, setPlaying] = React.useState(autoplay);
   // The external-playback latch: true while the HOST play bar is driving
@@ -391,7 +391,7 @@ function Stage({
 
   // Persist playhead
   React.useEffect(() => {
-    return;   // PARCHE: no se persiste el playhead fuera del editor
+    return;   // PARCHE: no se persiste el playhead
   }, [time, persistKey]);
 
   // Auto-scale to fit viewport
@@ -1921,7 +1921,7 @@ function PieceFavoritos() {
     [L + 2.6, fr], [N + 0.3, fr], [tS2 - D, r2], [tS2 + H, r2], [N + 2.0, [640, 430]], [N + 3.3, [640, 430]], [tS3 - D, r3], [tS3 + H, r3], [N + 6.0, [660, 450]],
   ], T);
   const cam = kf([
-    [0, [720, 405, 1.2]], [tFav - 0.7, [720, 405, 1.2]], [tFav - 0.1, [fv[0], fv[1] - 115, 1.38]], [tFav + 0.5, [fv[0], fv[1] - 115, 1.38]], [tFav + 1.2, [360, 405, 1.2]],
+    [0, [720, 405, 1.2]], [tFav - 0.7, [720, 405, 1.2]], [tFav - 0.1, [fv[0], fv[1] - 40, 1.56]], [tFav + 0.5, [fv[0], fv[1] - 40, 1.56]], [tFav + 1.2, [360, 330, 1.2]],
     [tS2 + 0.3, [360, 405, 1.2]], [tS2 + 1.2, [851, 405, 1.2]], [N + 3.0, [851, 405, 1.2]], [N + 3.8, [360, 405, 1.2]], [tS3 + 0.3, [360, 405, 1.2]], [tS3 + 1.2, [851, 405, 1.2]],
   ], T);
   const total = (JSON.parse(window.OM_SCENES || "[]")).reduce((a, x) => a + x.dur, 0) || N + 9;
