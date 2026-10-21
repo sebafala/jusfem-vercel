@@ -96,13 +96,17 @@
 
     T.forEach(function(t,k){ t.addEventListener("click",function(){ mostrar(k,true); }); });
 
-    // Solo anima mientras la sección está en pantalla.
+    // Montar de entrada. El IntersectionObserver no sirve como unico
+    // disparador: su primer callback puede llegar antes de que la seccion
+    // tenga tamano, reportar "no visible", y como el estado nunca cambia
+    // no vuelve a dispararse y la animacion no monta nunca.
+    mostrar(0);
     if("IntersectionObserver" in window){
       new IntersectionObserver(function(e){ e.forEach(function(en){
-        visible=en.isIntersecting;
-        if(visible) mostrar(i,false); else clearTimeout(timer);
+        if(en.isIntersecting && !visible){ visible=true; mostrar(i); }
+        else if(!en.isIntersecting){ visible=false; }
       }); },{threshold:0.25}).observe(vis);
-    } else { visible=true; mostrar(0,false); }
+    }
   }
 
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",init);
