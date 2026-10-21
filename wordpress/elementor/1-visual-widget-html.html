@@ -1,149 +1,91 @@
 <!--
-  JUSFEM IA — VISUAL (videos + fondo animado)
-  Va en un widget HTML de Elementor, en la columna DERECHA de la sección.
+  JUSFEM IA — VISUAL (animaciones compiladas)
+  Va en un widget HTML de Elementor, columna DERECHA de la sección.
 
-  Esto es lo único que queda como código. Todos los textos de la sección
-  (badge, título, bajada, botón y las 3 tarjetas) son widgets normales de
-  Elementor y se editan haciendo clic. Ver la guía de montaje.
+  Las animaciones son las mismas del prototipo, pero compiladas con esbuild:
+  sin Babel ni el runtime de Claude Design. ~215 KB en total (75 del bundle
+  + 142 de React) contra los 3,5 MB del iframe original.
 
-  QUÉ TOCAR ACÁ: solo los tres src de los videos.
+  MONTAJE: donde dice PEGAR-BUNDLE-AQUI va el contenido completo de
+  jusfem-anims.min.js (este archivo lo deja aparte para que se pueda leer).
 -->
 
 <div class="jia-visual" data-jia-visual>
-
   <div class="jia-visual__glows" aria-hidden="true">
     <span class="jia-visual__glow jia-visual__glow--a"></span>
     <span class="jia-visual__glow jia-visual__glow--b"></span>
     <span class="jia-visual__glow jia-visual__glow--c"></span>
   </div>
-
-  <div class="jia-visual__marco">
-
-    <!-- 1 · Realiza consultas y genera argumentos -->
-    <video class="jia-visual__video is-active" data-i="0" muted loop playsinline preload="metadata">
-      <source src="" type="video/mp4">
-    </video>
-
-    <!-- 2 · Revisa y contrasta las fuentes -->
-    <video class="jia-visual__video" data-i="1" muted loop playsinline preload="none">
-      <source src="" type="video/mp4">
-    </video>
-
-    <!-- 3 · Destaca tus conversaciones -->
-    <video class="jia-visual__video" data-i="2" muted loop playsinline preload="none">
-      <source src="" type="video/mp4">
-    </video>
-
-    <!-- Respaldo mientras no haya videos cargados. Quitar al publicar. -->
-    <iframe class="jia-visual__respaldo" title="Animación JusfemIA" loading="lazy"
-            data-src="https://jusfem.vercel.app/sitev2/anim-argumento.html?embed=1"></iframe>
-
-  </div>
+  <div class="jia-visual__marco"><div class="jia-visual__anim" id="jia-anim"></div></div>
 </div>
 
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+<script>
+/* PEGAR-BUNDLE-AQUI → contenido de jusfem-anims.min.js */
+</script>
 <script>
 (function(){
+  var PIEZAS=["argumento","documento","favoritos"], DUR=[40000,15000,15000];
+  var NW=1152, NH=1080;   // tamaño nativo del stage
+
   function init(){
-    var vis = document.querySelector('[data-jia-visual]');
-    if (!vis || vis.dataset.listo) return;
-    vis.dataset.listo = '1';
+    var vis=document.querySelector("[data-jia-visual]");
+    var cont=document.getElementById("jia-anim");
+    var marco=vis&&vis.querySelector(".jia-visual__marco");
+    if(!vis||!cont||!marco||vis.dataset.listo) return;
+    if(!window.React||!window.ReactDOM||!window.JusfemAnim) return setTimeout(init,200);
+    vis.dataset.listo="1";
 
-    var videos = [].slice.call(vis.querySelectorAll('.jia-visual__video'));
-    var marco  = vis.querySelector('.jia-visual__marco');
-    var resp   = vis.querySelector('.jia-visual__respaldo');
-    var DUR    = [40000, 15000, 15000];   // duración de cada video
-    var i = 0, timer = null, visible = false;
+    // El stage no se adapta solo al contenedor: se monta a tamaño nativo
+    // y se escala al ancho real del marco (y se recalcula si cambia).
+    cont.style.width=NW+"px"; cont.style.height=NH+"px";
+    cont.style.transformOrigin="0 0"; cont.style.position="absolute";
+    cont.style.left="0"; cont.style.top="0";
+    function escalar(){ cont.style.transform="scale("+(marco.clientWidth/NW)+")"; }
+    escalar();
+    if(window.ResizeObserver) new ResizeObserver(escalar).observe(marco);
+    else window.addEventListener("resize",escalar);
 
-    var hayVideos = videos.length && videos.every(function(v){
-      var s = v.querySelector('source');
-      return s && s.getAttribute('src');
-    });
+    var raiz=ReactDOM.createRoot(cont), i=0, timer=null, visible=false;
 
-    if (!hayVideos){
-      marco.classList.add('sin-videos');
-      if (resp){
-        resp.src = resp.getAttribute('data-src');
-        resp.onload = function(){ resp.classList.add('is-active'); };
-      }
-    }
-
-    // --- Puente con el acordeón de Elementor ---------------------------
-    // Busca los títulos del acordeón que esté en la misma sección.
-    // Soporta el acordeón clásico y el nuevo (nested). Si no encuentra
-    // ninguno, el visual igual rota solo.
-    function buscarTitulos(){
-      var raiz = vis.closest('.elementor-section, .e-con, .elementor-container') || document;
-      var sel = [
-        '.elementor-accordion .elementor-tab-title',          // acordeón clásico
-        '.e-n-accordion-item > .e-n-accordion-item-title',    // acordeón nested (Pro)
-        '.elementor-tabs .elementor-tab-title'                // pestañas
-      ];
-      for (var k = 0; k < sel.length; k++){
-        var found = [].slice.call(raiz.querySelectorAll(sel[k]));
-        if (found.length >= 2) return found;
+    // Puente con el acordeón de Elementor (clásico o anidado).
+    function tabs(){
+      var r=vis.closest(".e-con.e-parent, .elementor-section")||document;
+      var sel=[".elementor-accordion .elementor-tab-title",
+               ".e-n-accordion-item > .e-n-accordion-item-title"];
+      for(var k=0;k<sel.length;k++){
+        var f=[].slice.call(r.querySelectorAll(sel[k]));
+        if(f.length>=2) return f;
       }
       return [];
     }
+    var T=tabs();
 
-    var titulos = buscarTitulos();
-
-    titulos.forEach(function(t, k){
-      t.addEventListener('click', function(){ mostrar(k, true); });
-      t.addEventListener('keydown', function(e){
-        if (e.key === 'Enter' || e.key === ' ') setTimeout(function(){ mostrar(k, true); }, 0);
-      });
-    });
-
-    function abrirAcordeon(n){
-      var t = titulos[n];
-      if (!t) return;
-      // nested: <details open>
-      var det = t.closest('details');
-      if (det){ if (!det.open) t.click(); return; }
-      // clásico: la clase activa la pone Elementor
-      if (!t.classList.contains('elementor-active')) t.click();
-    }
-
-    function mostrar(n, desdeClic){
-      i = n;
-      if (hayVideos){
-        videos.forEach(function(v, k){
-          v.classList.toggle('is-active', k === n);
-          if (k === n && visible){
-            try { v.currentTime = 0; } catch(e){}
-            var p = v.play(); if (p && p.catch) p.catch(function(){});
-          } else { v.pause(); }
-        });
+    function mostrar(n,desdeClic){
+      i=n; cont.style.opacity="0";
+      raiz.render(React.createElement(window.JusfemAnim,
+        {pieza:PIEZAS[n], scenes:window.JusfemEscenas[PIEZAS[n]]}));
+      setTimeout(function(){ escalar(); cont.style.opacity="1"; },60);
+      if(!desdeClic&&T[n]&&!T[n].classList.contains("elementor-active")){
+        var d=T[n].closest("details"); if(!d||!d.open) T[n].click();
       }
-      if (!desdeClic) abrirAcordeon(n);
-      reiniciar();
-    }
-
-    function reiniciar(){
       clearTimeout(timer);
-      // Sin videos no rota: el respaldo remoto tarda en montar y quedaría en blanco.
-      if (!hayVideos || !visible) return;
-      var total = titulos.length || videos.length;
-      timer = setTimeout(function(){ mostrar((i + 1) % total, false); }, DUR[i] || 15000);
+      if(visible) timer=setTimeout(function(){ mostrar((i+1)%PIEZAS.length,false); },DUR[i]||15000);
     }
 
-    // Arranca al entrar en pantalla, pausa al salir.
-    if ('IntersectionObserver' in window){
-      new IntersectionObserver(function(entries){
-        entries.forEach(function(en){
-          visible = en.isIntersecting;
-          if (visible) mostrar(i, false);
-          else { clearTimeout(timer); videos.forEach(function(v){ v.pause(); }); }
-        });
-      }, { threshold: 0.25 }).observe(vis);
-    } else {
-      visible = true; mostrar(0, false);
-    }
+    T.forEach(function(t,k){ t.addEventListener("click",function(){ mostrar(k,true); }); });
+
+    // Solo anima mientras la sección está en pantalla.
+    if("IntersectionObserver" in window){
+      new IntersectionObserver(function(e){ e.forEach(function(en){
+        visible=en.isIntersecting;
+        if(visible) mostrar(i,false); else clearTimeout(timer);
+      }); },{threshold:0.25}).observe(vis);
+    } else { visible=true; mostrar(0,false); }
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",init);
   else init();
-  // Elementor reconstruye el DOM al editar: re-inicializar en el editor.
-  if (window.elementorFrontend) jQuery(window).on('elementor/frontend/init', init);
 })();
 </script>

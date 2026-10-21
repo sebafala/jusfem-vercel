@@ -195,3 +195,41 @@
   .jia-visual__glow{ animation:none; }
   .jia-visual__video,.jia-visual__respaldo{ transition:none; }
 }
+
+/* ====================================================================
+   AJUSTES APLICADOS EN EL SITIO (tema Astra + Elementor)
+   ==================================================================== */
+
+.jia-badge{ display:flex; }
+.jia-badge .elementor-widget-container{ width:auto; }
+.jia-badge p, .jia-bajada p, .jia-tarjetas .elementor-tab-content p{ margin:0; }
+
+/* --- animación compilada --- */
+.jia-visual__anim{ position:absolute; inset:0; transition:opacity .45s ease; }
+/* el stage pinta un fondo oscuro propio; se transparenta */
+.jia-visual__anim > div{ background:transparent !important; }
+/* barra de controles del editor de animación: fuera en producción */
+[data-omelette-chrome]{ display:none !important; }
+.jia-visual__marco{ background:#F7F6F8; }
+
+/* --- integración con el header y el hero ---
+   Un único fondo para header + sección: pintarlos por separado dejaba una
+   línea donde el header opaco tapaba el glow. El degradado llega a blanco
+   antes de los ~841px, donde arranca el hero con su propio fondo. */
+body:has(.jia-visual){ background:linear-gradient(#F8F5FB 0, #F8F5FB 480px, #fff 800px) no-repeat; }
+body:has(.jia-visual) .elementor-location-header{ background:transparent !important; position:relative; overflow-x:clip; }
+/* overflow-x:clip y no hidden: hidden recorta los dos ejes y corta el glow */
+body:has(.jia-visual) .e-con.e-parent:has(.jia-visual){ background:transparent !important; overflow-x:clip; overflow-y:visible; }
+body:has(.jia-visual) .e-con.e-parent:has(.jia-visual) .e-con-inner{ overflow:visible; }
+
+/* glow detrás del logo, como en el prototipo */
+.elementor-location-header::before{
+  content:''; position:absolute; left:-50px; top:-70px;
+  width:240px; height:150px; border-radius:50%;
+  background:#A06BD0; filter:blur(50px); opacity:.28;
+  pointer-events:none; z-index:0;
+  animation:jiaGlowD 8s ease-in-out infinite;
+}
+.elementor-location-header > *{ position:relative; z-index:1; }
+@keyframes jiaGlowD{0%,100%{transform:translate(0,0)}50%{transform:translate(20px,-40px)}}
+@media (prefers-reduced-motion:reduce){ .elementor-location-header::before{ animation:none; } }
