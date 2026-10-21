@@ -243,3 +243,12 @@ body:has(.jia-visual) .e-con.e-parent:has(.jia-visual) .e-con-inner{ overflow:vi
 .jia-tarjetas .elementor-tab-content{ padding-left:0 !important; }
 .jia-tarjetas .e-n-accordion-item-title{ padding-left:0; }
 .jia-tarjetas .e-n-accordion-item-title::before{ left:-18px; }
+
+/* --- reservar la altura del visual en mobile ---
+   El widget HTML queda con height:0 y la columna no propaga la altura del
+   marco, así que la sección no reservaba espacio y la animación se
+   superponía con el hero. Se reserva en la columna: en mobile ocupa casi
+   todo el ancho y el marco es 1152/1080, o sea ~94% de su ancho. */
+@media (max-width:1024px){
+  .e-con.e-child:has(.jia-visual){ min-height:92vw; }
+}
